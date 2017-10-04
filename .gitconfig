@@ -1,0 +1,32 @@
+[diff]
+	tool = gvimdiff
+[difftool "gvimdiff"]
+    cmd = \"C:\\Program Files (x86)\\vim\\vim80\\gvim.exe\" -d "$LOCAL" "$REMOTE"
+[difftool "vimdiff"]
+    cmd = \"C:\\tools\\neovim\\Neovim\\bin\\nvim.exe\" -d "$LOCAL" "$REMOTE"
+[mergetool "bc4"]
+    cmd = \"C:\\Program Files\\Beyond Compare 4\\BComp.exe\" "$LOCAL" "$REMOTE" "$BASE" "$MERGED"
+[difftool]
+    prompt = false
+[merge]
+	tool = bc4
+[push]
+    default = simple
+[status]
+    showUntrackedFiles = all
+[format]
+    pretty = %C(green)%h%C(red) %>(10)%cr:%C(cyan) (%aN)%n%C(white)- %<(60,trunc)%s%C(reset)
+[user]
+    name = Wes Rupert
+    email = wesr@microsoft.com
+[alias]
+	git = !exec git
+    changed = blame
+    overview = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(refname:short)"
+    recap = log --all --no-merges --author=wesr@microsoft.com --since=4.weeks
+    recap-one = log --no-merges --author=wesr@microsoft.com --since=4.weeks
+    stash-all = stash save --include-untracked
+    sync = fetch --all --prune
+    undo = reset --soft HEAD^
+[interactive]
+	diffFilter = diff-highlight
