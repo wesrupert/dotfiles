@@ -14,6 +14,12 @@ function .. { cd .. }
 function ... { cd ..\.. }
 function .... { cd ..\..\.. }
 function ..... { cd ..\..\..\.. }
+function ...... { cd ..\..\..\..\.. }
+function ....... { cd ..\..\..\..\..\.. }
+function ........ { cd ..\..\..\..\..\..\.. }
+function ......... { cd ..\..\..\..\..\..\..\.. }
+function .......... { cd ..\..\..\..\..\..\..\..\.. }
+function ........... { cd ..\..\..\..\..\..\..\..\..\.. }
 Set-Alias mklink Make-Link
 
 Set-Alias gdt Git-Difftool
@@ -24,6 +30,10 @@ Set-Alias online GoTo-Remote
 
 Set-Alias pr Start-Review
 Set-Alias cr Start-Review
+
+Set-Alias which Get-Command
+
+function fzc { fzf | clip }
 
 # }}}
 
@@ -54,14 +64,13 @@ function global:Set-MyPrompt { # {{{
         $dirs = $pwd.ProviderPath.Split('\')
         if ($dirs.Length -ge 2 -and ($dirs[0] -eq 'S:' -or $dirs -eq 'A:') -and $dirs[1]) {
             Write-Prompt $dirs[0] $cDir
-            Write-Prompt '{' $cDelim
+            Write-Prompt '\' $cDelim
             Write-Prompt $dirs[1] $cRepo
             if ($dirs.Length -ge 3) {
                 for ($i = 3; $i -lt $dirs.Length; $i++) { Write-Prompt '.' $cDir }
-                Write-Prompt '\' $cRepo
+                Write-Prompt '\' $cDelim
                 Write-Prompt "$($dirs[$dirs.Length - 1])" $cDir
             }
-            Write-Prompt '}' $cDelim
 
             if ($env:_BuildArch) {
                 Write-Prompt ' (' $cDelim
@@ -166,18 +175,17 @@ function VFind([switch]$noignorecase, [switch]$regex, [string]$text) { # {{{
 function GVim([switch]$newwindow, [object]$eval) { # {{{
     if ($eval -is [ScriptBlock]) {
         $eval.Invoke() | ForEach-Object {
-            Log-Command 'gvim' "Opening $($_.Name)!"
-            . Gvim -newwindow:$newwindow $_.FullName
+            Write-Host "Opening $($_.Name)" -ForegroundColor $(Get-TypeColor([ContentType]::Command))
+            Gvim -newwindow:$newwindow $_.FullName
         }
     } else {
-        $root = $(git rev-parse --show-toplevel 2>Out-Null)
+        $root = $(git rev-parse --show-toplevel 2>$null)
         if ($eval -and $eval.StartsWith('/') -and $root -ne '') {
             $eval = "$root\..$($eval.Replace('/', '\'))"
         }
 
         $source = $(if ($eval) { $eval } else { '' })
-        $useRemote = $(if (-not $newwindow -and $eval -and $(Get-Process | ?{ $_.Name -eq 'gvim' })) { '--remote-tab-silent' } else { '' })
-        & gvim.exe --servername "GVim (Conemu)" $useRemote $source
+        & nvim-qt.exe $source
     }
 } # }}}
 
@@ -295,7 +303,7 @@ function List-Compact([switch]$copyable) { # {{{
         return $counter
     }
 
-    $dir = if ($args -and $args[0]) { Get-FullPath $args[0] } else { (pwd) }
+    $dir = if ($args -and $args[0]) { if ($args[0].Contains('*')) { $args[0] } else { Get-FullPath $args[0] } } else { (pwd) }
     $header = $(if ($copyable) { '─' } else { '┌' }) + '── Contents of '
 
     $headerWidth = $Host.UI.RawUI.BufferSize.Width - 1
