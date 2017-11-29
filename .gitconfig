@@ -1,7 +1,7 @@
 [diff]
 	tool = gvimdiff
 [difftool "gvimdiff"]
-    cmd = \"C:\\Program Files (x86)\\vim\\vim80\\gvim.exe\" -d "$LOCAL" "$REMOTE"
+    cmd = \"C:\\tools\\neovim\\Neovim\\bin\\nvim-qt.exe\" "$LOCAL" "$REMOTE" -- -d
 [difftool "vimdiff"]
     cmd = \"C:\\tools\\neovim\\Neovim\\bin\\nvim.exe\" -d "$LOCAL" "$REMOTE"
 [mergetool "bc4"]
@@ -21,7 +21,9 @@
     email = wesr@microsoft.com
 [alias]
 	git = !exec git
+	abort = reset --hard HEAD
     changed = blame
+    c-amend = commit --amend --no-edit
     overview = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(refname:short)"
     recap = log --all --no-merges --author=wesr@microsoft.com --since=4.weeks
     recap-one = log --no-merges --author=wesr@microsoft.com --since=4.weeks
