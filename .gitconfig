@@ -4,6 +4,8 @@
     cmd = \"C:\\tools\\neovim\\Neovim\\bin\\nvim-qt.exe\" "$LOCAL" "$REMOTE" -- -d
 [difftool "vimdiff"]
     cmd = \"C:\\tools\\neovim\\Neovim\\bin\\nvim.exe\" -d "$LOCAL" "$REMOTE"
+[difftool "bc4"]
+    cmd = \"C:\\Program Files\\Beyond Compare 4\\BComp.exe\" "$LOCAL" "$REMOTE"
 [mergetool "bc4"]
     cmd = \"C:\\Program Files\\Beyond Compare 4\\BComp.exe\" "$LOCAL" "$REMOTE" "$BASE" "$MERGED"
 [difftool]
@@ -15,7 +17,8 @@
 [status]
     showUntrackedFiles = all
 [format]
-    pretty = %C(green)%h%C(red) %>(10)%cr:%C(cyan) (%aN)%n%C(white)- %<(60,trunc)%s%C(reset)
+    ;pretty = %C(green)%h%C(red) %>(10)%cr:%C(cyan) (%aN)%C(white) - %<(60,trunc)%s%C(reset)
+    pretty = %Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset
 [user]
     name = Wes Rupert
     email = wesr@microsoft.com
@@ -24,6 +27,8 @@
 	abort = reset --hard HEAD
     changed = blame
     c-amend = commit --amend --no-edit
+    c-aa = commit -a --amend --no-edit
+    logg = log --decorate --graph
     overview = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(refname:short)"
     recap = log --all --no-merges --author=wesr@microsoft.com --since=4.weeks
     recap-one = log --no-merges --author=wesr@microsoft.com --since=4.weeks
