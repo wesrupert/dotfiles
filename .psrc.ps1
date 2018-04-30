@@ -1,6 +1,6 @@
 ﻿# Imports {{{ {{{ {{{
 
-Import-Module 'C:\tools\poshgit\dahlbyk-posh-git-a4faccd\src\posh-git.psd1'
+Import-Module 'C:\tools\poshgit\dahlbyk-posh-git-4184928\src\posh-git.psd1'
 
 # }}} }}} }}}
 
@@ -228,7 +228,8 @@ function GoTo-Remote([switch]$push, [string]$remote) { # {{{
     }
 
     $matches = $null
-    if ([string]$output -notmatch "$remote\s*(.*)\ \($type\)") {
+    $matchstr =  "$remote\s*(.*)\ \($type\)"
+    if ($($output -match $matchstr) -notmatch $matchstr) {
         $remotes = ''
         $output | Foreach-Object {
             if ([string]$_ -match "([^\s]*).*\ \($type\)") {

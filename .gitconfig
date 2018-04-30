@@ -1,5 +1,7 @@
 [diff]
-	tool = gvimdiff
+    tool = gvimdiff
+[difftool "vscode"]
+    cmd = \"C:\\Program Files\\Microsoft VS Code\\Code.exe\" --wait --diff $LOCAL $REMOTE
 [difftool "gvimdiff"]
     cmd = \"C:\\tools\\neovim\\Neovim\\bin\\nvim-qt.exe\" "$LOCAL" "$REMOTE" -- -d
 [difftool "vimdiff"]
