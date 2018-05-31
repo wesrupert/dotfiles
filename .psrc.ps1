@@ -1,12 +1,12 @@
 ﻿# Imports {{{ {{{ {{{
 
-Import-Module 'C:\tools\poshgit\dahlbyk-posh-git-4184928\src\posh-git.psd1'
+Import-Module 'C:\tools\poshgit\dahlbyk-posh-git-9bda399\src\posh-git.psd1'
 
 # }}} }}} }}}
 
 # Aliases {{{
 
-function settings { GVim C:\Users\wesr\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1 }
+function settings { GVim $profile ; if (Test-Path $CustomProfile) { GVim $CustomProfile } }
 
 Set-Alias -Option AllScope ls List-Compact
 Set-Alias open explorer
@@ -231,11 +231,7 @@ function GoTo-Remote([switch]$push, [string]$remote) { # {{{
     $matchstr =  "$remote\s*(.*)\ \($type\)"
     if ($($output -match $matchstr) -notmatch $matchstr) {
         $remotes = ''
-        $output | Foreach-Object {
-            if ([string]$_ -match "([^\s]*).*\ \($type\)") {
-                $remotes += ', ' + $matches[1]
-            }
-        }
+        $output | Foreach-Object { if ([string]$_ -match "([^\s]*).*\ \($type\)") { $remotes += ', ' + $matches[1] } }
         if ($remotes) {
             Write-Output "Unable to locate remote $remote. Remotes found:$($remotes.Substring(1, $remotes.Length - 1))"
         } else {
