@@ -1,29 +1,7 @@
-[diff]
-    tool = gvimdiff
-[difftool "vscode"]
-    cmd = \"C:\\Program Files\\Microsoft VS Code\\Code.exe\" --wait --diff $LOCAL $REMOTE
-[difftool "gvimdiff"]
-    cmd = \"C:\\tools\\neovim\\Neovim\\bin\\nvim-qt.exe\" "$LOCAL" "$REMOTE" -- -d
-[difftool "vimdiff"]
-    cmd = \"C:\\tools\\neovim\\Neovim\\bin\\nvim.exe\" -d "$LOCAL" "$REMOTE"
-[difftool "bc4"]
-    cmd = \"C:\\Program Files\\Beyond Compare 4\\BComp.exe\" "$LOCAL" "$REMOTE"
-[mergetool "bc4"]
-    cmd = \"C:\\Program Files\\Beyond Compare 4\\BComp.exe\" "$LOCAL" "$REMOTE" "$BASE" "$MERGED"
-[difftool]
-    prompt = false
-[merge]
-	tool = bc4
-[push]
-    default = simple
-[status]
-    showUntrackedFiles = all
-[format]
-    ;pretty = %C(green)%h%C(red) %>(10)%cr:%C(cyan) (%aN)%C(white) - %<(60,trunc)%s%C(reset)
-    pretty = %Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset
 [user]
     name = Wes Rupert
     email = wesr@microsoft.com
+
 [alias]
 	git = !exec git
 	abort = reset --hard HEAD
@@ -37,5 +15,32 @@
     stash-all = stash save --include-untracked
     sync = fetch --all --prune
     undo = reset --soft HEAD^
+[format]
+    ;pretty = %C(green)%h%C(red) %>(10)%cr:%C(cyan) (%aN)%C(white) - %<(60,trunc)%s%C(reset)
+    pretty = %Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset
+
+[push]
+    default = simple
+[status]
+    showUntrackedFiles = all
 [interactive]
 	diffFilter = diff-highlight
+
+[core]
+	editor = C:/tools/neovim/Neovim/bin/nvim.exe
+[diff]
+    tool = gvimdiff
+[difftool]
+    prompt = false
+[difftool "bc4"]
+    cmd = \"C:\\Program Files\\Beyond Compare 4\\BComp.exe\" "$LOCAL" "$REMOTE"
+[difftool "gvimdiff"]
+    cmd = \"C:\\tools\\neovim\\Neovim\\bin\\nvim-qt.exe\" "$LOCAL" "$REMOTE" -- -d
+[difftool "vimdiff"]
+    cmd = \"C:\\tools\\neovim\\Neovim\\bin\\nvim.exe\" -d "$LOCAL" "$REMOTE"
+[difftool "vscode"]
+    cmd = \"C:\\Program Files\\Microsoft VS Code\\Code.exe\" --wait --diff $LOCAL $REMOTE
+[merge]
+	tool = bc4
+[mergetool "bc4"]
+    cmd = \"C:\\Program Files\\Beyond Compare 4\\BComp.exe\" "$LOCAL" "$REMOTE" "$BASE" "$MERGED"
