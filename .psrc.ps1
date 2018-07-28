@@ -1,12 +1,12 @@
 ﻿# Imports {{{ {{{ {{{
 
-Import-Module 'C:\tools\poshgit\dahlbyk-posh-git-a4faccd\src\posh-git.psd1'
+Import-Module 'C:\tools\poshgit\dahlbyk-posh-git-9bda399\src\posh-git.psd1'
 
 # }}} }}} }}}
 
 # Aliases {{{
 
-function settings { GVim C:\Users\wesr\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1 }
+function settings { GVim $profile ; if (Test-Path $CustomProfile) { GVim $CustomProfile } }
 
 Set-Alias -Option AllScope ls List-Compact
 Set-Alias open explorer
@@ -67,7 +67,10 @@ function global:Set-MyPrompt { # {{{
             Write-Prompt '\' $cDelim
             Write-Prompt $dirs[1] $cRepo
             if ($dirs.Length -ge 3) {
-                for ($i = 3; $i -lt $dirs.Length; $i++) { Write-Prompt '.' $cDir }
+                for ($i = 3; $i -lt $dirs.Length; $i++) {
+                    Write-Prompt '\' $cDelim
+                    Write-Prompt $dirs[$i-1][0] $cDir
+                }
                 Write-Prompt '\' $cDelim
                 Write-Prompt "$($dirs[$dirs.Length - 1])" $cDir
             }
@@ -205,6 +208,12 @@ function Git-Difftool([string]$ref) { # {{{
     $jobs | Remove-Job
 } # }}}
 
+function Git-ClearBranches {
+    git branch -vv `
+    | Select-String -Pattern '\*?\ ([^\ ]+)\ .*: gone]' `
+    | % { git branch -D $_.Matches[0].Groups[1].Value }
+}
+
 function Touch([string]$filename) { # {{{
     $([system.String]::Join(" ", $args)) | Out-File $filename -Encoding ASCII 
 } # }}}
@@ -219,13 +228,10 @@ function GoTo-Remote([switch]$push, [string]$remote) { # {{{
     }
 
     $matches = $null
-    if ([string]$output -notmatch "$remote\s*(.*)\ \($type\)") {
+    $matchstr =  "$remote\s*(.*)\ \($type\)"
+    if ($($output -match $matchstr) -notmatch $matchstr) {
         $remotes = ''
-        $output | Foreach-Object {
-            if ([string]$_ -match "([^\s]*).*\ \($type\)") {
-                $remotes += ', ' + $matches[1]
-            }
-        }
+        $output | Foreach-Object { if ([string]$_ -match "([^\s]*).*\ \($type\)") { $remotes += ', ' + $matches[1] } }
         if ($remotes) {
             Write-Output "Unable to locate remote $remote. Remotes found:$($remotes.Substring(1, $remotes.Length - 1))"
         } else {
@@ -364,6 +370,8 @@ echo $path
     return $path
 } # }}}
 
+function Kill-All([string]$name) { Get-Process -Name $name | Stop-Process }
+
 function Notify-Me { # {{{
     $address = ''
     if ($global:NOTIFYMECREDENTIALS) {
@@ -497,27 +505,27 @@ function Ensure-LockPath { # {{{
     }
 } # }}}
 
-function Get-Lock([switch]$force, [switch]$noprogress, [int]$interval = 10) { # {{{
+function Get-Lock([switch]$force, [switch]$quiet, [int]$interval = 10) { # {{{
     Ensure-LockPath
     if (Test-Path $env:LOCK) {
-        if ($force) { Clear-Lock -noprogress:$noprogress }
+        if ($force) { Clear-Lock -noprogress:$quiet }
 
-        if (-not ($noprogress -or $force)) { Log-Command -NoNewline 'lock' 'Waiting for {' @($env:LOCK, [ContentType]::SubInfo) '} to clear...' }
+        if (-not ($quiet -or $force)) { Log-Command -NoNewline 'lock' 'Waiting for {' @($env:LOCK, [ContentType]::SubInfo) '} to clear...' }
         while (Test-Path $env:LOCK) {
             Sleep($interval)
-            if (-not $noprogress) { Write-Host '.' -NoNewline -ForegroundColor $(Get-TypeColor([ContentType]::Command)) }
+            if (-not $quiet) { Write-Host '.' -NoNewline -ForegroundColor $(Get-TypeColor([ContentType]::Command)) }
         }
-        if (-not $noprogress) { Write-Host '' }
+        if (-not $quiet) { Write-Host '' }
     }
 
     Touch $env:LOCK
     Log-Command 'lock' 'Locked {' @([string]$env:LOCK, [ContentType]::SubInfo) '} file.'
 } # }}}
 
-function Clear-Lock([switch]$noprogress) { # {{{
+function Clear-Lock([switch]$quiet) { # {{{
     Ensure-LockPath
     if (Test-Path $env:LOCK) { Remove-Item $env:LOCK }
-    if (-not $noprogress) { Log-Command 'lock' 'Cleared {' @("$($env:LOCK)", [ContentType]::SubInfo) '} file.' }
+    if (-not $quiet) { Log-Command 'lock' 'Cleared {' @("$($env:LOCK)", [ContentType]::SubInfo) '} file.' }
 } # }}}
 
 function Get-Result { # {{{
@@ -530,12 +538,14 @@ function Set-Result([string]$result) { # {{{
     if ($result) { $result > $env:RESULT } elseif (Test-Path $env:RESULT) { Remove-Item $env:RESULT }
 } # }}}
 
-function Clear-Result { # {{{
+function Clear-Result([switch]$quiet) { # {{{
     Set-Result ''
-    Log-Command 'rslt' 'Cleared {' @($env:RESULT, [ContentType]::SubInfo) '} file.' 
+    if (-not $quiet) {
+        Log-Command 'rslt' 'Cleared {' @($env:RESULT, [ContentType]::SubInfo) '} file.' 
+    }
 } # }}}
 
-function Pipe([switch]$notifyme, [switch]$popup, [switch]$start, [switch]$end, [switch]$lock) { # {{{
+function Pipe([switch]$notifyme, [switch]$popup, [switch]$quiet, [switch]$start, [switch]$end, [switch]$lock) { # {{{
     if ($args.Length -eq 0) {
         Log-Command 'pipe' 'To use: ' @('pipe {command 1} {command 2} {command 3} ...', [ContentType]::Instruction)
         return
@@ -543,8 +553,8 @@ function Pipe([switch]$notifyme, [switch]$popup, [switch]$start, [switch]$end, [
     $lock = $lock -or $start -or $end
 
     if ($notifyme -and -not $global:NOTIFYMECREDENTIALS) { Set-Notifyme }
-    if ($start) { Clear-Lock ; Clear-Result }
-    if ($lock) { Get-Lock }
+    if ($start) { Clear-Lock -q:$quiet ; Clear-Result -q:$quiet }
+    if ($lock) { Get-Lock -q:$quiet }
 
     if ($(Get-Result) -ne '') {
         Log-Command 'pipe' @('ERROR OCCURED IN PREVIOUS PIPE', [ContentType]::Error) '. Command piping aborted.'
@@ -566,10 +576,12 @@ function Pipe([switch]$notifyme, [switch]$popup, [switch]$start, [switch]$end, [
     $global:LASTEXITCODE = $null
     $commands = $(if ($args -and ($args[0] -is [System.Array])) { $args[0] } else { $args })
     foreach ($command in $commands) {
-        Log-Command 'pipe' @("[$(Get-Location)] ", [ContentType]::Subinfo) 'Executing ' @("{$command}", [ContentType]::Subinfo) ':'
+        if (-not $quiet) {
+            Log-Command 'pipe' @("[$(Get-Location)] ", [ContentType]::Subinfo) 'Executing ' @("{$command}", [ContentType]::Subinfo) ':'
+        }
 
         $Error.Clear()
-        Invoke-Command $command
+        Invoke-Command -ScriptBlock $command
 
         if ($Error -or $LASTEXITCODE) {
             Log-Command 'pipe' @('ERROR OCCURED', [ContentType]::Error) '. Command piping stopped at ' @("{$command}", [ContentType]::Subinfo) '.'
@@ -585,7 +597,7 @@ function Pipe([switch]$notifyme, [switch]$popup, [switch]$start, [switch]$end, [
             return
         }
 
-        Write-Host ''
+        if (-not $quiet) { Write-Host '' }
     }
 
     Log-Command 'pipe' 'Commands completed: ' @("{$([system.String]::Join("} {", $commands))}", [ContentType]::Subinfo) '.'

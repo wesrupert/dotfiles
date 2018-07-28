@@ -2,32 +2,34 @@
 
 /* - - - - - - - - - - - - - - - Container indicators on top - - - - - - - - - - - - - - - */
 
-#TabsToolbar .tabbrowser-tabs {
-    -moz-border-top-colors: none !important;
-    min-width: 2em !important;
-}
-
-#TabsToolbar .tabbrowser-tab[usercontextid][visuallyselected="true"] .tab-line {
-    background-color: var(--identity-tab-color) !important;
-}
-
-#TabsToolbar .tabbrowser-tab[usercontextid] > .tab-stack > .tab-background > .tab-bottom-line {
-    background: none !important;
-}
-
-#TabsToolbar .tabbrowser-tab {
-    box-shadow: inset 0px 2px 0px var(--identity-tab-color) !important;
-}
-
-navigator-toolbox{
-    background:transparent;
-}
+/*
+ *#TabsToolbar .tabbrowser-tabs {
+ *    -moz-border-top-colors: none !important;
+ *    min-width: 2em !important;
+ *}
+ *
+ *#TabsToolbar .tabbrowser-tab[usercontextid][visuallyselected="true"] .tab-line {
+ *    background-color: var(--identity-tab-color) !important;
+ *}
+ *
+ *#TabsToolbar .tabbrowser-tab[usercontextid] > .tab-stack > .tab-background > .tab-bottom-line {
+ *    background: none !important;
+ *}
+ *
+ *#TabsToolbar .tabbrowser-tab {
+ *    box-shadow: inset 0px 2px 0px var(--identity-tab-color) !important;
+ *}
+ *
+ *navigator-toolbox{
+ *    background:transparent;
+ *}
+ */
 
 
 /* - - - - - - - - - - - - - - - Expand on hover TST - - - - - - - - - - - - - - - */
 
 :root {
-    --sidebar-hover-width: 48px;
+    --sidebar-hover-width: 66px;
     --sidebar-visible-width: 400px;
 }
 
@@ -72,6 +74,11 @@ navigator-toolbox{
 
 #sidebar-splitter { display: none; }
 
+#sidebar-button {
+    margin-right: 8px !important;
+    padding-right: 8px !important;
+    border-right: 1px solid #cccccc;
+}
 
 /* - - - - - - - - - - - - - - - Mini-window - - - - - - - - - - - - - - - */
 
@@ -124,29 +131,25 @@ navigator-toolbox{
 
 /* - - - - - - - - - - - - - - - Dark theme TST - - - - - - - - - - - - - - - */
 
-:root /* colours */
+:root
 {
-    --topBar-col: #303030;
-    --persBar-col: #303030;
-    --sideBar-backgrnd-col: #E8E8E8;
-    --sideBar-borders-col: #101010;
-    --urlBar-col: #505050;
-    --button-hover: #505060;
-    --button-active: #607080;
-    --text-col: #FFFFFF;
     --tst-icon-loc-16: url("moz-extension://904bbc5a-dc91-4a84-86a0-33d2a4932857/resources/16x16-dark.svg");
     --tst-icon-loc-24: url("moz-extension://904bbc5a-dc91-4a84-86a0-33d2a4932857/resources/24x24-dark.svg");
+    --chrome-background-color: unset !important;
+    --chrome-secondary-background-color: unset !important;
 }
 
-:root { --chrome-secondary-background-color: var(--topBar-col) !important; }
+[extradragspace][tabsintitlebar]:root:not([inFullscreen]) {
+    --space-above-tabbar: 4px !important;
+}
 
 /* merge nav bar and title bar and hide tabs */
 window[windowtype="navigator:browser"] #titlebar { margin-bottom: -32px !important; }
 window[windowtype="navigator:browser"] #titlebar-buttonbox { height: 31px !important; } /* minmaxclose */
 window[windowtype="navigator:browser"] #titlebar-content { margin-bottom: 0px !important; }
 window[windowtype="navigator:browser"] #TabsToolbar {
-    background-color: var(--topBar-col) !important;
-    border-bottom: rgba(255,255,255,0.02) solid 1px !important;
+    /*border-bottom: rgba(255,255,255,0.02) solid 1px !important;*/
+    border-bottom: none !important;
     height: 0px !important;
 } /* hide mysterious bottom line - might need to adjust */
 
@@ -158,30 +161,17 @@ window[windowtype="navigator:browser"] #tab-stack { display: none !important; }
 window[windowtype="navigator:browser"] #tab-background { display: none !important; }
 
 /* nav bar */
-#PanelUI-button { -moz-box-ordinal-group: 1; margin-right: -40px; }
+#PanelUI-button { -moz-box-ordinal-group: 1; margin-right: -20px; }
 #nav-bar-overflow-button { -moz-box-ordinal-group: 0; } /* move overflow button to left */
+#nav-bar .toolbarbutton-1 { background: white !important; }
 #nav-bar .toolbarbutton-1 > .toolbarbutton-icon { margin: 0 -1px 0 0 !important; }
-#urlbar { margin-left: 2px !important; border-color: var(--urlBar-col) !important; background-color: var(--urlBar-col) !important; }
-
-/* nav bar buttons colouring */
-#nav-bar .toolbarbutton-1:not(:-moz-any([disabled],[checked],[open])):hover > .toolbarbutton-icon, 
-#nav-bar .toolbarbutton-1:not(:-moz-any([disabled],[checked],[open])):hover > .toolbarbutton-badge-stack,
-#PanelUI-menu-button:not(:-moz-any([disabled],[checked],[open])):hover > .toolbarbutton-badge-stack
-{
-    background: var(--button-hover) !important;
-}
-#nav-bar .toolbarbutton-1:not([disabled]):-moz-any([open],[checked]) > .toolbarbutton-icon,
-#nav-bar .toolbarbutton-1:not([disabled]):-moz-any([open],[checked]) > .toolbarbutton-badge-stack
-{
-    background: var(--button-active) !important;
-}
+#urlbar { margin-left: 2px !important; }
 
 /* move findbar to top and style */
 findbar
 {
     -moz-box-ordinal-group: 0 !important;
     direction: rtl !important;
-    background-color: var(--topBar-col) !important;
     border: none !important;
     box-shadow: none !important; 
     transition-property: unset !important;
@@ -198,7 +188,6 @@ findbar .close-icon:hover { fill-opacity: 0.2 !important; }
 window:not([customizing]) #PersonalToolbar
 {
     position: absolute;
-    background-color: var(--persBar-col) !important;
     transform-origin: 0 0;
     transform: rotate(90deg);
     left: 33px;
@@ -206,7 +195,7 @@ window:not([customizing]) #PersonalToolbar
     width: 2000px;
     padding-left: 1px !important;
     padding-top: 2px !important;
-    border-top: var(--sideBar-borders-col) solid 1px; /* hide mystery pixels*/
+    border-top: black solid 1px; /* hide mystery pixels*/
 }
 window:not([customizing]) #PersonalToolbar toolbarbutton
 {
@@ -215,45 +204,60 @@ window:not([customizing]) #PersonalToolbar toolbarbutton
     width: 28px;
     margin: 0 1px !important;
 }
-window:not([customizing]) #PersonalToolbar toolbarbutton:hover { background-color: var(--button-hover) !important; border-color: var(--button-hover) !important; }
-window:not([customizing]) #PersonalToolbar toolbarbutton[open] { background-color: var(--button-active) !important; border-color: var(--button-active) !important; }
 window:not([customizing]) #PersonalToolbar .bookmark-item .toolbarbutton-text { display: none !important; }
 window:not([customizing]) #PersonalToolbar .bookmark-item .toolbarbutton-icon { margin-inline-end: 0 !important; }
-
-#sidebar
-{
-    background-color: var(--sideBar-backgrnd-col) !important;
-    margin-top: -30px;
-    border-left: var(--sideBar-borders-col) solid 1px;
-    min-width: 169px !important;
-    max-width: 800px !important;
-}
-.sidebar-splitter { border-color: var(--sideBar-borders-col) !important; }
-#sidebar-header /* pretending to be a personal bar icon */
-{
-    background-color: var(--persBar-col);
-    color: var(--text-col);
-    margin-left: -32px !important;
-    padding: 0px !important;
-    border: none !important;
-}
-#sidebar-switcher-target /* recolour TST icon */
-{
-    --webextension-menuitem-image: var(--tst-icon-loc-16) !important;
-    --webextension-menuitem-image-2x: var(--tst-icon-loc-24) !important;
-}
-#sidebar-switcher-target :not(#sidebar-icon), #sidebar-close { display: none; } /* hide sidebar switcher things except icon */
-#sidebar-switcher-target
-{
-    margin-top: 2px !important;
-    margin-left: 2px !important;
-    padding: 5px !important;
-    border-radius: 2px !important;
-}
-#sidebar-switcher-target:hover { background-color: var(--button-hover) !important; border-color: var(--button-hover) !important; }
-#sidebar-switcher-target.active { background-color: var(--button-active) !important; border-color: var(--button-active) !important; }
 
 /* popup menus */
 /* sidebar menu */
 #sidebarMenu-popup > *:nth-child(4), #sidebarMenu-popup > *:nth-child(n+6), #sidebarMenu-popup toolbarbutton[checked] { display: none !important; }
 #sidebarMenu-popup > *:nth-child(5) { -moz-box-ordinal-group: 0 !important; }
+
+
+/***MENU***/
+/*Menu to the left side*/
+#PanelUI-button,
+#customization-panel-container,
+#customization-panelWrapper .panel-arrow { 
+    -moz-box-ordinal-group: 0 !important;
+    margin-right: 0px !important;
+}
+
+#appMenu-popup {
+    margin-right: -258px !important;
+}
+
+#appMenu-popup .panel-arrow {
+    margin-right: 248px !important;
+}
+
+
+/* - - - - - - - - - - - - - - - Hide unused items - - - - - - - - - - - - - - - */
+
+/*Tabs*/
+#TabsToolbar .titlebar-placeholder[type="pre-tabs"],
+#TabsToolbar .tab-line,
+
+/*Menu*/
+#appMenu-fxa-container,
+#appMenu-fxa-container+toolbarseparator,
+#appMenuRestoreLastSession,
+#appMenu-zoom-controls,
+#appMenu-zoom-controls+toolbarseparator,
+#appMenu-edit-controls,
+#appMenu-edit-controls+toolbarseparator,
+#appMenu-library-button,
+/*#appMenu-customize-button,*/
+/*#appMenu-customize-button+toolbarseparator,*/
+#appMenu-open-file-button,
+#appMenu-save-file-button,
+#appMenu-find-button,
+#appMenu-more-button,
+
+/*URL Bar*/
+#pageActionButton,
+#pocket-button-box,
+.autocomplete-history-dropmarker,
+#identity-icon-labels
+{
+    display: none !important;
+}
