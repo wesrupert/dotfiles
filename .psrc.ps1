@@ -1,10 +1,4 @@
-﻿# Imports {{{ {{{ {{{
-
-Import-Module 'C:\tools\poshgit\dahlbyk-posh-git-9bda399\src\posh-git.psd1'
-
-# }}} }}} }}}
-
-# Aliases {{{
+﻿# Aliases {{{
 
 function settings { GVim $profile ; if (Test-Path $CustomProfile) { GVim $CustomProfile } }
 
@@ -188,7 +182,7 @@ function GVim([switch]$newwindow, [object]$eval) { # {{{
         }
 
         $source = $(if ($eval) { $eval } else { '' })
-        & nvim-qt.exe $source
+        & gvim.exe $source
     }
 } # }}}
 
