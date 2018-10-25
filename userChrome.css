@@ -128,6 +128,28 @@
     }
 }
 
+/* - - - - - - - - - - - - - - - Hide Top Tabs - - - - - - - - - - - - - - - */
+
+/*
+ * This style will hide the tab bar and merge the title bar with the navigation bar. For Windows
+ * Make sure "Title Bar" is unchecked in customize menu.
+ *
+ * Contributor(s): Ivan0xFF
+ */
+
+#TabsToolbar { visibility: collapse !important; }
+#titlebar-buttonbox { height: 40px !important; }
+[uidensity="compact"]:root #titlebar-buttonbox { height: 32px !important; } 
+[uidensity="compact"]:root #nav-bar { margin-top: -32px; }
+#titlebar-spacer { background-color: var(--chrome-secondary-background-color); }
+#titlebar-buttonbox-container { background-color: var(--chrome-secondary-background-color); }
+
+#nav-bar {
+  margin-top: -40px;
+  margin-right: 140px;
+  box-shadow: none !important;
+}
+
 
 /* - - - - - - - - - - - - - - - Dark theme TST - - - - - - - - - - - - - - - */
 
@@ -142,23 +164,6 @@
 [extradragspace][tabsintitlebar]:root:not([inFullscreen]) {
     --space-above-tabbar: 4px !important;
 }
-
-/* merge nav bar and title bar and hide tabs */
-window[windowtype="navigator:browser"] #titlebar { margin-bottom: -32px !important; }
-window[windowtype="navigator:browser"] #titlebar-buttonbox { height: 31px !important; } /* minmaxclose */
-window[windowtype="navigator:browser"] #titlebar-content { margin-bottom: 0px !important; }
-window[windowtype="navigator:browser"] #TabsToolbar {
-    /*border-bottom: rgba(255,255,255,0.02) solid 1px !important;*/
-    border-bottom: none !important;
-    height: 0px !important;
-} /* hide mysterious bottom line - might need to adjust */
-
-window:not([customizing]) #TabsToolbar>*:not(:last-child) { visibility: hidden; height: 39px; }
-window:not([customizing]) #nav-bar { border-top: 0px !important; margin-right: 180px; margin-top: -32px; }
-window:not([customizing]) .tabbrowser-tab { display: none; }
-
-window[windowtype="navigator:browser"] #tab-stack { display: none !important; }
-window[windowtype="navigator:browser"] #tab-background { display: none !important; }
 
 /* nav bar */
 #PanelUI-button { -moz-box-ordinal-group: 1; margin-right: -20px; }
