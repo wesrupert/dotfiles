@@ -1,0 +1,4 @@
+[submodule "git-diffall"]
+	path = git-diffall
+	url = https://github.com/thenigan/git-diffall
+	branch = master

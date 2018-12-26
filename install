@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+shopt -s dotglob
+
+orig_root=$(cd "$(dirname "$0")"; pwd)
+if [[ !("${orig_root%/*/?}" == "${HOME%/}"/*) ]]; then
+    echo 'Dotfiles must be on the same volume as $HOME!'
+    echo "HOME:     $HOME"
+    echo "Dotfiles: $orig_root"
+    exit 1
+fi
+
+function install {
+    echo "$verb $1..."
+    src="$orig_root/$2"
+    dest="$3"
+    output=0
+    mkdir -p "$dest"
+    for item in "${src%/}"/*; do
+        if [[ "$uninstall" == "0" ]]; then
+            ln -fv "$item" "$dest"
+            output=1
+        else
+            target="$dest/$(basename "$item")"
+            if  rm "$target" > /dev/null 2>&1; then
+                echo "$target -> unlinked"
+                output=1
+            fi
+        fi
+    done
+    if [[ "$output" == "1" ]]; then
+        echo ''
+    fi
+}
+
+# Handle args
+uninstall=0
+verb='Installing'
+while getopts "hu" opt; do
+    case $opt in
+        h)
+            echo "Usage: install [-u] [firefox profile list...]"
+            exit 1
+            ;;
+        u)
+            uninstall=1
+            verb='Uninstalling'
+            ;;
+    esac
+done
+shift $((OPTIND -1))
+firefox_profiles=${@:-"./*/"}
+
+case "$(uname -s)" in
+    Darwin*) firefox_root="$HOME/Library/Application Support/Firefox/Profiles" ;;
+    *)       firefox_root="$HOME/.mozilla/Firefox"                             ;;
+esac
+
+
+# Install features
+install 'configs' 'configs' "$HOME"
+
+cd "$firefox_root"
+for profile in $firefox_profiles; do # $profiles here unquoted for expansion
+    profile_dest=$(cd "$profile"; pwd)
+    install "Firefox tweaks in $(basename "$profile_dest")" "Firefox/chrome" "$profile_dest/chrome"
+done
+
+
+echo 'Done!'
