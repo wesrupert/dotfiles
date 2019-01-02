@@ -16,12 +16,9 @@ export LESS="-F -X -R $LESS"
 
 # Backup variables used in the OH MY ZSH that need to be restored
 ENV_HOME=$HOME
-HOME=/Users/$DEFAULT_USER
-
 ENV_ZSH=$ZSH
-ZSH=$HOME/.oh-my-zsh
-
 ENV_ZSH_THEME=$ZSH_THEME
+ZSH=$HOME/.oh-my-zsh
 
 CASE_SENSITIVE='false'
 HYPHEN_INSENSITIVE='true'
@@ -33,6 +30,8 @@ if [[ -d "$HOME/.oh-my-zsh/custom/themes/spaceship-prompt" ]]; then
   SPACESHIP_PROMPT_ADD_NEWLINE=false
   SPACESHIP_PROMPT_SEPARATE_LINE=true
   SPACESHIP_EXEC_TIME_ELAPSED=30
+else
+  ZSH_THEME='robbyrussell'
 fi
 
 plugins=(
@@ -61,7 +60,7 @@ function cd {
 }
 
 function od {
-    if [[ !"$#" ]]; then
+    if [[ "$#" == '0' ]]; then
         popd > /dev/null
     else
         for i in $(seq $1); do popd > /dev/null; done
@@ -79,7 +78,7 @@ alias .........='cd ../../../../../../../..'
 alias ..........='cd ../../../../../../../../..'
 alias ...........='cd ../../../../../../../../../..'
 
-if [[ -n "$(which -s nvim)" ]]; then
+if command -v nvim >/dev/null 2>&1; then
   export EDITOR=nvim
   alias vim=nvim
 else
@@ -91,7 +90,7 @@ alias gitk='gitk &'
 alias beep='tput bel'
 alias settings='e ~/.zshrc'
 
-if which rbenv > /dev/null; then
+if command -v rbenv >/dev/null 2>&1; then
   eval "$(rbenv init -)"
 fi
 
