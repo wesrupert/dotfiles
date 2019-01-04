@@ -9,61 +9,107 @@ if [[ !("${orig_root%/*/?}" == "${HOME%/}"/*) ]]; then
     exit 1
 fi
 
+run_on_configs=false
+run_on_dotfiles=false
+run_on_firefox=false
+run_on_git=false
+run_on_scripts=false
+uninstall=false
+
 function install {
-    echo "$verb $1..."
-    src="$orig_root/$2"
-    dest="$3"
-    output=0
+    if [[ "$1" == false ]]; then
+        return
+    fi
+    echo "${verb:-Installing} $2..."
+    src="$orig_root/$3"
+    dest="$4"
+
+    output=false
     mkdir -p "$dest"
     for item in "${src%/}"/*; do
-        if [[ "$uninstall" == "0" ]]; then
+        if [[ "$uninstall" == false ]]; then
             ln -fv "$item" "$dest"
-            output=1
+            output=true
         else
             target="$dest/$(basename "$item")"
             if  rm "$target" > /dev/null 2>&1; then
-                echo "$target -> unlinked"
-                output=1
+                echo "$target -> removed"
+                output=true
             fi
         fi
     done
-    if [[ "$output" == "1" ]]; then
+    if [[ "$output" == true ]]; then
         echo ''
     fi
 }
 
-# Handle args
-uninstall=0
-verb='Installing'
-while getopts "hu" opt; do
+function print_help {
+    echo 'Usage: install [-acdfsu] [firefox profile list...]'
+    echo 'Description: Installs selected features to your machine'
+    echo '    -a    Select all features'
+    echo '    -c    Select configs'
+    echo '    -d    Select dotfiles'
+    echo '    -f    Select firefox features'
+    echo '    -s    Select helper scripts'
+    echo '    -u    Uninstall selected features'
+    echo ''
+    exit 1
+}
+
+
+# Process command line
+while getopts 'acdfsu' opt; do
     case $opt in
-        h)
-            echo "Usage: install [-u] [firefox profile list...]"
-            exit 1
-            ;;
-        u)
-            uninstall=1
-            verb='Uninstalling'
-            ;;
+        h) print_help ;;
+
+        a) run_on_configs=true
+           run_on_dotfiles=true
+           run_on_firefox=true
+           run_on_scripts=true
+           ;;
+
+        c) run_on_configs=true  ;;
+        d) run_on_dotfiles=true ;;
+        f) run_on_firefox=true  ;;
+        s) run_on_scripts=true  ;;
+
+        u) uninstall=true
+           verb='Uninstalling'
+           ;;
     esac
 done
 shift $((OPTIND -1))
 firefox_profiles=${@:-"./*/"}
 
-case "$(uname -s)" in
-    Darwin*) firefox_root="$HOME/Library/Application Support/Firefox/Profiles" ;;
-    *)       firefox_root="$HOME/.mozilla/Firefox"                             ;;
-esac
-
+if [[ "$run_on_configs"  == false \
+   && "$run_on_dotfiles" == false \
+   && "$run_on_firefox"  == false \
+   && "$run_on_scripts"  == false ]]; then
+    print_help
+fi
 
 # Install features
-install 'configs' 'configs' "$HOME"
+install "$run_on_configs" 'configs' 'configs' "$HOME/.config"
+install "$run_on_dotfiles" 'dotfiles' 'dotfiles' "$HOME"
+install "$run_on_scripts" 'scripts' 'scripts' "$HOME"
 
-cd "$firefox_root"
-for profile in $firefox_profiles; do # $profiles here unquoted for expansion
-    profile_dest=$(cd "$profile"; pwd)
-    install "Firefox tweaks in $(basename "$profile_dest")" "Firefox/chrome" "$profile_dest/chrome"
-done
+if [[ "$run_on_firefox" == true ]]; then
+    case "$(uname -s)" in
+        Darwin*) firefox_root="$HOME/Library/Application Support/Firefox/Profiles" ;;
+        *)       firefox_root="$HOME/.mozilla/Firefox"                             ;;
+    esac
+
+    echo "${verb:-Installing} Firefox tweaks..."
+    cd "$firefox_root"
+    for profile in $firefox_profiles; do # $firefox_profiles here unquoted for expansion
+        if [[ !(-d "$profile") ]]; then
+            echo "Profile '$profile' does not exist, ignoring"
+            continue
+        fi
+        profile_dest=$(cd "$profile"; pwd)
+        install true "$(basename "$profile_dest")" 'Firefox' "$profile_dest/chrome"
+    done
+fi
 
 
 echo 'Done!'
