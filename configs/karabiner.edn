@@ -1,0 +1,101 @@
+{:devices {:devicekb [{:vendor_id 1452 :product_id 630}]}
+ :main [
+        {:des "Hold tab for function layer"
+         :rules [[:tab ["nav-layer" 1] :devicekb {:afterup ["nav-layer" 0] :alone :tab}]
+
+                 [:escape              [:control :shift :power] ["nav-layer" 1]]
+                 [:1                   [:f1]                    ["nav-layer" 1]]
+                 [:2                   [:f2]                    ["nav-layer" 1]]
+                 [:3                   [:f3]                    ["nav-layer" 1]]
+                 [:4                   [:f4]                    ["nav-layer" 1]]
+                 [:5                   [:f5]                    ["nav-layer" 1]]
+                 [:6                   [:f6]                    ["nav-layer" 1]]
+                 [:7                   [:f7]                    ["nav-layer" 1]]
+                 [:8                   [:f8]                    ["nav-layer" 1]]
+                 [:9                   [:f9]                    ["nav-layer" 1]]
+                 [:0                   [:f10]                   ["nav-layer" 1]]
+                 [:hyphen              [:f11]                   ["nav-layer" 1]]
+                 [:equal_sign          [:f12]                   ["nav-layer" 1]]
+                 [:delete_or_backspace [:delete_forward]        ["nav-layer" 1]]
+
+                 [:q                   [:rewind]                ["nav-layer" 1]]
+                 [:w                   [:play_or_pause]         ["nav-layer" 1]]
+                 [:e                   [:fastforward]           ["nav-layer" 1]]
+
+                 [:s                   [:home]                  ["nav-layer" 1]]
+                 [:d                   [:page_up]               ["nav-layer" 1]]
+                 [:f                   [:page_down]             ["nav-layer" 1]]
+                 [:g                   [:end]                   ["nav-layer" 1]]
+                 [:h                   [:left_arrow]            ["nav-layer" 1]]
+                 [:j                   [:down_arrow]            ["nav-layer" 1]]
+                 [:k                   [:up_arrow]              ["nav-layer" 1]]
+                 [:l                   [:right_arrow]           ["nav-layer" 1]]
+                 [:return_or_enter     [:mute]                  ["nav-layer" 1]]
+                 [:right_shift         [:play_or_pause]         ["nav-layer" 1]]
+
+                 [:left_arrow          [:rewind]                ["nav-layer" 1]]
+                 [:right_arrow         [:fastforward]           ["nav-layer" 1]]
+                 [:up_arrow            [:volume_up]             ["nav-layer" 1]]
+                 [:down_arrow          [:volume_down]           ["nav-layer" 1]]
+
+        ]}
+
+        {:des "Hold caps for symbol layer, tap for escape"
+         :rules [[:caps_lock ["nav-symbols" 1] :devicekb {:afterup ["nav-symbols" 0] :alone :escape}]
+
+                 [:w         [:!Sbackslash]     ["nav-symbols" 1]]
+                 [:e         [:slash]           ["nav-symbols" 1]]
+                 [:r         [:hyphen]          ["nav-symbols" 1]]
+                 [:t         [:!Sslash]         ["nav-symbols" 1]]
+                 [:y         [:!S1]             ["nav-symbols" 1]]
+                 [:u         [:!Sequal_sign]    ["nav-symbols" 1]]
+                 [:i         [:!S8]             ["nav-symbols" 1]]
+                 [:o         [:!S7]             ["nav-symbols" 1]]
+                                                    
+                 [:s         [:open_bracket]    ["nav-symbols" 1]]
+                 [:d         [:!Sopen_bracket]  ["nav-symbols" 1]]
+                 [:f         [:!S9]             ["nav-symbols" 1]]
+                 [:g         [:!Scomma]         ["nav-symbols" 1]]
+                 [:h         [:!Speriod]        ["nav-symbols" 1]]
+                 [:j         [:!S0]             ["nav-symbols" 1]]
+                 [:k         [:!Sclose_bracket] ["nav-symbols" 1]]
+                 [:l         [:close_bracket]   ["nav-symbols" 1]]
+                 [:semicolon [:!Ssemicolon]     ["nav-symbols" 1]]
+                 [:quote     [:!Squote]         ["nav-symbols" 1]]
+
+        ]}
+]}
+
+; Autocomplete (from https://raw.githubusercontent.com/yqrashawn/GokuRakuJoudo/master/src/karabiner_configurator/keys_info.clj):
+; :button1 :button2 :button3 :button4 :button5 :any :command :shift :option
+; :control :caps_lock :left_control :left_shift :left_option :left_command
+; :right_control :right_shift :right_option :right_command :fn :return_or_enter
+; :escape :delete_or_backspace :delete_forward :tab :spacebar :hyphen :equal_sign
+; :open_bracket :close_bracket :backslash :non_us_pound :semicolon :quote
+; :grave_accent_and_tilde :comma :period :slash :non_us_backslash :up_arrow
+; :down_arrow :left_arrow :right_arrow :page_up :page_down :home :end :a :b :c :d
+; :e :f :g :h :i :j :k :l :m :n :o :p :q :r :s :t :u :v :w :x :y :z :1 :2 :3 :4 :5
+; :6 :7 :8 :9 :0 :f1 :f2 :f3 :f4 :f5 :f6 :f7 :f8 :f9 :f10 :f11 :f12 :f13 :f14 :f15
+; :f16 :f17 :f18 :f19 :f20 :f21 :f22 :f23 :f24 :display_brightness_decrement
+; :display_brightness_increment 
+; :illumination_decrement :illumination_increment :rewind :play_or_pause
+; :fastforward :mute :volume_decrement :volume_increment :eject
+; :apple_display_brightness_decrement :apple_display_brightness_increment
+; :apple_top_case_display_brightness_decrement
+; :apple_top_case_display_brightness_increment :keypad_num_lock :keypad_slash
+; :keypad_asterisk :keypad_hyphen :keypad_plus :keypad_enter :keypad_1 :keypad_2
+; :keypad_3 :keypad_4 :keypad_5 :keypad_6 :keypad_7 :keypad_8 :keypad_9 :keypad_0
+; :keypad_period :keypad_equal_sign :keypad_comma :vk_none :print_screen
+; :scroll_lock :pause :insert :application :help :power :execute :menu :select
+; :stop :again :undo :cut :copy :paste :find :international1 :international2
+; :international3 :international4 :international5 :international6 :international7
+; :international8 :international9 :lang1 :lang2 :lang3 :lang4 :lang5 :lang6 :lang7
+; :lang8 :lang9 :japanese_eisuu :japanese_kana :japanese_pc_nfer :japanese_pc_xfer
+; :japanese_pc_katakana :keypad_equal_sign_as400 :locking_caps_lock
+; :locking_num_lock :locking_scroll_lock :alternate_erase :sys_req_or_attention
+; :cancel :clear :prior :return :separator :out :oper :clear_or_again
+; :cr_sel_or_props :ex_sel :left_alt :left_gui :right_alt :right_gui
+; :vk_consumer_brightness_down :vk_consumer_brightness_up :vk_mission_control
+; :vk_launchpad :vk_dashboard :vk_consumer_illumination_down
+; :vk_consumer_illumination_up :vk_consumer_previous :vk_consumer_play
+; :vk_consumer_next :volume_down :volume_up
