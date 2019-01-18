@@ -1,7 +1,6 @@
 [user]
     name = Wes Rupert
     email = rupertwe@amazon.com
-
 [alias]
     git = !exec git
     abort = reset --hard HEAD
@@ -9,32 +8,30 @@
     c-amend = commit --amend --no-edit
     c-aa = commit -a --amend --no-edit
     logg = log --decorate --graph
+    logg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+    logl = log --branches --not --remotes
     overview = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(refname:short)"
+    rebil = rebase -i origin/HEAD
     recap = log --all --no-merges --author=wesr@microsoft.com --since=4.weeks
     recap-one = log --no-merges --author=wesr@microsoft.com --since=4.weeks
     stash-all = stash save --include-untracked
     sync = fetch --all --prune
     undo = reset --soft HEAD^
-
 [diff]
 	tool = nvimdiff
-
-
 [difftool "nvimdiff"]
     cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
-
-[difftool "vv"]
-    cmd = "vv -d \"$LOCAL\" \"$REMOTE\""
-
+[difftool "vimrdiff"]
+  cmd = "vimr --wait --nvim -d \"$LOCAL\" \"$REMOTE\""
 [format]
-    ;pretty = %C(green)%h%C(red) %>(10)%cr:%C(cyan) (%aN)%C(white) - %<(60,trunc)%s%C(reset)
-    pretty = %Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset
-
+    pretty = tline
+[pretty]
+    oline = %C(green)%h%C(red) %>(10)%cr:%C(cyan) (%aN)%C(white) - %<(60,trunc)%s%C(reset)
+    tline = %w(80,0,0)%Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset %n %s%n
+    pbody = %w(80,0,0)%Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%n %s%n%n%b
 [push]
     default = simple
-
 [status]
     showUntrackedFiles = all
-
 [interactive]
 	diffFilter = diff-highlight

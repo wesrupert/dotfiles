@@ -1,4 +1,7 @@
-{:devices {:devicekb [{:vendor_id 1452 :product_id 630}]}
+{
+ :devices {
+           :devicekb [{:vendor_id 1452 :product_id 630}]
+ }
  :main [
         {:des "Hold tab for function layer"
          :rules [[:tab ["nav-layer" 1] :devicekb {:afterup ["nav-layer" 0] :alone :tab}]
@@ -43,25 +46,38 @@
         {:des "Hold caps for symbol layer, tap for escape"
          :rules [[:caps_lock ["nav-symbols" 1] :devicekb {:afterup ["nav-symbols" 0] :alone :escape}]
 
-                 [:w         [:!Sbackslash]     ["nav-symbols" 1]]
-                 [:e         [:slash]           ["nav-symbols" 1]]
-                 [:r         [:hyphen]          ["nav-symbols" 1]]
-                 [:t         [:!Sslash]         ["nav-symbols" 1]]
-                 [:y         [:!S1]             ["nav-symbols" 1]]
-                 [:u         [:!Sequal_sign]    ["nav-symbols" 1]]
-                 [:i         [:!S8]             ["nav-symbols" 1]]
-                 [:o         [:!S7]             ["nav-symbols" 1]]
+                 [:1          [:!S1]             ["nav-symbols" 1]]
+                 [:2          [:!S2]             ["nav-symbols" 1]]
+                 [:3          [:!S3]             ["nav-symbols" 1]]
+                 [:4          [:!S4]             ["nav-symbols" 1]]
+                 [:5          [:!S5]             ["nav-symbols" 1]]
+                 [:6          [:!S6]             ["nav-symbols" 1]]
+                 [:7          [:!S7]             ["nav-symbols" 1]]
+                 [:8          [:!S8]             ["nav-symbols" 1]]
+                 [:9          [:!S9]             ["nav-symbols" 1]]
+                 [:0          [:!S0]             ["nav-symbols" 1]]
+                 [:hyphen     [:!Shyphen]        ["nav-symbols" 1]]
+                 [:equal_sign [:!Sequal_sign]    ["nav-symbols" 1]]
+
+                 [:w          [:!Sbackslash]     ["nav-symbols" 1]]
+                 [:e          [:slash]           ["nav-symbols" 1]]
+                 [:r          [:hyphen]          ["nav-symbols" 1]]
+                 [:t          [:!Sslash]         ["nav-symbols" 1]]
+                 [:y          [:!S1]             ["nav-symbols" 1]]
+                 [:u          [:!Sequal_sign]    ["nav-symbols" 1]]
+                 [:i          [:!S8]             ["nav-symbols" 1]]
+                 [:o          [:!S7]             ["nav-symbols" 1]]
                                                     
-                 [:s         [:open_bracket]    ["nav-symbols" 1]]
-                 [:d         [:!Sopen_bracket]  ["nav-symbols" 1]]
-                 [:f         [:!S9]             ["nav-symbols" 1]]
-                 [:g         [:!Scomma]         ["nav-symbols" 1]]
-                 [:h         [:!Speriod]        ["nav-symbols" 1]]
-                 [:j         [:!S0]             ["nav-symbols" 1]]
-                 [:k         [:!Sclose_bracket] ["nav-symbols" 1]]
-                 [:l         [:close_bracket]   ["nav-symbols" 1]]
-                 [:semicolon [:!Ssemicolon]     ["nav-symbols" 1]]
-                 [:quote     [:!Squote]         ["nav-symbols" 1]]
+                 [:s          [:open_bracket]    ["nav-symbols" 1]]
+                 [:d          [:!Sopen_bracket]  ["nav-symbols" 1]]
+                 [:f          [:!S9]             ["nav-symbols" 1]]
+                 [:g          [:!Scomma]         ["nav-symbols" 1]]
+                 [:h          [:!Speriod]        ["nav-symbols" 1]]
+                 [:j          [:!S0]             ["nav-symbols" 1]]
+                 [:k          [:!Sclose_bracket] ["nav-symbols" 1]]
+                 [:l          [:close_bracket]   ["nav-symbols" 1]]
+                 [:semicolon  [:!Ssemicolon]     ["nav-symbols" 1]]
+                 [:quote      [:!Squote]         ["nav-symbols" 1]]
 
         ]}
 ]}

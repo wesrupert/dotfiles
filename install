@@ -13,6 +13,7 @@ run_on_configs=false
 run_on_dotfiles=false
 run_on_firefox=false
 run_on_git=false
+run_on_moreutils=false
 run_on_scripts=false
 uninstall=false
 
@@ -27,14 +28,16 @@ function install {
     output=false
     mkdir -p "$dest"
     for item in "${src%/}"/*; do
-        if [[ "$uninstall" == false ]]; then
-            ln -fv "$item" "$dest"
-            output=true
-        else
-            target="$dest/$(basename "$item")"
-            if  rm "$target" > /dev/null 2>&1; then
-                echo "$target -> removed"
+        if [[ ! -d "$item" ]]; then
+            if [[ "$uninstall" == false ]]; then
+                ln -fv "$item" "$dest"
                 output=true
+            else
+                target="$dest/$(basename "$item")"
+                if  rm "$target" > /dev/null 2>&1; then
+                    echo "$target -> removed"
+                    output=true
+                fi
             fi
         fi
     done
@@ -44,12 +47,13 @@ function install {
 }
 
 function print_help {
-    echo 'Usage: install [-acdfsu] [firefox profile list...]'
+    echo 'Usage: install [-acdfmsu] [firefox profile list...]'
     echo 'Description: Installs selected features to your machine'
     echo '    -a    Select all features'
     echo '    -c    Select configs'
     echo '    -d    Select dotfiles'
     echo '    -f    Select firefox features'
+    echo '    -m    Select moreutils'
     echo '    -s    Select helper scripts'
     echo '    -u    Uninstall selected features'
     echo ''
@@ -58,20 +62,22 @@ function print_help {
 
 
 # Process command line
-while getopts 'acdfsu' opt; do
+while getopts 'acdfmsu' opt; do
     case $opt in
         h) print_help ;;
 
         a) run_on_configs=true
            run_on_dotfiles=true
            run_on_firefox=true
+           run_on_moreutils=true
            run_on_scripts=true
            ;;
 
-        c) run_on_configs=true  ;;
-        d) run_on_dotfiles=true ;;
-        f) run_on_firefox=true  ;;
-        s) run_on_scripts=true  ;;
+        c) run_on_configs=true   ;;
+        d) run_on_dotfiles=true  ;;
+        f) run_on_firefox=true   ;;
+        m) run_on_moreutils=true ;;
+        s) run_on_scripts=true   ;;
 
         u) uninstall=true
            verb='Uninstalling'
@@ -81,17 +87,19 @@ done
 shift $((OPTIND -1))
 firefox_profiles=${@:-"./*/"}
 
-if [[ "$run_on_configs"  == false \
-   && "$run_on_dotfiles" == false \
-   && "$run_on_firefox"  == false \
-   && "$run_on_scripts"  == false ]]; then
+if [[ "$run_on_configs"   == false \
+   && "$run_on_dotfiles"  == false \
+   && "$run_on_firefox"   == false \
+   && "$run_on_moreutils" == false \
+   && "$run_on_scripts"   == false ]]; then
     print_help
 fi
 
 # Install features
-install "$run_on_configs" 'configs' 'configs' "$HOME/.config"
-install "$run_on_dotfiles" 'dotfiles' 'dotfiles' "$HOME"
-install "$run_on_scripts" 'scripts' 'scripts' "$HOME"
+install "$run_on_configs"   'configs'   'configs'   "$HOME/.config"
+install "$run_on_dotfiles"  'dotfiles'  'dotfiles'  "$HOME"
+install "$run_on_moreutils" 'moreutils' 'moreutils' '/usr/local/bin'
+install "$run_on_scripts"   'scripts'   'scripts'   "$HOME"
 
 if [[ "$run_on_firefox" == true ]]; then
     case "$(uname -s)" in

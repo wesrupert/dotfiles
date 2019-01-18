@@ -2,3 +2,6 @@
 	path = git-diffall
 	url = https://github.com/thenigan/git-diffall
 	branch = master
+[submodule "moreutils"]
+	path = moreutils/moreutils
+	url = git://git.joeyh.name/moreutils
