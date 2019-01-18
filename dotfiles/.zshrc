@@ -7,6 +7,7 @@ if [[ -z "$DEFAULT_USER" ]]; then
 fi
 
 export PATH=$HOME/bin:$PATH
+export PATH=$HOME/platform-tools:$PATH
 export PATH=$HOME/.dotfiles/git-diffall:$PATH
 export ZSH="$HOME/.oh-my-zsh"
 export SSH_PKEY="$HOME/.ssh/rsa_id"
@@ -34,13 +35,36 @@ else
   ZSH_THEME='robbyrussell'
 fi
 
-plugins=(
-  fzf
-  git
-  sudo
-  vscode
-  zsh_reload
-)
+plugins=(extract git vi-mode zsh_reload z)
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  plugins+=(osx)
+fi
+
+if command -v code >/dev/null 2>&1; then
+  plugins+=(vscode)
+fi
+
+if [[ -f "$HOME/.fzf.zsh" ]]; then
+  export FZF_COMPLETION_TRIGGER='qq'
+  export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
+  export FZF_DEFAULT_OPTS="--height 40% --reverse --border"
+  source "$HOME/.fzf.zsh"
+  plugins+=(fzf)
+
+  function fzf() {
+    if [[ $(tput cols) > 100 ]]; then
+      command fzf --preview '[[ $(file --mime {}) =~ binary ]] &&
+                 echo {} is a binary file ||
+                 (highlight -O ansi -l {} ||
+                  coderay {} ||
+                  rougify {} ||
+                  cat {}) 2> /dev/null | head -255' "$@"
+    else
+      command fzf "$@"
+    fi
+  }
+fi
 
 source $ZSH/oh-my-zsh.sh
 
@@ -48,8 +72,6 @@ source $ZSH/oh-my-zsh.sh
 ZSH=$ENV_ZSH
 HOME=$ENV_HOME
 ZSH_THEME=$ENV_ZSH_THEME
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 function cd {
     if [[ "$#" == '0' ]]; then
