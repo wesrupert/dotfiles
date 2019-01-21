@@ -3,6 +3,8 @@
            :devicekb [{:vendor_id 1452 :product_id 630}]
  }
  :main [
+        {:des "Use power to lock screen" :rules [[:power [:control :shift :power]]]}
+
         {:des "Hold tab for function layer"
          :rules [[:tab ["nav-layer" 1] :devicekb {:afterup ["nav-layer" 0] :alone :tab}]
 
@@ -41,7 +43,7 @@
                  [:up_arrow            [:volume_up]             ["nav-layer" 1]]
                  [:down_arrow          [:volume_down]           ["nav-layer" 1]]
 
-        ]}
+         ]}
 
         {:des "Hold caps for symbol layer, tap for escape"
          :rules [[:caps_lock ["nav-symbols" 1] :devicekb {:afterup ["nav-symbols" 0] :alone :escape}]
@@ -79,7 +81,7 @@
                  [:semicolon  [:!Ssemicolon]     ["nav-symbols" 1]]
                  [:quote      [:!Squote]         ["nav-symbols" 1]]
 
-        ]}
+         ]}
 ]}
 
 ; Autocomplete (from https://raw.githubusercontent.com/yqrashawn/GokuRakuJoudo/master/src/karabiner_configurator/keys_info.clj):

@@ -10,7 +10,15 @@ export PATH=$HOME/bin:$PATH
 export PATH=$HOME/.dotfiles/git-diffall:$PATH
 export ZSH="$HOME/.oh-my-zsh"
 export SSH_PKEY="$HOME/.ssh/rsa_id"
-export SSH_CLIENT=''
+
+export SESSION_TYPE="$(who -m | awk '{ print $2 }' | sed 's/[0-9]*$//')"
+if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+  export SESSION_TYPE=remote/ssh
+else
+  case $(ps -o comm= -p $PPID) in
+    sshd|*/sshd) export SESSION_TYPE=remote/ssh ;;
+  esac
+fi
 
 export LESS="-F -X -R $LESS"
 
@@ -34,38 +42,44 @@ else
   ZSH_THEME='robbyrussell'
 fi
 
-plugins=(
-  fzf
-  git
-  sudo
-  vscode
-  zsh_reload
-)
+plugins=(fzf git sudo vscode zsh_reload)
 
-source $ZSH/oh-my-zsh.sh
+try_source $ZSH/oh-my-zsh.sh
 
 # Restore environment variables
 ZSH=$ENV_ZSH
 HOME=$ENV_HOME
 ZSH_THEME=$ENV_ZSH_THEME
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 function cd {
-    if [[ "$#" == '0' ]]; then
-        pushd "$HOME" > /dev/null
-    else
-        pushd "$@" > /dev/null
-    fi
+  if [[ "$#" == '0' ]]; then
+    pushd "$HOME" > /dev/null
+  else
+    pushd "$@" > /dev/null
+  fi
 }
 
 function od {
-    if [[ "$#" == '0' ]]; then
-        popd > /dev/null
-    else
-        for i in $(seq $1); do popd > /dev/null; done
-    fi
+  if [[ "$#" == '0' ]]; then
+    popd > /dev/null
+  else
+    for i in $(seq $1); do popd > /dev/null; done
+  fi
 }
+
+export SSH_COMMAND="$(which ssh)"
+function ssh {
+  if [[ -n "$iterm2_hostname" ]]; then
+    export iterm2_hostname="${@:-1}"
+    iterm2_print_state_data
+    "$SSH_COMMAND" "$@"
+    export iterm2_hostname="$(hostname)"
+    iterm2_print_state_data
+  else
+    "$SSH_COMMAND" "$@"
+  fi
+}
+
 
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -94,6 +108,6 @@ if command -v rbenv >/dev/null 2>&1; then
   eval "$(rbenv init -)"
 fi
 
+try_source "$HOME/.fzf.sh"
 try_source "$HOME/.iterm2_shell_integration.zsh"
-
 try_source "$HOME/.zshrc.after"
