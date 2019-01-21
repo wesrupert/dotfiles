@@ -7,6 +7,7 @@ if [[ -z "$DEFAULT_USER" ]]; then
 fi
 
 export PATH=$HOME/bin:$PATH
+export PATH=$HOME/platform-tools:$PATH
 export PATH=$HOME/.dotfiles/git-diffall:$PATH
 export ZSH="$HOME/.oh-my-zsh"
 export SSH_PKEY="$HOME/.ssh/rsa_id"
@@ -42,7 +43,36 @@ else
   ZSH_THEME='robbyrussell'
 fi
 
-plugins=(fzf git sudo vscode zsh_reload)
+plugins=(extract fzf git sudo vi-mode zsh_reload)
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  plugins+=(osx)
+fi
+
+if command -v code >/dev/null 2>&1; then
+  plugins+=(vscode)
+fi
+
+if [[ -f "$HOME/.fzf.zsh" ]]; then
+  export FZF_COMPLETION_TRIGGER='qq'
+  export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
+  export FZF_DEFAULT_OPTS="--height 40% --reverse --border"
+  plugins+=(fzf)
+  source "$HOME/.fzf.zsh"
+
+  function fzf() {
+    if [[ $(tput cols) > 100 ]]; then
+      command fzf --preview '[[ $(file --mime {}) =~ binary ]] &&
+                 echo {} is a binary file ||
+                 (highlight -O ansi -l {} ||
+                  coderay {} ||
+                  rougify {} ||
+                  cat {}) 2> /dev/null | head -255' "$@"
+    else
+      command fzf "$@"
+    fi
+  }
+fi
 
 try_source $ZSH/oh-my-zsh.sh
 
@@ -80,7 +110,6 @@ function ssh {
   fi
 }
 
-
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -108,6 +137,5 @@ if command -v rbenv >/dev/null 2>&1; then
   eval "$(rbenv init -)"
 fi
 
-try_source "$HOME/.fzf.sh"
 try_source "$HOME/.iterm2_shell_integration.zsh"
 try_source "$HOME/.zshrc.after"
