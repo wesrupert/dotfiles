@@ -43,7 +43,7 @@ else
   ZSH_THEME='robbyrussell'
 fi
 
-plugins=(extract fzf git sudo vi-mode zsh_reload)
+plugins=(extract git sudo vi-mode zsh_reload)
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   plugins+=(osx)
@@ -72,6 +72,8 @@ if [[ -f "$HOME/.fzf.zsh" ]]; then
       command fzf "$@"
     fi
   }
+
+  alias fzh="fzf --history '${FZF_HISTORY_DIR:-TMPDIR}'"
 fi
 
 try_source $ZSH/oh-my-zsh.sh

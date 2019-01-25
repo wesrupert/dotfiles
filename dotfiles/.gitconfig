@@ -1,37 +1,50 @@
 [user]
     name = Wes Rupert
     email = rupertwe@amazon.com
-[alias]
-    git = !exec git
-    abort = reset --hard HEAD
-    changed = blame
-    c-amend = commit --amend --no-edit
-    c-aa = commit -a --amend --no-edit
-    logg = log --decorate --graph
-    logg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
-    logl = log --branches --not --remotes
-    overview = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(refname:short)"
-    rebil = rebase -i origin/HEAD
-    recap = log --all --no-merges --author=wesr@microsoft.com --since=4.weeks
-    recap-one = log --no-merges --author=wesr@microsoft.com --since=4.weeks
-    stash-all = stash save --include-untracked
-    sync = fetch --all --prune
-    undo = reset --soft HEAD^
 [diff]
-	tool = nvimdiff
+    tool = nvimdiff
 [difftool "nvimdiff"]
     cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [difftool "vimrdiff"]
-  cmd = "vimr --wait --nvim -d \"$LOCAL\" \"$REMOTE\""
+    cmd = "vimr --wait --nvim -d \"$LOCAL\" \"$REMOTE\""
 [format]
     pretty = tline
 [pretty]
     oline = %C(green)%h%C(red) %>(10)%cr:%C(cyan) (%aN)%C(white) - %<(60,trunc)%s%C(reset)
-    tline = %w(80,0,0)%Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset %n %s%n
-    pbody = %w(80,0,0)%Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%n %s%n%n%b
+    tline = %Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset %w(80,0,0)%n %s%n
+    pbody = %Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%n %w(80,0,0)%s%n%n%b
 [push]
     default = simple
 [status]
     showUntrackedFiles = all
 [interactive]
-	diffFilter = diff-highlight
+    diffFilter = diff-highlight
+[alias]
+    assume         = "update-index --assume-unchanged"
+    assumed        = "!git ls-files -v | grep ^h | cut -c 3-"
+    branch-name    = "!git rev-parse --abbrev-ref HEAD"
+    changed        = "blame"
+    commit-a       = "commit --amend --no-edit"
+    commit-aa      = "commit -a --amend --no-edit"
+    delete-merged  = "!f() { git co ${1:-${GIT_MAIN_BRANCH:-master}} && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; }; f"
+    diffc          = "diff --cached"
+    git            = "!exec git"
+    graph          = "log --decorate --graph"
+    logl           = "log --branches --not --remotes"
+    merge-diff     = "!git diff `git merge-span ... $1`"
+    merge-difftool = "!git difftool `git merge-span ... $1`"
+    merge-log      = "!git log `git merge-span .. $1`"
+    merge-span     = "!f() { echo $(git log -1 $2 --merges --pretty=format:%P | cut -d' ' -f1)$1$(git log -1 $2 --merges --pretty=format:%P | cut -d' ' -f2); }; f"
+    ours           = "!f() { git checkout --ours \"$@\" && git add \"$@\"; }; f"
+    overview       = "for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(refname:short)'"
+    publish        = "!f() { git push -u ${1:-origin} $(git branch-name); }; f"
+    rebil          = "!f() { git rebase -i $(git merge-base ${1:-origin}/${2:-${GIT_MAIN_BRANCH:-master}} HEAD)"
+    recap          = "log --all --no-merges --author=rupertwe@amazon.com --since=4.weeks"
+    recap-one      = "log --no-merges --author=rupertwe@amazon.com --since=4.weeks"
+    remake-branch  = "!f() { [[ -n $@ ]] && git checkout \"$@\" && git unpublish && git checkout ${GIT_MAIN_BRANCH:-master} && git branch -D \"$@\" && git checkout -b \"$@\" && git publish; }; f"
+    stash-all      = "stash save --include-untracked"
+    falp           = "fetch --all --prune"
+    theirs         = "!f() { git checkout --theirs \"$@\" && git add \"$@\"; }; f"
+    unassume       = "update-index --no-assume-unchanged"
+    unpublish      = "!f() { if [[ ${GIT_MAIN_BRANCH:-master} != $(git branch-name) ]]; then git push ${1:-origin} :$(git branch-name); else echo \"Deleting ${GIT_MAIN_BRANCH:-master} is dangerous! Aborting!\"; fi; }; f"
+    unstage        = "reset HEAD"
