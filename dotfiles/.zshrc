@@ -6,9 +6,10 @@ if [[ -z "$DEFAULT_USER" ]]; then
   DEFAULT_USER=wesr
 fi
 
-export PATH=$HOME/bin:$PATH
-export PATH=$HOME/platform-tools:$PATH
-export PATH=$HOME/.dotfiles/git-diffall:$PATH
+export PATH=$PATH:$HOME/bin
+export PATH=$PATH:$HOME/platform-tools
+export PATH=$PATH:$HOME/.dotfiles/git-diffall
+export PATH=$PATH:/usr/local/bin/python
 export ZSH="$HOME/.oh-my-zsh"
 export SSH_PKEY="$HOME/.ssh/rsa_id"
 
@@ -33,6 +34,7 @@ CASE_SENSITIVE='false'
 HYPHEN_INSENSITIVE='true'
 ENABLE_CORRECTION='true'
 COMPLETION_WAITING_DOTS='true'
+setopt globdots
 
 if [[ -d "$HOME/.oh-my-zsh/custom/themes/spaceship-prompt" ]]; then
   ZSH_THEME='spaceship'
@@ -101,7 +103,7 @@ function od {
 
 export SSH_COMMAND="$(which ssh)"
 function ssh {
-  if [[ -n "$iterm2_hostname" ]]; then
+  if command -v iterm2_print_state_data >/dev/null 2>&1; then
     export iterm2_hostname="${@:-1}"
     iterm2_print_state_data
     "$SSH_COMMAND" "$@"
@@ -139,5 +141,12 @@ if command -v rbenv >/dev/null 2>&1; then
   eval "$(rbenv init -)"
 fi
 
+if command -v pyenv >/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
+
 try_source "$HOME/.iterm2_shell_integration.zsh"
 try_source "$HOME/.zshrc.after"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
