@@ -107,16 +107,20 @@ if [[ "$run_on_firefox" == true ]]; then
         *)       firefox_root="$HOME/.mozilla/Firefox"                             ;;
     esac
 
-    echo "${verb:-Installing} Firefox tweaks..."
-    cd "$firefox_root"
-    for profile in $firefox_profiles; do # $firefox_profiles here unquoted for expansion
-        if [[ !(-d "$profile") ]]; then
-            echo "Profile '$profile' does not exist, ignoring"
-            continue
-        fi
-        profile_dest=$(cd "$profile"; pwd)
-        install true "$(basename "$profile_dest")" 'Firefox' "$profile_dest/chrome"
-    done
+    if [[ -d "$firefox_root" ]]; then
+        echo "${verb:-Installing} Firefox tweaks..."
+        cd "$firefox_root"
+        for profile in $firefox_profiles; do # $firefox_profiles here unquoted for expansion
+            if [[ !(-d "$profile") ]]; then
+                echo "Profile '$profile' does not exist, ignoring"
+                continue
+            fi
+            profile_dest=$(cd "$profile"; pwd)
+            install true "$(basename "$profile_dest")" 'Firefox' "$profile_dest/chrome"
+        done
+    else
+        echo 'Firefox profiles not present, skipping...'
+    fi
 fi
 
 
