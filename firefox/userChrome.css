@@ -65,7 +65,8 @@
  */
 
 #TabsToolbar { visibility: collapse !important; }
-#titlebar-buttonbox-container { margin-left: 5px !important; margin-top: 5px !important; }
+#toolbar-menubar { visibility: visible !important; }
+.titlebar-buttonbox-container { position: fixed !important; }
 .box-inherit .scrollbox-innerbox { margin-right: 0px !important; }
 #main-window:not([inFullscreen]) #nav-bar{ padding: 0px 5px 0px 75px !important; }
 
