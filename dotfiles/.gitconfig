@@ -8,9 +8,9 @@
 [difftool "vimrdiff"]
     cmd = "vimr --wait --nvim -d \"$LOCAL\" \"$REMOTE\""
 [format]
-    pretty = tline
+    pretty = oline
 [pretty]
-    oline = %C(green)%h%C(red) %>(10)%cr:%C(cyan) (%aN)%C(white) - %<(60,trunc)%s%C(reset)
+    oline = %Cred%h%Creset %Cgreen%cr %s%Creset %C(bold blue)<%an>%Creset%C(yellow)%d%Creset
     tline = %Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset %w(80,0,0)%n %s%n
     pbody = %Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%n %w(80,0,0)%s%n%n%b
 [push]
@@ -24,8 +24,11 @@
     assumed        = "!git ls-files -v | grep ^h | cut -c 3-"
     branch-name    = "!git rev-parse --abbrev-ref HEAD"
     changed        = "blame"
-    commit-a       = "commit --amend --no-edit"
-    commit-aa      = "commit -a --amend --no-edit"
+    changed-in     = "diff-tree --no-commit-id --name-only -r"
+    ca             = "commit --amend --no-edit"
+    caa            = "commit -a --amend --no-edit"
+    cae            = "commit --amend"
+    caae           = "commit -a --amend"
     delete-merged  = "!f() { git co ${1:-${GIT_MAIN_BRANCH:-master}} && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; }; f"
     diffc          = "diff --cached"
     git            = "!exec git"
@@ -38,12 +41,12 @@
     ours           = "!f() { git checkout --ours \"$@\" && git add \"$@\"; }; f"
     overview       = "for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(refname:short)'"
     publish        = "!f() { git push -u ${1:-origin} $(git branch-name); }; f"
-    rebil          = "!f() { git rebase -i $(git merge-base ${1:-origin}/${2:-${GIT_MAIN_BRANCH:-master}} HEAD)"
     recap          = "log --all --no-merges --author=rupertwe@amazon.com --since=4.weeks"
     recap-one      = "log --no-merges --author=rupertwe@amazon.com --since=4.weeks"
     remake-branch  = "!f() { [[ -n $@ ]] && git checkout \"$@\" && git unpublish && git checkout ${GIT_MAIN_BRANCH:-master} && git branch -D \"$@\" && git checkout -b \"$@\" && git publish; }; f"
     stash-all      = "stash save --include-untracked"
     falp           = "fetch --all --prune"
+    folp           = "fetch --prune origin"
     theirs         = "!f() { git checkout --theirs \"$@\" && git add \"$@\"; }; f"
     unassume       = "update-index --no-assume-unchanged"
     unpublish      = "!f() { if [[ ${GIT_MAIN_BRANCH:-master} != $(git branch-name) ]]; then git push ${1:-origin} :$(git branch-name); else echo \"Deleting ${GIT_MAIN_BRANCH:-master} is dangerous! Aborting!\"; fi; }; f"
