@@ -1,0 +1,87 @@
+[31m43e0a40[m[33m (HEAD -> master)[m [32m4 seconds ago[m [1;34m<Wes Rupert>[m 
+Automatic update 22:11:58 02/22/19
+
+[31m6712d2e[m[33m[m [32m12 minutes ago[m [1;34m<Wes Rupert>[m 
+Automatic update
+
+[31m18f9ae9[m[33m[m [32m2 hours ago[m [1;34m<Wes Rupert>[m 
+Add tmux autolaunch support
+
+[31mb083443[m[33m[m [32m2 days ago[m [1;34m<Wes Rupert>[m 
+Update gitconfig
+
+[31m2a49625[m[33m[m [32m9 days ago[m [1;34m<Wes Rupert>[m 
+Don't install Firefox when not present
+
+[31m5d7f406[m[33m[m [32m9 days ago[m [1;34m<Wes Rupert>[m 
+Fix Firefox update breaking userChrome
+
+[31mf084eea[m[33m[m [32m2 weeks ago[m [1;34m<Wes Rupert>[m 
+Add pyenv support
+
+[31me4370ed[m[33m[m [32m2 weeks ago[m [1;34m<Wes Rupert>[m 
+Swap layers
+
+[31m7ed8dd3[m[33m[m [32m4 weeks ago[m [1;34m<Wes Rupert>[m 
+Update macos support
+
+[31m8aebaab[m[33m[m [32m5 weeks ago[m [1;34m<Wes Rupert>[m 
+Merge branch 'master' of github.com:wesrupert/dotfiles
+
+[31m16f0740[m[33m[m [32m5 weeks ago[m [1;34m<Wes Rupert>[m 
+Add iterm profile support to ssh
+
+[31ma8da4b7[m[33m[m [32m5 weeks ago[m [1;34m<Wes Rupert>[m 
+Improve fzf support
+
+[31m5943217[m[33m[m [32m5 weeks ago[m [1;34m<Wes Rupert>[m 
+Add moreutils
+
+[31m9bcb315[m[33m[m [32m6 weeks ago[m [1;34m<Wes Rupert>[m 
+Add karabiner layout
+
+[31m9cb73ce[m[33m[m [32m7 weeks ago[m [1;34m<Wes Rupert>[m 
+Update install script
+
+[31mf31ed98[m[33m[m [32m7 weeks ago[m [1;34m<Wes Rupert>[m 
+Improve zshrc portability
+
+[31me6e0e0e[m[33m[m [32m8 weeks ago[m [1;34m<Wes Rupert>[m 
+Improve macos support
+
+[31m8003d78[m[33m[m [32m4 months ago[m [1;34m<Wes Rupert>[m 
+Update tab bar hiding
+
+[31mccfd314[m[33m[m [32m4 months ago[m [1;34m<Wes Rupert>[m 
+Remove old posh-git reference
+
+[31md0d6037[m[33m[m [32m7 months ago[m [1;34m<Wes Rupert>[m 
+Merge branch 'master' of github.com:wesrupert/dotfiles
+
+[31me8054c0[m[33m[m [32m7 months ago[m [1;34m<Wes Rupert>[m 
+Fix pixel values
+
+[31m18c40ac[m[33m[m [32m9 months ago[m [1;34m<Wes Rupert>[m 
+Rearrange gitconfig
+
+[31mde2a19a[m[33m[m [32m9 months ago[m [1;34m<Wes Rupert>[m 
+Update psrc
+
+[31m73f76a0[m[33m[m [32m10 months ago[m [1;34m<Wes Rupert>[m 
+Update settings
+
+[31m4b7557f[m[33m[m [32m10 months ago[m [1;34m<Wes Rupert>[m 
+Update preferences
+
+[31mf38083c[m[33m[m [32m1 year, 3 months ago[m [1;34m<Wes Rupert>[m 
+Update TST layout
+
+[31ma2c6973[m[33m[m [32m1 year, 3 months ago[m [1;34m<Wes Rupert>[m 
+Update prompt
+
+[31mf06436d[m[33m[m [32m1 year, 3 months ago[m [1;34m<Wes Rupert>[m 
+Update diff to use neovim
+
+[31mfe5c236[m[33m[m [32m1 year, 5 months ago[m [1;34m<Wes Rupert>[m 
+Initial commit
+

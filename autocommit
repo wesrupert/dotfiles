@@ -3,7 +3,7 @@
 cd "$(dirname "$0")"
 
 git add .
-git commit -m "Automatic update $(-date +"%T %D")"
+git commit -m "Automatic update $(date +"%T %D")"
 
 tracked="$(git for-each-ref --format='%(upstream:short)' $(git symbolic-ref -q HEAD))"
 if [[ -n "$tracked" ]]; then
