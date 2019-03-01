@@ -12,6 +12,7 @@ export PATH=$PATH:$HOME/bin
 export PATH=$PATH:$HOME/platform-tools
 export PATH=$PATH:$HOME/.dotfiles/git-diffall
 export PATH=$PATH:/usr/local/bin/python
+export ZSH="$HOME/.oh-my-zsh"
 
 export SSH_PKEY="$HOME/.ssh/rsa_id"
 export SESSION_TYPE="$(who -m | awk '{ print $2 }' | sed 's/[0-9]*$//')"
@@ -28,11 +29,12 @@ if command -v tmux >/dev/null 2>&1; then
   if [[ -z "$TMUX" && "$SESSION_TYPE" == remote/ssh ]]; then
     TERM=screen-256color-bce
     export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=1
+    flag=${ITERM_SHELL_INTEGRATION_INSTALLED:+-CC}
     session="$(tmux ls | sed '/(attached)$/d' | sed 's/:.*//' | tail -n 1)"
     if [[ -n "$session" ]]; then
-      tmux attach -t "$session"
+      tmux $flag attach -t "$session"
     else
-      tmux 
+      tmux $flag
     fi
     exit
   fi
@@ -105,6 +107,15 @@ if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
   HOME=$ENV_HOME
   ZSH_THEME=$ENV_ZSH_THEME
 fi
+
+# 0 -- vanilla completion (abc => abc)
+# 1 -- smart case completion (abc => Abc)
+# 2 -- word flex completion (abc => A-big-Car)
+# 3 -- full flex completion (abc => ABraCadabra)
+zstyle ':completion:*' matcher-list '' \
+  'm:{a-z\-}={A-Z\_}' \
+  'r:[^[:alpha:]]||[[:alpha:]]=** r:|=* m:{a-z\-}={A-Z\_}' \
+  'r:|?=** m:{a-z\-}={A-Z\_}'
 
 function cd {
   if [[ "$#" == '0' ]]; then
