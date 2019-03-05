@@ -67,6 +67,7 @@ if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
     ZSH_THEME='robbyrussell'
   fi
 
+  export KEYTIMEOUT=1
   plugins=(extract git sudo vi-mode zsh_reload)
 
   if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -146,16 +147,14 @@ function ssh {
   fi
 }
 
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-alias ......='cd ../../../../..'
-alias .......='cd ../../../../../..'
-alias ........='cd ../../../../../../..'
-alias .........='cd ../../../../../../../..'
-alias ..........='cd ../../../../../../../../..'
-alias ...........='cd ../../../../../../../../../..'
+function .. {
+  dir='..'
+  times=${1:-1}
+  while [[ $((times--)) > 1 ]]; do
+    dir="$dir/.."
+  done
+  cd $dir
+}
 
 if [[ -n "$TMUX" ]]; then
   alias detach='tmux detach'

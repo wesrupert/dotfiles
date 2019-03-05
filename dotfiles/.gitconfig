@@ -1,6 +1,8 @@
 [user]
     name = Wes Rupert
     email = rupertwe@amazon.com
+[core]
+    excludesfile = "~/.config/.gitignore_global"
 [diff]
     tool = nvimdiff
 [difftool "nvimdiff"]
@@ -19,6 +21,8 @@
     showUntrackedFiles = all
 [interactive]
     diffFilter = diff-highlight
+[rebase]
+    autoStash = true
 [alias]
     assume         = "update-index --assume-unchanged"
     assumed        = "!git ls-files -v | grep ^h | cut -c 3-"

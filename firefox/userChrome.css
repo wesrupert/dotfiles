@@ -8,6 +8,10 @@
     --sidebar-visible-width: 400px;
 }
 
+:root[inFullscreen="true"] {
+    --sidebar-hover-width: 8px !important;
+}
+
 #sidebar-header {
     padding: 2px !important;
     min-height: 16px !important;
