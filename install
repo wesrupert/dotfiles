@@ -47,7 +47,7 @@ function install {
 }
 
 function print_help {
-    echo 'Usage: install [-acdfmsu] [firefox profile list...]'
+    echo 'Usage: install [-a] [-cdfmsw] [-u] [firefox profile list...]'
     echo 'Description: Installs selected features to your machine'
     echo '    -a    Select all features'
     echo '    -c    Select configs'
@@ -55,6 +55,7 @@ function print_help {
     echo '    -f    Select firefox features'
     echo '    -m    Select moreutils'
     echo '    -s    Select helper scripts'
+    echo '    -w    Select Windows features'
     echo '    -u    Uninstall selected features'
     echo ''
     exit 1
@@ -62,7 +63,7 @@ function print_help {
 
 
 # Process command line
-while getopts 'acdfmsu' opt; do
+while getopts 'acdfmswu' opt; do
     case $opt in
         h) print_help ;;
 
@@ -71,6 +72,7 @@ while getopts 'acdfmsu' opt; do
            run_on_firefox=true
            run_on_moreutils=true
            run_on_scripts=true
+          #run_on_windows=true
            ;;
 
         c) run_on_configs=true   ;;
@@ -78,6 +80,7 @@ while getopts 'acdfmsu' opt; do
         f) run_on_firefox=true   ;;
         m) run_on_moreutils=true ;;
         s) run_on_scripts=true   ;;
+        w) run_on_windows=true   ;;
 
         u) uninstall=true
            verb='Uninstalling'
@@ -91,15 +94,17 @@ if [[ "$run_on_configs"   == false \
    && "$run_on_dotfiles"  == false \
    && "$run_on_firefox"   == false \
    && "$run_on_moreutils" == false \
-   && "$run_on_scripts"   == false ]]; then
+   && "$run_on_scripts"   == false \
+   && "$run_on_windows"   == false ]]; then
     print_help
 fi
 
 # Install features
-install "$run_on_configs"   'configs'   'configs'   "$HOME/.config"
-install "$run_on_dotfiles"  'dotfiles'  'dotfiles'  "$HOME"
-install "$run_on_moreutils" 'moreutils' 'moreutils' '/usr/local/bin'
-install "$run_on_scripts"   'scripts'   'scripts'   "$HOME"
+install "$run_on_configs"   'configs'       'configs'   "$HOME/.config"
+install "$run_on_dotfiles"  'dotfiles'      'dotfiles'  "$HOME"
+install "$run_on_moreutils" 'moreutils'     'moreutils' '/usr/local/bin'
+install "$run_on_scripts"   'scripts'       'scripts'   '/usr/local/bin'
+install "$run_on_windows"   'Windows files' 'windows'   "$HOME"
 
 if [[ "$run_on_firefox" == true ]]; then
     case "$(uname -s)" in

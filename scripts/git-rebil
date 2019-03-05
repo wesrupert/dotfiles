@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+while getopts 'bh' opt; do
+    case $opt in
+        h) echo 'usage: git rebil [-b] [branch]'
+           echo '       git rebil [-b] [remote] [branch]'
+           echo '    -b    Update from merge-base'
+           exit 0
+           ;;
+
+        b) from_merge_base=true
+    esac
+done
+shift $((OPTIND -1))
+
+if [[ -z "$2" ]]; then
+    branch="$1"
+else
+    remote="$1"
+    branch="$2"
+fi
+
+
+remotes="$(git remote -v)"
+function get_remote_if_present {
+    echo "$remotes" \
+        | grep '(fetch)$' \
+        | awk '{ print $1 }' \
+        | grep -o "$1"
+}
+
+if [[ -z "$remote" ]]; then
+    remote="$(          get_remote_if_present 'origin')"
+    remote="${remote:-$(get_remote_if_present 'upstream')}"
+    remote="${remote:-$(get_remote_if_present 'fork')}"
+fi
+if [[ -z "$(get_remote_if_present "$remote")" ]]; then
+    echo 'Unable to determine correct remote!'
+    echo "Wanted: $remote"
+    echo 'Found:'
+    git remote -v
+    exit 1
+fi
+
+
+branches="$(git branch -r)"
+function get_branch_if_present {
+    echo "$branches" | grep -o "$1"
+}
+
+if [[ -z "$branch" ]]; then
+    branch="$(git branch -r | grep HEAD | awk '{ print $3 }' | sed 's:^[^/]*/::')"
+    branch="${branch:-$(get_branch_if_present 'mainline')}"
+    branch="${branch:-$(get_branch_if_present 'master')}"
+fi
+if [[ -z "$(get_branch_if_present "$branch")" ]]; then
+    echo 'Unable to determine correct branch!'
+    echo "Wanted: $branch"
+    echo 'Found:'
+    git branch -r
+    exit 1
+fi
+
+
+ref="$remote/$branch"
+if [[ "$from_merge_base" == true ]]; then
+    ref="$(git merge-base "$ref" HEAD)"
+fi
+
+if [[ "$?" == '0' && -n "$ref" ]]; then
+    echo "Rebasing on $ref..."
+    git rebase -i "$ref"
+else
+    echo 'Unable to determine merge base!'
+    exit 1
+fi
