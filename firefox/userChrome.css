@@ -4,12 +4,12 @@
 /* - - - - - - - - - - - - - - - Expand on hover TST - - - - - - - - - - - - - - - */
 
 :root {
-    --sidebar-hover-width: 66px;
+    --sidebar-hover-width: 48px;
     --sidebar-visible-width: 400px;
 }
 
 :root[inFullscreen="true"] {
-    --sidebar-hover-width: 8px !important;
+    --sidebar-hover-width: 1px !important;
 }
 
 #sidebar-header {
