@@ -1,4 +1,5 @@
 function try_source { if [[ -e "$1" ]]; then source "$1"; fi }
+function exists { command -v "$1" >/dev/null 2>&1; return $? }
 
 export DISABLE_AUTO_UPDATE='true'
 
@@ -25,7 +26,7 @@ else
 fi
 
 # Run this check early so that we don't do extra work if we're relaunching
-if command -v tmux >/dev/null 2>&1; then
+if exists tmux; then
   if [[ -z "$TMUX" && "$SESSION_TYPE" == remote/ssh ]]; then
     TERM=screen-256color-bce
     export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=1
@@ -52,12 +53,35 @@ ENABLE_CORRECTION='true'
 COMPLETION_WAITING_DOTS='true'
 setopt globdots
 
+if [[ -f "$HOME/.fzf.zsh" ]]; then
+  export FZF_COMPLETION_TRIGGER='qq'
+  export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
+  export FZF_DEFAULT_OPTS="--height 40% --reverse --border"
+  source "$HOME/.fzf.zsh"
+
+  function fzf() {
+    if [[ $(tput cols) > 100 ]]; then
+      command fzf --preview '[[ $(file --mime {}) =~ binary ]] &&
+                 echo {} is a binary file ||
+                 (highlight -O ansi -l {} ||
+                  coderay {} ||
+                  rougify {} ||
+                  cat {}) 2> /dev/null | head -255' "$@"
+    else
+      command fzf "$@"
+    fi
+  }
+
+  alias fzh="fzf --history '${FZF_HISTORY_DIR:-TMPDIR}'"
+fi
+
 if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
   # Backup variables used in the OH MY ZSH that need to be restored
   ENV_HOME=$HOME
   ENV_ZSH_THEME=$ZSH_THEME
   ENV_ZSH=$ZSH
   ZSH="$HOME/.oh-my-zsh"
+  export ZSH_DISABLE_COMPFIX=true
   if [[ -d "$HOME/.oh-my-zsh/custom/themes/spaceship-prompt" ]]; then
     ZSH_THEME='spaceship'
     SPACESHIP_PROMPT_ADD_NEWLINE=false
@@ -74,31 +98,12 @@ if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
     plugins+=(osx)
   fi
 
-  if command -v code >/dev/null 2>&1; then
+  if exists code; then
     plugins+=(vscode)
   fi
 
-  if [[ -f "$HOME/.fzf.zsh" ]]; then
-    export FZF_COMPLETION_TRIGGER='qq'
-    export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
-    export FZF_DEFAULT_OPTS="--height 40% --reverse --border"
+  if exists fzf; then
     plugins+=(fzf)
-    source "$HOME/.fzf.zsh"
-
-    function fzf() {
-      if [[ $(tput cols) > 100 ]]; then
-        command fzf --preview '[[ $(file --mime {}) =~ binary ]] &&
-                   echo {} is a binary file ||
-                   (highlight -O ansi -l {} ||
-                    coderay {} ||
-                    rougify {} ||
-                    cat {}) 2> /dev/null | head -255' "$@"
-      else
-        command fzf "$@"
-      fi
-    }
-
-    alias fzh="fzf --history '${FZF_HISTORY_DIR:-TMPDIR}'"
   fi
 
   try_source $ZSH/oh-my-zsh.sh
@@ -160,7 +165,7 @@ if [[ -n "$TMUX" ]]; then
   alias detach='tmux detach'
 fi
 
-if command -v nvim >/dev/null 2>&1; then
+if exists nvim; then
   export EDITOR=nvim
   alias vim=nvim
 else
@@ -172,11 +177,11 @@ alias gitk='gitk &'
 alias beep='tput bel'
 alias settings='e ~/.zshrc'
 
-if command -v rbenv >/dev/null 2>&1; then
+if exists rbenv; then
   eval "$(rbenv init -)"
 fi
 
-if command -v pyenv >/dev/null 2>&1; then
+if exists pyenv; then
   eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"
 fi
