@@ -15,10 +15,11 @@ run_on_firefox=false
 run_on_git=false
 run_on_moreutils=false
 run_on_scripts=false
+run_on_windows=false
 uninstall=false
 
 function install {
-    if [[ "$1" == false ]]; then
+    if [[ "$1" != true ]]; then
         return
     fi
     echo "${verb:-Installing} $2..."
