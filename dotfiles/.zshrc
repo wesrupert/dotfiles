@@ -33,15 +33,10 @@ fi
 # Run this check early so that we don't do extra work if we're relaunching
 if exists tmux; then
   if [[ -z "$TMUX" && "$SESSION_TYPE" == remote/ssh ]]; then
-    TERM=screen-256color-bce
     export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=1
-    flag=${ITERM_SHELL_INTEGRATION_INSTALLED:+-CC}
-    session="$(tmux ls | sed '/(attached)$/d' | sed 's/:.*//' | tail -n 1)"
-    if [[ -n "$session" ]]; then
-      tmux $flag attach -t "$session"
-    else
-      tmux $flag
-    fi
+    TERM=screen-256color-bce
+    sid="$(tmux ls | sed '/(attached)$/d' | sed 's/:.*//' | tail -n 1)"
+    tmux ${ITERM_SHELL_INTEGRATION_INSTALLED:+-CC} ${sid:+attach} ${sid:+-t} $sid
     exit
   fi
 fi
@@ -97,7 +92,7 @@ if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
   fi
 
   export KEYTIMEOUT=1
-  plugins=(extract git sudo vi-mode zsh_reload)
+  plugins=(extract git sudo vi-mode wd zsh_reload)
 
   if [[ "$OSTYPE" == "darwin"* ]]; then
     plugins+=(osx)

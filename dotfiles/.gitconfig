@@ -12,9 +12,9 @@
 [format]
     pretty = oline
 [pretty]
-    oline = %Cred%h%Creset %Cgreen%cr %s%Creset %C(bold blue)<%an>%Creset%C(yellow)%d%Creset
-    tline = %Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset %w(80,0,0)%n %s%n
-    pbody = %Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%n %w(80,0,0)%s%n%n%b
+    oline = %Cred%h%Creset %s %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%C(yellow)%d%Creset
+    tline = %Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%n%w(80,0,0)%s%n
+    pbody = %Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%n%w(80,0,0)%s%n%n%b
 [push]
     default = simple
 [status]
@@ -37,7 +37,11 @@
     diffc          = "diff --cached"
     git            = "!exec git"
     graph          = "log --decorate --graph"
+    logb           = "log --pretty=pbody"
+    logt           = "log --pretty=tline"
     logl           = "log --branches --not --remotes"
+    loglb          = "log --branches --not --remotes --pretty=pbody"
+    loglt          = "log --branches --not --remotes --pretty=tline"
     merge-diff     = "!git diff `git merge-span ... $1`"
     merge-difftool = "!git difftool `git merge-span ... $1`"
     merge-log      = "!git log `git merge-span .. $1`"
@@ -54,4 +58,5 @@
     theirs         = "!f() { git checkout --theirs \"$@\" && git add \"$@\"; }; f"
     unassume       = "update-index --no-assume-unchanged"
     unpublish      = "!f() { if [[ ${GIT_MAIN_BRANCH:-master} != $(git branch-name) ]]; then git push ${1:-origin} :$(git branch-name); else echo \"Deleting ${GIT_MAIN_BRANCH:-master} is dangerous! Aborting!\"; fi; }; f"
+    unpushed       = "log --branches --not --remotes --no-walk --decorate --oneline"
     unstage        = "reset HEAD"
