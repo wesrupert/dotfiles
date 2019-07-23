@@ -9,6 +9,8 @@
     cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [difftool "vimrdiff"]
     cmd = "vimr --wait --nvim -d \"$LOCAL\" \"$REMOTE\""
+[mergetool]
+    keepBackup = false
 [format]
     pretty = oline
 [pretty]
