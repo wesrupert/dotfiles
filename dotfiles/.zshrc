@@ -161,6 +161,10 @@ function .. {
   cd $dir
 }
 
+function withspaces {
+  awk -F: '{if(f!=$1)print ""; f=$1; print $0;}'
+}
+
 if [[ -n "$TMUX" ]]; then
   alias detach='tmux detach'
 fi
@@ -190,3 +194,5 @@ try_source "$HOME/.zshrc.after"
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
