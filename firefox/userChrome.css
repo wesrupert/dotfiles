@@ -11,8 +11,8 @@
 /* - - - - - - - - Expand on hover TST - - - - - - - - */
 
 :root {
-    --sidebar-hover-width: 48px;
-    --sidebar-visible-width: 768px;
+    --sidebar-hover-width: 3vw;
+    --sidebar-visible-width: 33vw;
 }
 
 :root[inFullscreen="true"] {
@@ -76,11 +76,6 @@
 /* - - - - - - - - Mini-window - - - - - - - - */
 
 @media (max-width: 900px), (max-height: 720px) {
-    :root {
-        --sidebar-hover-width: 8px !important;
-        --sidebar-visible-width: 200px !important;
-    }
-
     #navigator-toolbox > * {
         background:#999;
     }
@@ -127,7 +122,6 @@
 /* Tabs */
 #TabsToolbar .titlebar-placeholder[type="pre-tabs"],
 #TabsToolbar .tab-line,
-
 /* Menu */
 #appMenu-tp-button,
 #appMenu-tp-separator,
@@ -139,14 +133,11 @@
 #appMenu-edit-controls,
 #appMenu-edit-controls+toolbarseparator,
 #appMenu-library-button,
-/*#appMenu-customize-button,*/
-/*#appMenu-customize-button+toolbarseparator,*/
 #appMenu-open-file-button,
 #appMenu-save-file-button,
 #appMenu-find-button,
 #appMenu-more-button,
 #appMenu-help-button,
-
 /* URL Bar */
 #pageActionButton,
 #pocket-button-box,
