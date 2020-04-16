@@ -5,25 +5,18 @@
 #sidebar-header {
     padding: 2px !important;
     min-height: 16px !important;
-    border-right: 4px solid white !important;
 }
 
 /* - - - - - - - - Expand on hover TST - - - - - - - - */
-
-:root {
-    --sidebar-hover-width: 3vw;
-    --sidebar-visible-width: 33vw;
-}
-
-:root[inFullscreen="true"] {
-    --sidebar-hover-width: 1px;
-}
 
 #sidebar-splitter {
     display: none;
 }
 
 #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] {
+    --sidebar-hover-width: 3vw;
+    --sidebar-visible-width: 33vw;
+
     overflow: hidden;
     position: relative;
     min-width: var(--sidebar-hover-width);
@@ -35,6 +28,7 @@
 }
 
 #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar {
+    display: inline;
     min-width: var(--sidebar-visible-width) !important;
     max-width: var(--sidebar-visible-width) !important;
 }
@@ -67,11 +61,7 @@
 
 /* - - - - - - - - Hide Top Tabs - - - - - - - - */
 
-#main-window[tabsintitlebar="true"]:not([extradragspace="true"]) #TabsToolbar { visibility: collapse !important; }
-#main-window[tabsintitlebar="true"]:not([extradragspace="true"]) #toolbar-menubar { visibility: visible !important; }
-#main-window[tabsintitlebar="true"]:not([extradragspace="true"]) .titlebar-buttonbox-container { position: fixed !important; }
-#main-window[tabsintitlebar="true"]:not([extradragspace="true"]) .box-inherit .scrollbox-innerbox { margin-right: 0px !important; }
-#main-window:not([inFullscreen]) #nav-bar{ padding: 0px 5px 0px 75px !important; }
+#TabsToolbar { display: none !important; }
 
 /* - - - - - - - - Mini-window - - - - - - - - */
 

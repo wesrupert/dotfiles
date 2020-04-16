@@ -55,7 +55,7 @@ setopt globdots
 
 if [[ -f "$HOME/.fzf.zsh" ]]; then
   export FZF_COMPLETION_TRIGGER='qq'
-  export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
+  export FZF_DEFAULT_COMMAND='rg --files --hidden --follow 2>/dev/null'
   export FZF_DEFAULT_OPTS="--height 40% --reverse --border"
   source "$HOME/.fzf.zsh"
 
@@ -163,6 +163,12 @@ function .. {
 
 function withspaces {
   awk -F: '{if(f!=$1)print ""; f=$1; print $0;}'
+}
+
+function kill-port {
+    echo "Killing $(lsof -t -i tcp:$1 | wc -l) processes"
+    lsof -t -i tcp:$1 | xargs kill -9
+    echo "$(lsof -t -i tcp:$1 | wc -l) processes remaining"
 }
 
 if [[ -n "$TMUX" ]]; then

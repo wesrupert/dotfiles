@@ -5,7 +5,7 @@
  :main [
         {:des "Use power to lock screen" :rules [[:power [:control :shift :power]]]}
 
-        {:des "Hold space for function layer"
+        {:des "Hold space for symbol layer"
          :rules [[:spacebar ["spc-layer" 1] :devicekb {:afterup ["spc-layer" 0] :alone :spacebar}]
 
                  [:1          [:!S1]             ["spc-layer" 1]]
@@ -43,7 +43,7 @@
 
          ]}
 
-        {:des "Hold caps for symbol layer, tap for escape"
+        {:des "Hold caps for function layer, tap for escape"
          :rules [[:caps_lock ["cap-layer" 1] :devicekb {:afterup ["cap-layer" 0] :alone :escape}]
 
                  [:1                   [:f1]                    ["cap-layer" 1]]
@@ -60,21 +60,26 @@
                  [:equal_sign          [:f12]                   ["cap-layer" 1]]
                  [:delete_or_backspace [:delete_forward]        ["cap-layer" 1]]
 
+                 [:tab                 [:caps_lock]             ["cap-layer" 1]]
                  [:q                   [:rewind]                ["cap-layer" 1]]
                  [:w                   [:play_or_pause]         ["cap-layer" 1]]
                  [:e                   [:fastforward]           ["cap-layer" 1]]
+                 [:y                   [:home]                  ["cap-layer" 1]]
+                 [:u                   [:page_down]             ["cap-layer" 1]]
+                 [:i                   [:page_up]               ["cap-layer" 1]]
+                 [:o                   [:end]                   ["cap-layer" 1]]
+                 [:p                   [:print_screen]          ["cap-layer" 1]]
 
-                 [:s                   [:home]                  ["cap-layer" 1]]
-                 [:d                   [:page_up]               ["cap-layer" 1]]
-                 [:f                   [:page_down]             ["cap-layer" 1]]
-                 [:g                   [:end]                   ["cap-layer" 1]]
+                 [:a                   [:volume_down]           ["cap-layer" 1]]
+                 [:s                   [:mute]                  ["cap-layer" 1]]
+                 [:d                   [:volume_up]             ["cap-layer" 1]]
                  [:h                   [:left_arrow]            ["cap-layer" 1]]
                  [:j                   [:down_arrow]            ["cap-layer" 1]]
                  [:k                   [:up_arrow]              ["cap-layer" 1]]
                  [:l                   [:right_arrow]           ["cap-layer" 1]]
+
                  [:return_or_enter     [:mute]                  ["cap-layer" 1]]
                  [:right_shift         [:play_or_pause]         ["cap-layer" 1]]
-
                  [:left_arrow          [:rewind]                ["cap-layer" 1]]
                  [:right_arrow         [:fastforward]           ["cap-layer" 1]]
                  [:up_arrow            [:volume_up]             ["cap-layer" 1]]
