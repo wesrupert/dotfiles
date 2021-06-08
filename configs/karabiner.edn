@@ -1,92 +1,99 @@
 {
  :devices {
            :devicekb [{:vendor_id 1452 :product_id 630}]
- }
+           }
  :main [
-        {:des "Use power to lock screen" :rules [[:power [:control :shift :power]]]}
+        {:des "Redefine mods"
+         :rules [
+                 [:power        [:control :command :q]]
+                 [:caps_lock    [:left_control]]
+                 [:left_control [:left_alt]]
+                 [:left_alt     [:left_command]]
+                 [:right_alt    [:right_command]]
+                 [:return       [:right_control {:alone :return}]]
+                 ]}
 
-        {:des "Hold space for symbol layer"
-         :rules [[:spacebar ["spc-layer" 1] :devicekb {:afterup ["spc-layer" 0] :alone :spacebar}]
+        {:des "LT(SYMB, GUI)"
+         :rules [
+                 [:left_command ["sym-layer" 1] :devicekb {:afterup ["sym-layer" 0] :alone :escape}]
+                 [:right_command ["sym-layer" 1] :devicekb {:afterup ["sym-layer" 0] :alone :escape}]
+                 [:1          [:!S1]             ["sym-layer" 1]]
+                 [:2          [:!S2]             ["sym-layer" 1]]
+                 [:3          [:!S3]             ["sym-layer" 1]]
+                 [:4          [:!S4]             ["sym-layer" 1]]
+                 [:5          [:!S5]             ["sym-layer" 1]]
+                 [:6          [:!S6]             ["sym-layer" 1]]
+                 [:7          [:!S7]             ["sym-layer" 1]]
+                 [:8          [:!S8]             ["sym-layer" 1]]
+                 [:9          [:!S9]             ["sym-layer" 1]]
+                 [:0          [:!S0]             ["sym-layer" 1]]
+                 [:hyphen     [:!Shyphen]        ["sym-layer" 1]]
+                 [:equal_sign [:!Sequal_sign]    ["sym-layer" 1]]
 
-                 [:1          [:!S1]             ["spc-layer" 1]]
-                 [:2          [:!S2]             ["spc-layer" 1]]
-                 [:3          [:!S3]             ["spc-layer" 1]]
-                 [:4          [:!S4]             ["spc-layer" 1]]
-                 [:5          [:!S5]             ["spc-layer" 1]]
-                 [:6          [:!S6]             ["spc-layer" 1]]
-                 [:7          [:!S7]             ["spc-layer" 1]]
-                 [:8          [:!S8]             ["spc-layer" 1]]
-                 [:9          [:!S9]             ["spc-layer" 1]]
-                 [:0          [:!S0]             ["spc-layer" 1]]
-                 [:hyphen     [:!Shyphen]        ["spc-layer" 1]]
-                 [:equal_sign [:!Sequal_sign]    ["spc-layer" 1]]
+                 [:w          [:!Sbackslash]     ["sym-layer" 1]]
+                 [:e          [:slash]           ["sym-layer" 1]]
+                 [:r          [:hyphen]          ["sym-layer" 1]]
+                 [:t          [:!Sslash]         ["sym-layer" 1]]
+                 [:y          [:!S1]             ["sym-layer" 1]]
+                 [:u          [:!Sequal_sign]    ["sym-layer" 1]]
+                 [:i          [:!S8]             ["sym-layer" 1]]
+                 [:o          [:!S7]             ["sym-layer" 1]]
 
-                 [:w          [:!Sbackslash]     ["spc-layer" 1]]
-                 [:e          [:slash]           ["spc-layer" 1]]
-                 [:r          [:hyphen]          ["spc-layer" 1]]
-                 [:t          [:!Sslash]         ["spc-layer" 1]]
-                 [:y          [:!S1]             ["spc-layer" 1]]
-                 [:u          [:!Sequal_sign]    ["spc-layer" 1]]
-                 [:i          [:!S8]             ["spc-layer" 1]]
-                 [:o          [:!S7]             ["spc-layer" 1]]
-                                                    
-                 [:s          [:open_bracket]    ["spc-layer" 1]]
-                 [:d          [:!Sopen_bracket]  ["spc-layer" 1]]
-                 [:f          [:!S9]             ["spc-layer" 1]]
-                 [:g          [:!Scomma]         ["spc-layer" 1]]
-                 [:h          [:!Speriod]        ["spc-layer" 1]]
-                 [:j          [:!S0]             ["spc-layer" 1]]
-                 [:k          [:!Sclose_bracket] ["spc-layer" 1]]
-                 [:l          [:close_bracket]   ["spc-layer" 1]]
-                 [:semicolon  [:!Ssemicolon]     ["spc-layer" 1]]
-                 [:quote      [:!Squote]         ["spc-layer" 1]]
+                 [:s          [:open_bracket]    ["sym-layer" 1]]
+                 [:d          [:!Sopen_bracket]  ["sym-layer" 1]]
+                 [:f          [:!S9]             ["sym-layer" 1]]
+                 [:g          [:!Scomma]         ["sym-layer" 1]]
+                 [:h          [:!Speriod]        ["sym-layer" 1]]
+                 [:j          [:!S0]             ["sym-layer" 1]]
+                 [:k          [:!Sclose_bracket] ["sym-layer" 1]]
+                 [:l          [:close_bracket]   ["sym-layer" 1]]
+                 [:semicolon  [:!Ssemicolon]     ["sym-layer" 1]]
+                 [:quote      [:!Squote]         ["sym-layer" 1]]
+                 ]}
 
-         ]}
+        {:des "LT(FUNC, ESC)"
+         :rules [
+                 [:spacebar ["func-layer" 1] :devicekb {:afterup ["func-layer" 0] :alone :spacebar}]
+                 [:1                   [:f1]                    ["func-layer" 1]]
+                 [:2                   [:f2]                    ["func-layer" 1]]
+                 [:3                   [:f3]                    ["func-layer" 1]]
+                 [:4                   [:f4]                    ["func-layer" 1]]
+                 [:5                   [:f5]                    ["func-layer" 1]]
+                 [:6                   [:f6]                    ["func-layer" 1]]
+                 [:7                   [:f7]                    ["func-layer" 1]]
+                 [:8                   [:f8]                    ["func-layer" 1]]
+                 [:9                   [:f9]                    ["func-layer" 1]]
+                 [:0                   [:f10]                   ["func-layer" 1]]
+                 [:hyphen              [:f11]                   ["func-layer" 1]]
+                 [:equal_sign          [:f12]                   ["func-layer" 1]]
+                 [:delete_or_backspace [:delete_forward]        ["func-layer" 1]]
 
-        {:des "Hold caps for function layer, tap for escape"
-         :rules [[:caps_lock ["cap-layer" 1] :devicekb {:afterup ["cap-layer" 0] :alone :escape}]
+                 [:caps_lock           [:caps_lock]             ["func-layer" 1]]
+                 [:q                   [:rewind]                ["func-layer" 1]]
+                 [:w                   [:play_or_pause]         ["func-layer" 1]]
+                 [:e                   [:fastforward]           ["func-layer" 1]]
+                 [:y                   [:home]                  ["func-layer" 1]]
+                 [:u                   [:page_down]             ["func-layer" 1]]
+                 [:i                   [:page_up]               ["func-layer" 1]]
+                 [:o                   [:end]                   ["func-layer" 1]]
+                 [:p                   [:print_screen]          ["func-layer" 1]]
 
-                 [:1                   [:f1]                    ["cap-layer" 1]]
-                 [:2                   [:f2]                    ["cap-layer" 1]]
-                 [:3                   [:f3]                    ["cap-layer" 1]]
-                 [:4                   [:f4]                    ["cap-layer" 1]]
-                 [:5                   [:f5]                    ["cap-layer" 1]]
-                 [:6                   [:f6]                    ["cap-layer" 1]]
-                 [:7                   [:f7]                    ["cap-layer" 1]]
-                 [:8                   [:f8]                    ["cap-layer" 1]]
-                 [:9                   [:f9]                    ["cap-layer" 1]]
-                 [:0                   [:f10]                   ["cap-layer" 1]]
-                 [:hyphen              [:f11]                   ["cap-layer" 1]]
-                 [:equal_sign          [:f12]                   ["cap-layer" 1]]
-                 [:delete_or_backspace [:delete_forward]        ["cap-layer" 1]]
+                 [:a                   [:volume_down]           ["func-layer" 1]]
+                 [:s                   [:mute]                  ["func-layer" 1]]
+                 [:d                   [:volume_up]             ["func-layer" 1]]
+                 [:h                   [:left_arrow]            ["func-layer" 1]]
+                 [:j                   [:down_arrow]            ["func-layer" 1]]
+                 [:k                   [:up_arrow]              ["func-layer" 1]]
+                 [:l                   [:right_arrow]           ["func-layer" 1]]
 
-                 [:tab                 [:caps_lock]             ["cap-layer" 1]]
-                 [:q                   [:rewind]                ["cap-layer" 1]]
-                 [:w                   [:play_or_pause]         ["cap-layer" 1]]
-                 [:e                   [:fastforward]           ["cap-layer" 1]]
-                 [:y                   [:home]                  ["cap-layer" 1]]
-                 [:u                   [:page_down]             ["cap-layer" 1]]
-                 [:i                   [:page_up]               ["cap-layer" 1]]
-                 [:o                   [:end]                   ["cap-layer" 1]]
-                 [:p                   [:print_screen]          ["cap-layer" 1]]
-
-                 [:a                   [:volume_down]           ["cap-layer" 1]]
-                 [:s                   [:mute]                  ["cap-layer" 1]]
-                 [:d                   [:volume_up]             ["cap-layer" 1]]
-                 [:h                   [:left_arrow]            ["cap-layer" 1]]
-                 [:j                   [:down_arrow]            ["cap-layer" 1]]
-                 [:k                   [:up_arrow]              ["cap-layer" 1]]
-                 [:l                   [:right_arrow]           ["cap-layer" 1]]
-
-                 [:return_or_enter     [:mute]                  ["cap-layer" 1]]
-                 [:right_shift         [:play_or_pause]         ["cap-layer" 1]]
-                 [:left_arrow          [:rewind]                ["cap-layer" 1]]
-                 [:right_arrow         [:fastforward]           ["cap-layer" 1]]
-                 [:up_arrow            [:volume_up]             ["cap-layer" 1]]
-                 [:down_arrow          [:volume_down]           ["cap-layer" 1]]
-
-         ]}
-]}
+                 [:return_or_enter     [:mute]                  ["func-layer" 1]]
+                 [:right_shift         [:play_or_pause]         ["func-layer" 1]]
+                 [:left_arrow          [:rewind]                ["func-layer" 1]]
+                 [:right_arrow         [:fastforward]           ["func-layer" 1]]
+                 [:up_arrow            [:volume_up]             ["func-layer" 1]]
+                 [:down_arrow          [:volume_down]           ["func-layer" 1]]
+                 ]}
+        ]}
 
 ; Autocomplete (from https://raw.githubusercontent.com/yqrashawn/GokuRakuJoudo/master/src/karabiner_configurator/keys_info.clj):
 ; :button1 :button2 :button3 :button4 :button5 :any :command :shift :option
