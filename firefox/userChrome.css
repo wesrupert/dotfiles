@@ -21,11 +21,32 @@
   min-height: 0 !important;
 }
 
+/* Adding empty space for buttons */
+#nav-bar {
+  margin-right:140px;
+}
+
+#titlebar {
+  appearance: none !important;
+  height: 0px;
+}
+
+#titlebar[inFullscreen] {
+  appearance: none !important;
+  height: 8px;
+}
+
+/* Fix for main menu calling by Alt button */
+#titlebar > #toolbar-menubar {
+  margin-top: 4px;
+}
+
+/* Move minimize/restore/close buttons to empty space */
 #TabsToolbar > .titlebar-buttonbox-container {
   display: block;
   position: absolute;
-  top: 12px;
-  left: 0px;
+  top: 8px;
+  right: 1px;
 }
 
 /* - - Hide tab bar - - */
@@ -72,12 +93,6 @@
     margin-right: calc((var(--wide-tab-width) - var(--thin-tab-width)) * -1) !important;
     z-index: 1;
 }
-
-/* - - - Mini-window - - - */
-
-@media (max-width: 900px), (max-height: 720px) {
-}
-
 
 /* - - - Hide unused items - - - */
 
