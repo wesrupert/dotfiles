@@ -1,123 +1,85 @@
-@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); /* only needed once */
-
-/* - - - - - - - - Sidebar tweaks - - - - - - - - */
-
-#sidebar-header {
-    padding: 2px !important;
-    min-height: 16px !important;
-    border-right: 4px solid white !important;
-}
-
-/* - - - - - - - - Expand on hover TST - - - - - - - - */
+/* - - - Sidebar tabs - - - */
 
 :root {
-    --sidebar-hover-width: 3vw;
-    --sidebar-visible-width: 33vw;
+    --thin-tab-width: clamp(28px, 15vw, 48px);
+    --wide-tab-width: clamp(200px, 33vw, 400px);
 }
 
-:root[inFullscreen="true"] {
-    --sidebar-hover-width: 1px;
+/* - - Hide title bar - - */
+
+#titlebar {
+  appearance: none !important;
+  height: 0px;
 }
 
-#sidebar-splitter {
-    display: none;
+#titlebar > #toolbar-menubar {
+  margin-top: 0px;
+}
+
+#TabsToolbar {
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+
+#TabsToolbar > .titlebar-buttonbox-container {
+  display: block;
+  position: absolute;
+  top: 12px;
+  left: 0px;
+}
+
+/* - - Hide tab bar - - */
+
+#main-window[tabsintitlebar="true"]:not([extradragspace="true"]) #TabsToolbar > .toolbar-items {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#main-window:not([tabsintitlebar="true"]) #TabsToolbar {
+    visibility: collapse !important;
+}
+
+/* - - Expanding tab well - - */
+
+#sidebar {
+    max-width: none !important;
+    min-width: 0px !important;
+}
+
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] + #sidebar-splitter {
+    display: none !important;
+}
+
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
+    visibility: collapse;
+}
+
+#sidebar-box:not([sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"]) {
+    min-width: var(--wide-tab-width) !important;
+    max-width: none !important;
 }
 
 #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] {
-    overflow: hidden;
-    position: relative;
-    min-width: var(--sidebar-hover-width);
-    max-width: var(--sidebar-hover-width);
-    left: var(--sidebar-hover-width);
-    transition: all 0.2s ease;
-    border-right: 1px solid #0c0c0d;
-    z-index: 2;
-}
-
-#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar {
-    min-width: var(--sidebar-visible-width) !important;
-    max-width: var(--sidebar-visible-width) !important;
+    position: relative !important;
+    transition: all ease 100ms !important;
+    min-width: var(--thin-tab-width) !important;
+    max-width: var(--thin-tab-width) !important;
 }
 
 #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"]:hover {
-    min-width: var(--sidebar-visible-width) !important;
-    max-width: var(--sidebar-visible-width) !important;
-    margin-right: calc((var(--sidebar-visible-width) - var(--sidebar-hover-width)) * -1) !important;
-    left: var(--sidebar-visible-width) !important;
+    min-width: var(--wide-tab-width) !important;
+    max-width: var(--wide-tab-width) !important;
+    margin-right: calc((var(--wide-tab-width) - var(--thin-tab-width)) * -1) !important;
+    z-index: 1;
 }
 
-#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"]:hover #sidebar-header {
-    transition: all 0.2s ease;
-    padding: 2px !important;
-    min-height: 16px !important;
-    border-right: 4px solid white !important;
-}
-
-#sidebar-box[positionend="true"] {
-    left: unset;
-    right: var(--sidebar-hover-width);
-}
-
-#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"][positionend="true"]:hover {
-    margin-right: unset !important;
-    left: unset !important;
-    margin-left: calc((var(--sidebar-visible-width) - var(--sidebar-hover-width)) * -1) !important;
-    right: var(--sidebar-visible-width) !important;
-}
-
-/* - - - - - - - - Hide Top Tabs - - - - - - - - */
-
-#main-window[tabsintitlebar="true"]:not([extradragspace="true"]) #TabsToolbar { visibility: collapse !important; }
-#main-window[tabsintitlebar="true"]:not([extradragspace="true"]) #toolbar-menubar { visibility: visible !important; }
-#main-window[tabsintitlebar="true"]:not([extradragspace="true"]) .titlebar-buttonbox-container { position: fixed !important; }
-#main-window[tabsintitlebar="true"]:not([extradragspace="true"]) .box-inherit .scrollbox-innerbox { margin-right: 0px !important; }
-#main-window:not([inFullscreen]) #nav-bar{ padding: 0px 5px 0px 75px !important; }
-
-/* - - - - - - - - Mini-window - - - - - - - - */
+/* - - - Mini-window - - - */
 
 @media (max-width: 900px), (max-height: 720px) {
-    #navigator-toolbox > * {
-        background:#999;
-    }
-
-    #navigator-toolbox {
-        position: relative;
-        height: 8px;
-        transition:.1s linear all;
-        overflow: hidden;
-        opacity:0;
-        margin-bottom: 0px;
-        z-index: 1;
-    }
-
-    #navigator-toolbox:hover {
-        height: 256px;
-        margin-bottom: -248px;
-        overflow:extend;
-        opacity:1;
-    }
-
-
-    #content-deck{
-        position:relative;
-        z-index: 0;
-    }
-
-    #titlebar-buttonbox{
-        opacity:0;
-        height: 4px;
-        overflow: hidden;
-        transition:.2s ease all;
-    }
-
-    #titlebar-buttonbox:hover {
-        opacity:1;
-        height: auto;
-    }
 }
 
 
-/* - - - - - - - - Hide unused items - - - - - - - - */
+/* - - - Hide unused items - - - */
 
 /* Tabs */
 #TabsToolbar .titlebar-placeholder[type="pre-tabs"],
