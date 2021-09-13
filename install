@@ -31,13 +31,24 @@ function install {
     for item in "${src%/}"/*; do
         if [[ ! -d "$item" ]]; then
             if [[ "$uninstall" == false ]]; then
-                ln -fv "$item" "$dest"
+                if [[ "$dest" == '/usr/local/bin' ]]; then
+                    sudo ln -fv "$item" "$dest"
+                else
+                    ln -fv "$item" "$dest"
+                fi
                 output=true
             else
                 target="$dest/$(basename "$item")"
-                if  rm "$target" > /dev/null 2>&1; then
-                    echo "$target -> removed"
-                    output=true
+                if [[ "$dest" == '/usr/local/bin' ]]; then
+                    if sudo rm "$target" > /dev/null 2>&1; then
+                        echo "$target -> removed"
+                        output=true
+                    fi
+                else
+                    if rm "$target" > /dev/null 2>&1; then
+                        echo "$target -> removed"
+                        output=true
+                    fi
                 fi
             fi
         fi
