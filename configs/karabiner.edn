@@ -3,20 +3,9 @@
            :devicekb [{:vendor_id 1452 :product_id 630}]
            }
  :main [
-        {:des "Redefine mods"
+        {:des "Symbol layer"
          :rules [
-                 [:power        [:control :command :q]]
-                 [:caps_lock    [:left_control]]
-                 [:left_control [:left_alt]]
-                 [:left_alt     [:left_command]]
-                 [:right_alt    [:right_command]]
-                 [:return       [:right_control {:alone :return}]]
-                 ]}
-
-        {:des "LT(SYMB, GUI)"
-         :rules [
-                 [:left_command ["sym-layer" 1] :devicekb {:afterup ["sym-layer" 0] :alone :escape}]
-                 [:right_command ["sym-layer" 1] :devicekb {:afterup ["sym-layer" 0] :alone :escape}]
+                 [:return_or_enter ["sym-layer" 1] :devicekb {:afterup ["sym-layer" 0] :alone :return_or_enter}]
                  [:1          [:!S1]             ["sym-layer" 1]]
                  [:2          [:!S2]             ["sym-layer" 1]]
                  [:3          [:!S3]             ["sym-layer" 1]]
@@ -51,9 +40,9 @@
                  [:quote      [:!Squote]         ["sym-layer" 1]]
                  ]}
 
-        {:des "LT(FUNC, ESC)"
+        {:des "Function layer"
          :rules [
-                 [:spacebar ["func-layer" 1] :devicekb {:afterup ["func-layer" 0] :alone :spacebar}]
+                 [:caps_lock ["func-layer" 1] :devicekb {:afterup ["func-layer" 0] :alone :escape}]
                  [:1                   [:f1]                    ["func-layer" 1]]
                  [:2                   [:f2]                    ["func-layer" 1]]
                  [:3                   [:f3]                    ["func-layer" 1]]
@@ -78,15 +67,16 @@
                  [:o                   [:end]                   ["func-layer" 1]]
                  [:p                   [:print_screen]          ["func-layer" 1]]
 
-                 [:a                   [:volume_down]           ["func-layer" 1]]
-                 [:s                   [:mute]                  ["func-layer" 1]]
-                 [:d                   [:volume_up]             ["func-layer" 1]]
+                 [:s                   [:left_arrow]            ["func-layer" 1]]
+                 [:d                   [:up_arrow]              ["func-layer" 1]]
+                 [:f                   [:down_arrow]            ["func-layer" 1]]
+                 [:g                   [:right_arrow]           ["func-layer" 1]]
                  [:h                   [:left_arrow]            ["func-layer" 1]]
                  [:j                   [:down_arrow]            ["func-layer" 1]]
                  [:k                   [:up_arrow]              ["func-layer" 1]]
                  [:l                   [:right_arrow]           ["func-layer" 1]]
 
-                 [:return_or_enter     [:mute]                  ["func-layer" 1]]
+                 [:spacebar            [:mute]                  ["func-layer" 1]]
                  [:right_shift         [:play_or_pause]         ["func-layer" 1]]
                  [:left_arrow          [:rewind]                ["func-layer" 1]]
                  [:right_arrow         [:fastforward]           ["func-layer" 1]]
