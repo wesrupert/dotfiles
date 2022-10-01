@@ -133,7 +133,7 @@ if [[ "$run_on_firefox" == true ]]; then
                 continue
             fi
             profile_dest=$(cd "$profile"; pwd)
-            install true "$(basename "$profile_dest")" 'Firefox' "$profile_dest/chrome"
+            install true "$(basename "$profile_dest")" 'firefox' "$profile_dest/chrome"
         done
     else
         echo 'Firefox profiles not present, skipping...'
