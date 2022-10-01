@@ -46,7 +46,7 @@
   display: block;
   position: absolute;
   top: 8px;
-  right: 1px;
+  right: 4px;
 }
 
 /* - - Hide tab bar - - */
@@ -82,7 +82,7 @@
 
 #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] {
     position: relative !important;
-    transition: all ease 100ms !important;
+    transition: all ease 150ms !important;
     min-width: var(--thin-tab-width) !important;
     max-width: var(--thin-tab-width) !important;
 }

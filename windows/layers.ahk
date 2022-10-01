@@ -1,12 +1,12 @@
 #NoEnv
-#SingleInstance Force
+#SingleInstance Ignore
 current_layer := "layer_normal"
 
 CapsLock::
   ; Start layer and wait for tapping term.
   global current_layer
   current_layer := "layer_function"
-  keywait, CapsLock, t0.15
+  keywait, CapsLock, t0.25
   ; Determine tap or hold.
   if (ErrorLevel = 0) {
     ; Tap behavior: If tapped fast enough, cancel layer and send tap code.
@@ -23,7 +23,7 @@ Enter::
   ; Start layer and wait for tapping term.
   global current_layer
   current_layer := "layer_symbols"
-  keywait, Enter, t0.15
+  keywait, Enter, t0.25
   ; Determine tap or hold.
   if (ErrorLevel = 0) {
     ; Tap behavior: If tapped fast enough, cancel layer and send tap code.
