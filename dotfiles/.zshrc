@@ -92,7 +92,7 @@ if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
   fi
 
   export KEYTIMEOUT=1
-  plugins=(extract git sudo vi-mode wd zsh_reload)
+  plugins=(extract git sudo vi-mode wd)
 
   if [[ "$OSTYPE" == "darwin"* ]]; then
     plugins+=(osx)
@@ -109,9 +109,10 @@ if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
   try_source $ZSH/oh-my-zsh.sh
 
   # Restore environment variables
-  ZSH=$ENV_ZSH
-  HOME=$ENV_HOME
-  ZSH_THEME=$ENV_ZSH_THEME
+  ZSH=${ENV_ZSH:-$ZSH}
+  HOME=${ENV_HOME:-$HOME}
+  ZSH_THEME=${ENV_ZSH_THEME:-$ZSH_THEME}
+  echo "OMZSH $ZSH_THEME"
 fi
 
 # 0 -- vanilla completion (abc => abc)
