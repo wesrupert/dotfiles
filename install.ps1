@@ -21,12 +21,16 @@ function Install-Dir {
 }
 
 function Install-File {
-  param ([string]$file, [string]$path)
-    echo "Installing $file to $path..."
+  param ([string]$file, [string]$dest)
+    echo "Installing $file to $dest..."
     $props = Get-ChildItem "$PSScriptRoot\$file"
     $orig = $props.FullName
-    if (-not (Test-Path -Path $path)) {
-      New-Item -ItemType SymbolicLink -Target $orig -Path $path -ErrorAction Stop
+    if (-not (Test-Path -Path $dest)) {
+      $destPath = [System.IO.Path]::GetDirectoryName($dest)
+      if (-not (Test-Path -Path $destPath)) {
+        New-Item $destPath -ItemType Directory
+      }
+      New-Item -ItemType SymbolicLink -Target $orig -Path $dest -ErrorAction Stop
     }
 }
 
@@ -43,14 +47,7 @@ function Install-WingetPackages {
     })
 }
 
-# Install features
-Install-Dir -Dir 'configs' -Path "$HOME\.config"
-Install-Dir -Dir 'dotfiles' -Path "$HOME"
-Install-File 'windows\layers.ahk' 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\layers.ahk'
-Install-File 'windows\profile.ps1' $PROFILE
-
 # Install packages
-
 if (-not $n) {
   Write-Host 'Installing common packages...'
     Install-WingetPackages (
@@ -82,6 +79,15 @@ if (-not $n) {
           )
   }
 }
+
+# Install features
+Install-Dir -Dir 'configs' -Path "$HOME\.config"
+Install-Dir -Dir 'dotfiles' -Path "$HOME"
+Install-File 'windows\profile.ps1' $PROFILE
+Install-File 'windows\layers.ahk' 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\layers.ahk'
+
+# This one auto-installs itself
+windows\windowsTerminal_themeToggler.ps1
 
 $firefoxprofiles = "$($env:APPDATA)\Mozilla\Firefox\Profiles"
 Get-ChildItem "$firefoxprofiles" | Foreach-Object {
