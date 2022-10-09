@@ -32,7 +32,8 @@ function Install-File {
 function Install-WingetPackages {
   param ([string[]]$packages)
     $packages.ForEach({
-      if (winget list -e --id $_) {
+      winget list -e --id $_
+      if ($?) {
         Write-Host "$_ already installed, skipping..."
       } else {
         Write-Host "Installing $_..."
