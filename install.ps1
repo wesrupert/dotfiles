@@ -2,7 +2,9 @@ param(
   [Parameter(HelpMessage="Automatically install work applications")]
   [switch]$w = $False,
   [Parameter(HelpMessage="Automatically install personal applications")]
-  [switch]$h = $False
+  [switch]$h = $False,
+  [Parameter(HelpMessage="Skip all package installation")]
+  [switch]$n = $False
 )
 
 function Install-Dir {
@@ -23,9 +25,8 @@ function Install-File {
     echo "Installing $file to $path..."
     $props = Get-ChildItem "$PSScriptRoot\$file"
     $orig = $props.FullName
-    $dest = "$path\$($props.Name)"
-    if (-not (Test-Path -Path $dest)) {
-      New-Item -ItemType SymbolicLink -Target $orig -Path $dest -ErrorAction Stop
+    if (-not (Test-Path -Path $path)) {
+      New-Item -ItemType SymbolicLink -Target $orig -Path $path -ErrorAction Stop
     }
 }
 
@@ -45,38 +46,41 @@ function Install-WingetPackages {
 # Install features
 Install-Dir -Dir 'configs' -Path "$HOME\.config"
 Install-Dir -Dir 'dotfiles' -Path "$HOME"
-Install-File 'windows\layers.ahk' 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup'
+Install-File 'windows\layers.ahk' 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\layers.ahk'
+Install-File 'windows\profile.ps1' $PROFILE
 
 # Install packages
 
-Write-Host 'Installing common packages...'
-Install-WingetPackages (
-    '7zip.7zip', 'AgileBits.1Password', 'ApacheFriends.Xampp.8.1',
-    'Armin2208.WindowsAutoNightMode', 'Git.Git', 'GitHub.cli', 'Google.Chrome',
-    'JanDeDobbeleer.OhMyPosh', 'Lexikos.AutoHotkey', 'Logitech.GHUB',
-    'Logitech.OptionsPlus', 'Microsoft.PowerShell.Preview', 'Microsoft.PowerToys',
-    'Microsoft.VisualStudioCode', 'Microsoft.WindowsTerminal', 'Mozilla.Firefox',
-    'Neovim.Neovim.Nightly', 'Obsidian.Obsidian', 'Python.Python.3.10',
-    'Spotify.Spotify', 'SyncTrayzor.SyncTrayzor', 'Yarn.Yarn', 'Zoom.Zoom'
-    )
-
-if ($h -or ((-not $w) -and ($(Read-Host -Prompt 'Install home packages? (y/N)') -eq 'y'))) {
-  Write-Host 'Installing home packages...'
+if (-not $n) {
+  Write-Host 'Installing common packages...'
     Install-WingetPackages (
-        'Discord.Discord', 'Foxit.FoxitReader', 'Mojang.MinecraftLauncher',
-        'OpenWhisperSystems.Signal', 'Samsung.DeX', 'Telegram.TelegramDesktop',
-        'Ultimaker.Cura', 'Valve.Steam', 'VideoLAN.VLC'
+        '7zip.7zip', 'AgileBits.1Password', 'ApacheFriends.Xampp.8.1',
+        'Armin2208.WindowsAutoNightMode', 'Git.Git', 'GitHub.cli', 'Google.Chrome',
+        'JanDeDobbeleer.OhMyPosh', 'Lexikos.AutoHotkey', 'Logitech.GHUB',
+        'Logitech.OptionsPlus', 'Microsoft.PowerShell.Preview', 'Microsoft.PowerToys',
+        'Microsoft.VisualStudioCode', 'Microsoft.WindowsTerminal', 'Mozilla.Firefox',
+        'Neovim.Neovim.Nightly', 'Obsidian.Obsidian', 'Python.Python.3.10',
+        'Spotify.Spotify', 'SyncTrayzor.SyncTrayzor', 'Yarn.Yarn', 'Zoom.Zoom'
         )
-}
+
+    if ($h -or ((-not $w) -and ($(Read-Host -Prompt 'Install home packages? (y/N)') -eq 'y'))) {
+      Write-Host 'Installing home packages...'
+        Install-WingetPackages (
+            'Discord.Discord', 'Foxit.FoxitReader', 'Mojang.MinecraftLauncher',
+            'OpenWhisperSystems.Signal', 'Samsung.DeX', 'Telegram.TelegramDesktop',
+            'Ultimaker.Cura', 'Valve.Steam', 'VideoLAN.VLC'
+            )
+    }
 
 # Work
-if ($w -or ((-not $h) -and ($(Read-Host -Prompt 'Install work packages? (y/N)') -eq 'y'))) {
-  Write-Host 'Installing work packages...'
-    Install-WingetPackages (
-        'Asana.Asana', 'Figma.Figma', 'GitHub.GitHubDesktop',
-        'Hashicorp.Vagrant', 'Loom.Loom', 'Oracle.VirtualBox',
-        'SlackTechnologies.Slack'
-        )
+  if ($w -or ((-not $h) -and ($(Read-Host -Prompt 'Install work packages? (y/N)') -eq 'y'))) {
+    Write-Host 'Installing work packages...'
+      Install-WingetPackages (
+          'Asana.Asana', 'Figma.Figma', 'GitHub.GitHubDesktop',
+          'Hashicorp.Vagrant', 'Loom.Loom', 'Oracle.VirtualBox',
+          'SlackTechnologies.Slack'
+          )
+  }
 }
 
 $firefoxprofiles = "$($env:APPDATA)\Mozilla\Firefox\Profiles"
