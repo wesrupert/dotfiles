@@ -1,5 +1,4 @@
-#oh-my-posh init pwsh --config "$($env:LOCALAPPDATA)\Programs\oh-my-posh\themes\spaceshipfixed.omp.json" | Invoke-Expression
-oh-my-posh init pwsh --config "$($env:LOCALAPPDATA)\Programs\oh-my-posh\themes\spaceship.omp.json" | Invoke-Expression
+oh-my-posh init pwsh --config "$($env:LOCALAPPDATA)\Programs\oh-my-posh\themes\spaceshipfixed.omp.json" | Invoke-Expression
 
 if (Get-Command 'fnm' -ErrorAction 'SilentlyContinue') {
   fnm env --use-on-cd | Out-String | Invoke-Expression
