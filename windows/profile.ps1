@@ -13,16 +13,16 @@ function ..... { cd ..\..\..\.. }
 function ..code { cd ~\Code }
 
 function Toggle-Theme {
-  . "$($env:LOCALAPPDATA)\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\windowsTerminal_themeToggler.ps1" *> out-null
+  . "$($env:LOCALAPPDATA)\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\windowsTerminal_themeToggler.ps1" *> $null
 }
 
 # }}}
 
 # Options {{{
 
-Set-PSReadLineOption -PredictionSource History -ErrorAction 'SilentlyContinue' *> out-null
-Set-PSReadLineOption -PredictionViewStyle ListView -ErrorAction 'SilentlyContinue' *> out-null
-Set-PSReadLineOption -EditMode Windows -ErrorAction 'SilentlyContinue' *> out-null
+Set-PSReadLineOption -PredictionSource History -ErrorAction 'SilentlyContinue' *> $null
+Set-PSReadLineOption -PredictionViewStyle ListView -ErrorAction 'SilentlyContinue' *> $null
+Set-PSReadLineOption -EditMode Windows -ErrorAction 'SilentlyContinue' *> $null
 
 # }}}
 

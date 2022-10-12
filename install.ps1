@@ -83,7 +83,9 @@ if (-not $n) {
 # Install features
 Install-Dir -Dir 'configs' -Path "$HOME\.config"
 Install-Dir -Dir 'dotfiles' -Path "$HOME"
+
 Install-File 'windows\profile.ps1' $PROFILE
+Install-File 'windows\spaceshipfixed.omp.json' "$($env:LOCALAPPDATA)\Programs\oh-my-posh\themes\spaceshipfixed.omp.json"
 Install-File 'windows\layers.ahk' 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\layers.ahk'
 
 # This one auto-installs itself

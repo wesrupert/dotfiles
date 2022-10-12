@@ -3,6 +3,7 @@
     email = rupertwe@amazon.com
 [core]
     excludesfile = "~/.config/.gitignore_global"
+    editor = nvim
 [diff]
     tool = nvimdiff
 [difftool "nvimdiff"]
@@ -66,3 +67,10 @@
     unpublish      = "!f() { if [[ ${GIT_MAIN_BRANCH:-master} != $(git branch-name) ]]; then git push ${1:-origin} :$(git branch-name); else echo \"Deleting ${GIT_MAIN_BRANCH:-master} is dangerous! Aborting!\"; fi; }; f"
     unpushed       = "log --branches --not --remotes --no-walk --decorate --oneline"
     unstage        = "reset HEAD"
+[safe]
+    directory = *
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
