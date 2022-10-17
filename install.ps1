@@ -75,7 +75,7 @@ if (-not $n) {
       Install-WingetPackages (
           'Asana.Asana', 'Figma.Figma', 'GitHub.GitHubDesktop',
           'Hashicorp.Vagrant', 'Loom.Loom', 'Oracle.VirtualBox',
-          'SlackTechnologies.Slack'
+          'OpenVPNTechnologies.OpenVPNConnect', 'SlackTechnologies.Slack'
           )
   }
 }
