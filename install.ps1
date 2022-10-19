@@ -88,7 +88,8 @@ Install-File 'windows\profile.ps1' $PROFILE
 Install-File 'windows\spaceshipfixed.omp.json' "$($env:LOCALAPPDATA)\Programs\oh-my-posh\themes\spaceshipfixed.omp.json"
 Install-File 'windows\layers.ahk' 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\layers.ahk'
 
-# This one auto-installs itself
+# Install this via symlink instead of its native copier.
+Install-File 'windows\windowsTerminal_themeToggler.ps1' "$($env:LOCALAPPDATA)\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\windowsTerminal_themeToggler.ps1" 
 windows\windowsTerminal_themeToggler.ps1
 
 $firefoxprofiles = "$($env:APPDATA)\Mozilla\Firefox\Profiles"
