@@ -6,11 +6,18 @@ if (Get-Command 'fnm' -ErrorAction 'SilentlyContinue') {
 
 # Aliases {{{
 
+$env:DEV_ROOT = "$HOME\Code"
+
+Set-Alias -Name "cd-" -Value Pop-Location
+Set-Alias -Name "od" -Value Pop-Location
 function .. { cd .. }
 function ... { cd ..\.. }
 function .... { cd ..\..\.. }
 function ..... { cd ..\..\..\.. }
-function ..code { cd ~\Code }
+Function cd.. { cd .. }
+Function cd\  { cd \ }
+Function cdh  { cd "$HOME" }
+Function cdc  { cd $env:DEV_ROOT }
 
 function Toggle-Theme {
   . "$($env:LOCALAPPDATA)\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\windowsTerminal_themeToggler.ps1" *> $null
@@ -219,11 +226,6 @@ function cd {
         elseif ($Path -or $LiteralPath)          {Push-Location @PSBoundParameters }
       }
 }
-Set-Alias -Name "cd-" -Value Pop-Location
-Set-Alias -Name "od" -Value Pop-Location
-Function cd.. {Push-Location -Path ..}
-Function cd\  {Push-Location -Path \ }
-Function cd~  {Push-Location -Path ~}
 
 # }}}
 
@@ -233,6 +235,12 @@ $psAfter = "$PSScriptRoot\Microsoft.PowerShell_profile.after.ps1"
 if (Test-Path -Path $psAfter) {
   . $psAfter
 }
+
+# }}}
+
+# Set up environment {{{
+
+ssh-agent
 
 # }}}
 

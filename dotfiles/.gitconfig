@@ -40,7 +40,7 @@
     caa            = "commit -a --amend --no-edit"
     cae            = "commit --amend"
     caae           = "commit -a --amend"
-    delete-merged  = "!f() { git co ${1:-${GIT_MAIN_BRANCH:-master}} && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; }; f"
+    delete-merged  = "!f() { git checkout ${1:-${GIT_MAIN_BRANCH:-master}} && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; }; f"
     diffc          = "diff --cached"
     git            = "!exec git"
     graph          = "log --decorate --graph"
@@ -54,18 +54,18 @@
     merge-difftool = "!git difftool `git merge-span ... $1`"
     merge-log      = "!git log `git merge-span .. $1`"
     merge-span     = "!f() { echo $(git log -1 $2 --merges --pretty=format:%P | cut -d' ' -f1)$1$(git log -1 $2 --merges --pretty=format:%P | cut -d' ' -f2); }; f"
+    nbfm           = "!f() { git fetch --all -p ; git checkout -b $1 upstream/HEAD ; git push -u mine $1 ; }; f"
     ours           = "!f() { git checkout --ours \"$@\" && git add \"$@\"; }; f"
     overview       = "for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(refname:short)'"
-    publish        = "!f() { git push -u ${1:-origin} $(git branch-name); }; f"
-    recap          = "log --all --no-merges --author=rupertwe@amazon.com --since=4.weeks"
-    recap-one      = "log --no-merges --author=rupertwe@amazon.com --since=4.weeks"
+    publish        = "!f() { git push -u ${1:-mine} $(git branch-name); }; f"
+    republish      = "!f() { git push --force-with-lease ${1:-mine} $(git branch-name); }; f"
     remake-branch  = "!f() { [[ -n $@ ]] && git checkout \"$@\" && git unpublish && git checkout ${GIT_MAIN_BRANCH:-master} && git branch -D \"$@\" && git checkout -b \"$@\" && git publish; }; f"
-    stash-all      = "stash save --include-untracked"
+    stall          = "stash save --include-untracked"
     falp           = "fetch --all --prune"
-    folp           = "fetch --prune origin"
+    folp           = "!f() { fetch --prune ${1:-upstream}; }; f"
     theirs         = "!f() { git checkout --theirs \"$@\" && git add \"$@\"; }; f"
     unassume       = "update-index --no-assume-unchanged"
-    unpublish      = "!f() { if [[ ${GIT_MAIN_BRANCH:-master} != $(git branch-name) ]]; then git push ${1:-origin} :$(git branch-name); else echo \"Deleting ${GIT_MAIN_BRANCH:-master} is dangerous! Aborting!\"; fi; }; f"
+    unpublish      = "!f() { if [[ ${GIT_MAIN_BRANCH:-master} != $(git branch-name) ]]; then git push ${1:-mine} :$(git branch-name); else echo \"Deleting ${GIT_MAIN_BRANCH:-master} is dangerous! Aborting!\"; fi; }; f"
     unpushed       = "log --branches --not --remotes --no-walk --decorate --oneline"
     unstage        = "reset HEAD"
 [safe]
@@ -75,3 +75,5 @@
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
     required = true
+[advice]
+    setUpstreamFailure = false
