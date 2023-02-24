@@ -1,6 +1,5 @@
 [user]
     name = Wes Rupert
-    email = rupertwe@amazon.com
 [core]
     excludesfile = "~/.config/.gitignore_global"
     editor = nvim
@@ -36,12 +35,17 @@
     branch-name    = "!git rev-parse --abbrev-ref HEAD"
     changed        = "blame"
     changed-in     = "diff-tree --no-commit-id --name-only -r"
-    ca             = "commit --amend --no-edit"
-    caa            = "commit -a --amend --no-edit"
-    cae            = "commit --amend"
-    caae           = "commit -a --amend"
+    ca             = "commit --amend --no-edit --no-verify"
+    caa            = "commit --amend -a --no-edit --no-verify"
+    cae            = "commit --amend --no-verify"
+    caae           = "commit --amend -a --no-verify"
+    cav            = "commit --amend --no-edit"
+    caav           = "commit --amend -a --no-edit"
+    caev           = "commit --amend"
+    caaev          = "commit --amend -a"
     delete-merged  = "!f() { git checkout ${1:-${GIT_MAIN_BRANCH:-master}} && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; }; f"
     diffc          = "diff --cached"
+    checkout-ffo   = "!f() { git fetch https://github.com/$1.git $2:fork/$1/$2 && git checkout fork/$1/$2; }; f"
     git            = "!exec git"
     graph          = "log --decorate --graph"
     logb           = "log --pretty=pbody"
@@ -62,7 +66,7 @@
     remake-branch  = "!f() { [[ -n $@ ]] && git checkout \"$@\" && git unpublish && git checkout ${GIT_MAIN_BRANCH:-master} && git branch -D \"$@\" && git checkout -b \"$@\" && git publish; }; f"
     stall          = "stash save --include-untracked"
     falp           = "fetch --all --prune"
-    folp           = "!f() { fetch --prune ${1:-upstream}; }; f"
+    folp           = "!f() { git fetch --prune ${1:-upstream}; }; f"
     theirs         = "!f() { git checkout --theirs \"$@\" && git add \"$@\"; }; f"
     unassume       = "update-index --no-assume-unchanged"
     unpublish      = "!f() { if [[ ${GIT_MAIN_BRANCH:-master} != $(git branch-name) ]]; then git push ${1:-mine} :$(git branch-name); else echo \"Deleting ${GIT_MAIN_BRANCH:-master} is dangerous! Aborting!\"; fi; }; f"
@@ -77,3 +81,5 @@
     required = true
 [advice]
     setUpstreamFailure = false
+[include]
+    path = ~/.config/git/.gitconfig.after
