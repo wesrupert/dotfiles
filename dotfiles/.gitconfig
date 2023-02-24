@@ -1,85 +1,90 @@
 [user]
-    name = Wes Rupert
+  name = Wes Rupert
 [core]
-    excludesfile = "~/.config/.gitignore_global"
-    editor = nvim
+  excludesfile = "~/.config/.gitignore_global"
+  editor = nvim
 [diff]
-    tool = nvimdiff
+  tool = nvimdiff
 [difftool "nvimdiff"]
-    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [difftool "vimrdiff"]
-    cmd = "vimr --wait --nvim -d \"$LOCAL\" \"$REMOTE\""
+  cmd = "vimr --wait --nvim -d \"$LOCAL\" \"$REMOTE\""
 [mergetool]
-    keepBackup = false
+  keepBackup = false
 [format]
-    pretty = oline
+  pretty = oline
 [pretty]
-    oline = %Cred%h%Creset %s %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%C(yellow)%d%Creset
-    tline = %Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%n%w(80,0,0)%s%n
-    pbody = %Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%n%w(80,0,0)%s%n%n%b
-    hashs = %Cred%H%Creset %s %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%C(yellow)%d%Creset
+  oline = %Cred%h%Creset %s %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%C(yellow)%d%Creset
+  tline = %Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%n%w(80,0,0)%s%n
+  pbody = %Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%n%w(80,0,0)%s%n%n%b
+  hashs = %Cred%H%Creset %s %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%C(yellow)%d%Creset
 [pull]
-    rebase = true
+  rebase = true
 [push]
-    default = simple
-    autoSetupRemote = true
+  default = simple
+  autoSetupRemote = true
 [status]
-    showUntrackedFiles = all
+  showUntrackedFiles = all
 [interactive]
-    diffFilter = diff-highlight
+  diffFilter = diff-highlight
 [rebase]
-    autoStash = true
-[alias]
-    assume         = "update-index --assume-unchanged"
-    assumed        = "!git ls-files -v | grep ^h | cut -c 3-"
-    branch-name    = "!git rev-parse --abbrev-ref HEAD"
-    changed        = "blame"
-    changed-in     = "diff-tree --no-commit-id --name-only -r"
-    ca             = "commit --amend --no-edit --no-verify"
-    caa            = "commit --amend -a --no-edit --no-verify"
-    cae            = "commit --amend --no-verify"
-    caae           = "commit --amend -a --no-verify"
-    cav            = "commit --amend --no-edit"
-    caav           = "commit --amend -a --no-edit"
-    caev           = "commit --amend"
-    caaev          = "commit --amend -a"
-    delete-merged  = "!f() { git checkout ${1:-${GIT_MAIN_BRANCH:-master}} && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; }; f"
-    diffc          = "diff --cached"
-    checkout-ffo   = "!f() { git fetch https://github.com/$1.git $2:fork/$1/$2 && git checkout fork/$1/$2; }; f"
-    git            = "!exec git"
-    graph          = "log --decorate --graph"
-    logb           = "log --pretty=pbody"
-    logh           = "log --pretty=hashs"
-    logl           = "log --branches --not --remotes"
-    logt           = "log --pretty=tline"
-    loglb          = "log --branches --not --remotes --pretty=pbody"
-    loglt          = "log --branches --not --remotes --pretty=tline"
-    merge-diff     = "!git diff `git merge-span ... $1`"
-    merge-difftool = "!git difftool `git merge-span ... $1`"
-    merge-log      = "!git log `git merge-span .. $1`"
-    merge-span     = "!f() { echo $(git log -1 $2 --merges --pretty=format:%P | cut -d' ' -f1)$1$(git log -1 $2 --merges --pretty=format:%P | cut -d' ' -f2); }; f"
-    nbfm           = "!f() { git fetch --all -p ; git checkout -b $1 upstream/HEAD ; git push -u mine $1 ; }; f"
-    ours           = "!f() { git checkout --ours \"$@\" && git add \"$@\"; }; f"
-    overview       = "for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(refname:short)'"
-    publish        = "!f() { git push -u ${1:-mine} $(git branch-name); }; f"
-    republish      = "!f() { git push --force-with-lease ${1:-mine} $(git branch-name); }; f"
-    remake-branch  = "!f() { [[ -n $@ ]] && git checkout \"$@\" && git unpublish && git checkout ${GIT_MAIN_BRANCH:-master} && git branch -D \"$@\" && git checkout -b \"$@\" && git publish; }; f"
-    stall          = "stash save --include-untracked"
-    falp           = "fetch --all --prune"
-    folp           = "!f() { git fetch --prune ${1:-upstream}; }; f"
-    theirs         = "!f() { git checkout --theirs \"$@\" && git add \"$@\"; }; f"
-    unassume       = "update-index --no-assume-unchanged"
-    unpublish      = "!f() { if [[ ${GIT_MAIN_BRANCH:-master} != $(git branch-name) ]]; then git push ${1:-mine} :$(git branch-name); else echo \"Deleting ${GIT_MAIN_BRANCH:-master} is dangerous! Aborting!\"; fi; }; f"
-    unpushed       = "log --branches --not --remotes --no-walk --decorate --oneline"
-    unstage        = "reset HEAD"
+  autoStash = true
 [safe]
-    directory = *
+  directory = *
 [filter "lfs"]
-    clean = git-lfs clean -- %f
-    smudge = git-lfs smudge -- %f
-    process = git-lfs filter-process
-    required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
 [advice]
-    setUpstreamFailure = false
+  setUpstreamFailure = false
+[alias]
+  # View all aliases in your terminal
+  alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
+
+  # Quick commit aliases: c(ommit) a(mend) a(ll) e(dit) v(erify).
+  ca             = "commit --amend --no-edit --no-verify"
+  caa            = "commit --amend -a --no-edit --no-verify"
+  cae            = "commit --amend --no-verify"
+  caae           = "commit --amend -a --no-verify"
+  cav            = "commit --amend --no-edit"
+  caav           = "commit --amend -a --no-edit"
+  caev           = "commit --amend"
+  caaev          = "commit --amend -a"
+
+  # Quick log aliases.
+  logb           = "log --pretty=pbody"
+  logg           = "log --decorate --graph"
+  logh           = "log --pretty=hashs"
+  logl           = "log --branches --not --remotes"
+  logt           = "log --pretty=tline"
+  loglb          = "log --branches --not --remotes --pretty=pbody"
+  loglt          = "log --branches --not --remotes --pretty=tline"
+
+  # Informational aliases.
+  unpushed       = "log --branches --not --remotes --no-walk --decorate --oneline"
+  branch-name    = "!git rev-parse --abbrev-ref HEAD"
+
+  # Branch management aliases.
+  fup            = "!f() { git fetch --prune ${1:-upstream}; }; f"
+  fallp          = "fetch --all --prune"
+  checkout-ffo   = "!f() { git fetch https://github.com/$1.git $2:fork/$1/$2 && git checkout fork/$1/$2; }; f"
+  publish        = "!f() { git push -u ${1:-mine} $(git branch-name); }; f"
+  republish      = "!f() { git push --force-with-lease ${1:-mine} $(git branch-name); }; f"
+  unpublish      = "!f() { if [[ ${GIT_MAIN_BRANCH:-master} != $(git branch-name) ]]; then git push ${1:-mine} :$(git branch-name); else echo \"Deleting ${GIT_MAIN_BRANCH:-master} is dangerous! Aborting!\"; fi; }; f"
+  nbfm           = "!f() { git fetch --all -p ; git checkout -b $1 upstream/HEAD ; git push -u mine $1 ; }; f"
+  stall          = "stash save --include-untracked"
+
+  # Hide files in the index that you don't intend to commit changes to.
+  assume         = "update-index --assume-unchanged"
+  unassume       = "update-index --no-assume-unchanged"
+  assumed        = "!git ls-files -v | grep ^h | cut -c 3-"
+
+  # Merge/rebase/etc aliases.
+  add-ours       = "!f() { git checkout --ours \"$@\" && git add \"$@\"; }; f"
+  add-theirs     = "!f() { git checkout --theirs \"$@\" && git add \"$@\"; }; f"
+
+  # Stupid, but a lifesaver.
+  git            = "!exec git"
 [include]
-    path = ~/.config/git/.gitconfig.after
+  path = ~/.config/git/.gitconfig.after
