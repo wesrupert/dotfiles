@@ -53,12 +53,12 @@ if (-not $n) {
   Write-Host 'Installing common packages...'
   Install-WingetPackages (
     '7zip.7zip', 'AgileBits.1Password' 'Armin2208.WindowsAutoNightMode',
-    'Git.Git', 'GitHub.cli', 'Google.Chrome', 'JanDeDobbeleer.OhMyPosh',
-    'Lexikos.AutoHotkey', 'Microsoft.PowerShell.Preview',
-    'Microsoft.PowerToys', 'Microsoft.VisualStudioCode',
-    'Microsoft.WindowsTerminal', 'Mozilla.Firefox', 'Neovim.Neovim.Nightly',
-    'Obsidian.Obsidian', 'Python.Python.3.10', 'Spotify.Spotify' 'Yarn.Yarn',
-    'Zoom.Zoom'
+    'cURL.cURL', 'Git.Git', 'GitHub.cli', 'Google.Chrome',
+    'JanDeDobbeleer.OhMyPosh', 'Lexikos.AutoHotkey',
+    'Microsoft.PowerShell.Preview', 'Microsoft.PowerToys',
+    'Microsoft.VisualStudioCode', 'Microsoft.WindowsTerminal',
+    'Mozilla.Firefox', 'Neovim.Neovim.Nightly', 'Obsidian.Obsidian',
+     'Python.Python.3.12', 'Spotify.Spotify' 'Yarn.Yarn', 'Zoom.Zoom'
   )
 
   if ($h -or ((-not $w) -and ($(Read-Host -Prompt 'Install home packages? (y/N)') -eq 'y'))) {

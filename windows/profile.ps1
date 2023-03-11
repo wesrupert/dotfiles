@@ -8,8 +8,9 @@ if (Get-Command 'fnm' -ErrorAction 'SilentlyContinue') {
 
 $env:DEV_ROOT = "$HOME\Code"
 
-Set-Alias -Name "cd-" -Value Pop-Location
-Set-Alias -Name "od" -Value Pop-Location
+Set-Alias -Name 'which' -Value Get-Command
+Set-Alias -Name 'cd-' -Value Pop-Location
+Set-Alias -Name 'od' -Value Pop-Location
 function .. { cd .. }
 function ... { cd ..\.. }
 function .... { cd ..\..\.. }
@@ -21,6 +22,10 @@ Function cdc  { cd $env:DEV_ROOT }
 
 function Toggle-Theme {
   . "$($env:LOCALAPPDATA)\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\windowsTerminal_themeToggler.ps1" *> $null
+}
+
+function Mk-Link ($target, $link) {
+  New-Item -Path $(Resolve-Path $link) -ItemType SymbolicLink -Value $(Resolve-Path $target)
 }
 
 # }}}

@@ -3,6 +3,8 @@
 [core]
   excludesfile = "~/.config/.gitignore_global"
   editor = nvim
+  autocrlf = true
+  eol = lf
 [diff]
   tool = nvimdiff
 [difftool "nvimdiff"]
@@ -42,7 +44,17 @@
   # View all aliases in your terminal
   alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
 
-  # Quick commit aliases: c(ommit) a(mend) a(ll) e(dit) v(erify).
+  # Quick commit aliases: co(mmit) a(ll) v(erify) m(essage).
+  co             = "commit --no-verify"
+  com            = "commit --no-verify -m"
+  coa            = "commit -a --no-verify"
+  coam           = "commit -a --no-verify -m"
+  cov            = "commit"
+  covm           = "commit -m"
+  coav           = "commit -a"
+  coavm          = "commit -a -m"
+
+  # Amend commit aliases: c(ommit) a(mend) a(ll) e(dit) v(erify).
   ca             = "commit --amend --no-edit --no-verify"
   caa            = "commit --amend -a --no-edit --no-verify"
   cae            = "commit --amend --no-verify"
@@ -67,8 +79,8 @@
 
   # Branch management aliases.
   fup            = "!f() { git fetch --prune ${1:-upstream}; }; f"
-  fallp          = "fetch --all --prune"
-  checkout-ffo   = "!f() { git fetch https://github.com/$1.git $2:fork/$1/$2 && git checkout fork/$1/$2; }; f"
+  falp           = "fetch --all --prune"
+  cheffo         = "!f() { git fetch https://github.com/$1.git $2:fork/$1/$2 && git checkout fork/$1/$2; }; f"
   publish        = "!f() { git push -u ${1:-mine} $(git branch-name); }; f"
   republish      = "!f() { git push --force-with-lease ${1:-mine} $(git branch-name); }; f"
   unpublish      = "!f() { if [[ ${GIT_MAIN_BRANCH:-master} != $(git branch-name) ]]; then git push ${1:-mine} :$(git branch-name); else echo \"Deleting ${GIT_MAIN_BRANCH:-master} is dangerous! Aborting!\"; fi; }; f"
