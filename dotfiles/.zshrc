@@ -17,9 +17,19 @@ export PATH=$PATH:$HOME/.rbenv/bin
 export PATH=$PATH:$HOME/.local/share/fnm:$PATH
 export PATH=$PATH:$HOME/.yarn/bin
 export PATH=$PATH:$HOME/.config/yarn/global/node_modules/.bin
+export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:$HOME/.local/share/fnm
 export PATH=$PATH:/usr/local/bin/python
 export ZSH="$HOME/.oh-my-zsh"
 export NVM_DIR="$HOME/.nvm"
+
+if [ -d /mnt/c/QMK_MSYS ]; then
+  # USB integrations on WSL are inadequate for QMK, use the Windows utils directly.
+  export DFU_PROGRAMMER=/mnt/c/QMK_MSYS/mingw64/bin/dfu-programmer.exe
+  export DFU_UTIL=/mnt/c/QMK_MSYS/mingw64/bin/dfu-util.exe
+  export TEENSY_LOADER_CLI=/mnt/c/QMK_MSYS/mingw64/bin/teensy_loader_cli.exe
+  export BATCHISP=/mnt/c/QMK_MSYS/mingw64/bin/batchisp.exe
+fi
 
 export SSH_PKEY="$HOME/.ssh/rsa_id"
 export SESSION_TYPE="$(who -m | awk '{ print $2 }' | sed 's/[0-9]*$//')"
@@ -87,6 +97,7 @@ if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
     ZSH_THEME='spaceship'
     SPACESHIP_PROMPT_ADD_NEWLINE=false
     SPACESHIP_PROMPT_SEPARATE_LINE=true
+    SPACESHIP_CHAR_SUFFIX=' '
     SPACESHIP_EXEC_TIME_ELAPSED=30
   else
     ZSH_THEME='robbyrussell'
@@ -113,7 +124,6 @@ if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
   ZSH=${ENV_ZSH:-$ZSH}
   HOME=${ENV_HOME:-$HOME}
   ZSH_THEME=${ENV_ZSH_THEME:-$ZSH_THEME}
-  echo "OMZSH $ZSH_THEME"
 fi
 
 # 0 -- vanilla completion (abc => abc)
@@ -134,11 +144,7 @@ function cd {
 }
 
 function od {
-  if [[ "$#" == '0' ]]; then
-    popd > /dev/null
-  else
-    for i in $(seq $1); do popd > /dev/null; done
-  fi
+  popd "$@" > /dev/null
 }
 
 export SSH_COMMAND="$(which ssh)"
