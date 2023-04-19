@@ -44,6 +44,14 @@
   # View all aliases in your terminal
   alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
 
+  # Informational aliases.
+  get-unpushed   = "log --branches --not --remotes --no-walk --decorate --oneline"
+  get-branch-name= "!git rev-parse --abbrev-ref HEAD"
+  get-upstream   = "!f() { echo ${1:-${GIT_UPSTREAM_REMOTE:-origin}}; }; f"
+  get-working    = "!f() { echo ${1:-${GIT_WORKING_REMOTE:-origin}}; }; f"
+  get-main-ref   = "!git rev-parse --abbrev-ref --symbolic-full-name @{u}"
+  get-main-branch= "!git get-main-ref | sed 's!.*/!!'"
+
   # Quick commit aliases: co(mmit) a(ll) v(erify) m(essage).
   co             = "commit --no-verify"
   com            = "commit --no-verify -m"
@@ -73,18 +81,14 @@
   loglb          = "log --branches --not --remotes --pretty=pbody"
   loglt          = "log --branches --not --remotes --pretty=tline"
 
-  # Informational aliases.
-  unpushed       = "log --branches --not --remotes --no-walk --decorate --oneline"
-  branch-name    = "!git rev-parse --abbrev-ref HEAD"
-
   # Branch management aliases.
-  fup            = "!f() { git fetch --prune ${1:-upstream}; }; f"
+  fup            = "!f() { git fetch --prune ${1:-$(git get-upstream)}; }; f"
   falp           = "fetch --all --prune"
   cheffo         = "!f() { git fetch https://github.com/$1.git $2:fork/$1/$2 && git checkout fork/$1/$2; }; f"
-  publish        = "!f() { git push -u ${1:-mine} $(git branch-name); }; f"
-  republish      = "!f() { git push --force-with-lease ${1:-mine} $(git branch-name); }; f"
-  unpublish      = "!f() { if [[ ${GIT_MAIN_BRANCH:-master} != $(git branch-name) ]]; then git push ${1:-mine} :$(git branch-name); else echo \"Deleting ${GIT_MAIN_BRANCH:-master} is dangerous! Aborting!\"; fi; }; f"
-  nbfm           = "!f() { git fetch --all -p ; git checkout -b $1 upstream/HEAD ; git push -u mine $1 ; }; f"
+  publish        = "!f() { git push -u ${1:-$(git get-working)} $(git get-branch-name); }; f"
+  republish      = "!f() { git push --force-with-lease ${1:-$(git get-working)} $(git get-branch-name); }; f"
+  unpublish      = "!f() { if [[ $(git get-main-branch) != $(git get-branch-name) ]]; then git push ${1:-$(git get-working)} :$(git get-branch-name); else echo \"Deleting $(git get-main-branch) is dangerous! Aborting!\"; fi; }; f"
+  nbfm           = "!f() { git fetch --all -p ; git checkout -b $1 $(git get-main-ref) ; git push -u $(git get-working) $1 ; }; f"
   stall          = "stash save --include-untracked"
 
   # Hide files in the index that you don't intend to commit changes to.

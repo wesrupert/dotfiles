@@ -25,7 +25,7 @@ function Toggle-Theme {
 }
 
 function Mk-Link ($target, $link) {
-  New-Item -Path $(Resolve-Path $link) -ItemType SymbolicLink -Value $(Resolve-Path $target)
+  New-Item -Path $link -ItemType SymbolicLink -Value $target
 }
 
 # }}}
