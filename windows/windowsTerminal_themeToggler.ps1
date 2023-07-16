@@ -34,6 +34,7 @@ param(
     }
     catch {
         throw $_.Exception.Message
+        Write-Host "Script failed to store. ${$_.Exception.Message}"
     }
   }
 
