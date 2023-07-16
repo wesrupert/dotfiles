@@ -3,7 +3,7 @@
 [core]
   excludesfile = "~/.config/.gitignore_global"
   editor = nvim
-  autocrlf = true
+  autocrlf = input
   eol = lf
 [diff]
   tool = nvimdiff
