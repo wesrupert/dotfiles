@@ -52,30 +52,54 @@ function Install-WingetPackages {
 if (-not $n) {
   Write-Host 'Installing common packages...'
   Install-WingetPackages (
-    '7zip.7zip', 'AgileBits.1Password', 'Armin2208.WindowsAutoNightMode',
-    'cURL.cURL', 'Git.Git', 'GitHub.cli', 'Google.Chrome',
-    'JanDeDobbeleer.OhMyPosh', 'Lexikos.AutoHotkey',
-    'Microsoft.PowerShell.Preview', 'Microsoft.PowerToys',
-    'Microsoft.VisualStudioCode', 'Microsoft.WindowsTerminal',
-    'Mozilla.Firefox', 'Neovim.Neovim.Nightly', 'Obsidian.Obsidian',
-    'Python.Python.3.12', 'Spotify.Spotify', 'Yarn.Yarn', 'Zoom.Zoom'
+    '7zip.7zip',
+    'AgileBits.1Password',
+    'Armin2208.WindowsAutoNightMode',
+    'Git.Git',
+    'GitHub.cli',
+    'Google.Chrome',
+    'JanDeDobbeleer.OhMyPosh',
+    'Lexikos.AutoHotkey',
+    'Microsoft.PowerShell.Preview',
+    'Microsoft.PowerToys',
+    'Microsoft.VisualStudioCode',
+    'Microsoft.WindowsTerminal',
+    'Mozilla.Firefox',
+    'Neovide.Neovide',
+    'Neovim.Neovim.Nightly',
+    'Obsidian.Obsidian',
+    'Python.Python.3.12',
+    'Spotify.Spotify',
+    'Yarn.Yarn',
+    'Zoom.Zoom',
+    'cURL.cURL'
   )
 
   if ($h -or ((-not $w) -and ($(Read-Host -Prompt 'Install home packages? (y/N)') -eq 'y'))) {
     Write-Host 'Installing home packages...'
     Install-WingetPackages (
-      'Discord.Discord', 'Foxit.FoxitReader', 'Mojang.MinecraftLauncher',
-      'OpenWhisperSystems.Signal', 'Samsung.DeX', 'Telegram.TelegramDesktop',
-      'Ultimaker.Cura', 'Valve.Steam', 'VideoLAN.VLC'
+      'Discord.Discord',
+      'Foxit.FoxitReader',
+      'Mojang.MinecraftLauncher',
+      'OpenWhisperSystems.Signal',
+      'Telegram.TelegramDesktop',
+      'Ultimaker.Cura',
+      'Valve.Steam',
+      'VideoLAN.VLC'
     )
   }
 
   if ($w -or ((-not $h) -and ($(Read-Host -Prompt 'Install work packages? (y/N)') -eq 'y'))) {
     Write-Host 'Installing work packages...'
     Install-WingetPackages (
-      'Asana.Asana', 'ApacheFriends.Xampp.8.1', 'Figma.Figma',
-      'Hashicorp.Vagrant', 'Loom.Loom', 'Oracle.VirtualBox',
-      'OpenVPNTechnologies.OpenVPNConnect', 'SlackTechnologies.Slack'
+      'ApacheFriends.Xampp.8.1',
+      'Asana.Asana',
+      'Figma.Figma',
+      'Hashicorp.Vagrant',
+      'Loom.Loom',
+      'OpenVPNTechnologies.OpenVPNConnect',
+      'Oracle.VirtualBox',
+      'SlackTechnologies.Slack'
     )
   }
 }
