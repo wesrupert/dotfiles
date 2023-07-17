@@ -37,12 +37,11 @@ function Install-File {
 function Install-WingetPackages {
   param ([string[]]$packages)
   $packages.ForEach({
-    Write-Host "Installing $_..."
-    winget list -e --id $_
+    winget list -e --accept-source-agreements --id $_
     if ($?) {
       Write-Host "$_ already installed, skipping..."
     } else {
-      Write-Host "$_ not installed, installing $_..."
+      Write-Host "$_ not installed, installing..."
       winget install -e -s winget --accept-package-agreements --accept-source-agreements --id $_
     }
   })
@@ -55,6 +54,7 @@ if (-not $n) {
     '7zip.7zip',
     'AgileBits.1Password',
     'Armin2208.WindowsAutoNightMode',
+    'AutoHotkey.AutoHotkey',
     'Git.Git',
     'GitHub.cli',
     'Google.Chrome',
@@ -68,6 +68,7 @@ if (-not $n) {
     'Neovide.Neovide',
     'Neovim.Neovim.Nightly',
     'Obsidian.Obsidian',
+    'dotPDNLLC.paintdotnet',
     'Python.Python.3.12',
     'Spotify.Spotify',
     'Yarn.Yarn',
@@ -103,6 +104,9 @@ if (-not $n) {
     )
   }
 }
+
+Write-Host 'Upgrading installed packages...'
+winget upgrade -s winget --accept-package-agreements --accept-source-agreements --all
 
 # Install features
 Install-Dir -Dir 'configs' -Path "$HOME\.config"
