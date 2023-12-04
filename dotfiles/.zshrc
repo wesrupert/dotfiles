@@ -19,6 +19,8 @@ export PATH=$PATH:$HOME/.yarn/bin
 export PATH=$PATH:$HOME/.config/yarn/global/node_modules/.bin
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/.local/share/fnm
+export PATH=$PATH:$HOME/.local/share/phpenv/bin
+export PATH=$PATH:$HOME/.composer/vendor/bin
 export PATH=$PATH:/usr/local/bin/python
 export ZSH="$HOME/.oh-my-zsh"
 export NVM_DIR="$HOME/.nvm"
@@ -210,4 +212,5 @@ try_source "$HOME/.zshrc.after"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-eval "`fnm env`"
+eval "`fnm env --use-on-cd`"
+eval "$(phpenv init -)"

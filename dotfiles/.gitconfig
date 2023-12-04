@@ -47,11 +47,12 @@
   alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
 
   # Informational aliases.
+  sync-main-ref  = "!f() { git remote set-head $(git get-upstream) -a; }; f"
   get-unpushed   = "log --branches --not --remotes --no-walk --decorate --oneline"
   get-branch-name= "!git rev-parse --abbrev-ref HEAD"
   get-upstream   = "!f() { echo ${1:-${GIT_UPSTREAM_REMOTE:-origin}}; }; f"
   get-working    = "!f() { echo ${1:-${GIT_WORKING_REMOTE:-origin}}; }; f"
-  get-main-ref   = "!git rev-parse --abbrev-ref --symbolic-full-name @{u}"
+  get-main-ref   = "!f() { git symbolic-ref refs/remotes/$(git get-upstream)/HEAD; }; f"
   get-main-branch= "!git get-main-ref | sed 's!.*/!!'"
 
   # Quick commit aliases: co(mmit) a(ll) v(erify) m(essage).
@@ -86,13 +87,18 @@
   logc           = "!f() { git log --numstat --pretty="%H" ${1:-HEAD^..HEAD} | awk 'NF==3 {plus+=$1; minus+=$2} END {printf(\"+%d, -%d\\n\", plus, minus)}'; }; f"
 
   # Branch management aliases.
+  brage          = "for-each-ref --sort=-committerdate refs/heads/ --format='%(committerdate:relative)\t-- %(refname:short)'"
   fup            = "!f() { git fetch --prune ${1:-$(git get-upstream)}; }; f"
   falp           = "fetch --all --prune"
-  cheffo         = "!f() { git fetch https://github.com/$1.git $2:fork/$1/$2 && git checkout fork/$1/$2; }; f"
+  cheffo         = "!f() { git fetch --update-head-ok https://github.com/$1.git $2:fork/$1/$2 && git checkout fork/$1/$2; }; f"
   publish        = "!f() { git push -u ${1:-$(git get-working)} $(git get-branch-name); }; f"
   republish      = "!f() { git push --force-with-lease ${1:-$(git get-working)} $(git get-branch-name); }; f"
+  reup           = "!f() { git fup && git rebase $(git get-main-ref); }; f"
+  revert-reset   = "!f() { git revert "$(git merge-base HEAD ${1:-$(git get-working)})..HEAD" && git merge "${1:-$(git get-working)}"; }; f"
   unpublish      = "!f() { if [[ $(git get-main-branch) != $(git get-branch-name) ]]; then git push ${1:-$(git get-working)} :$(git get-branch-name); else echo \"Deleting $(git get-main-branch) is dangerous! Aborting!\"; fi; }; f"
-  nbfm           = "!f() { git fetch --all -p ; git checkout -b $1 $(git get-main-ref) ; git push -u $(git get-working) $1 ; }; f"
+  make-feat      = "!f() { git fetch --all -p ; git checkout -b \"feat/$1/wes/dev\" $(git get-main-ref); }; f"
+  make-chore     = "!f() { git fetch --all -p ; git checkout -b \"chore/$1/wes/dev\" $(git get-main-ref); }; f"
+  make-stage     = "!f() { stage=$(git get-branch-name | sed 's/\\/[^/]*$/\\/stage/'); git checkout -b $stage || git checkout $stage; }; f"
   stall          = "stash save --include-untracked"
 
   # Hide files in the index that you don't intend to commit changes to.
@@ -102,9 +108,15 @@
 
   # Merge/rebase/etc aliases.
   add-ours       = "!f() { git checkout --ours \"$@\" && git add \"$@\"; }; f"
+  addo           = add-ours
   add-theirs     = "!f() { git checkout --theirs \"$@\" && git add \"$@\"; }; f"
+  addt           = add-theirs
 
   # Stupid, but a lifesaver.
   git            = "!exec git"
+[credential "https://github.com"]
+  helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+  helper = !/usr/bin/gh auth git-credential
 [include]
   path = ~/.config/git/.gitconfig.after
