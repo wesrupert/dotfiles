@@ -94,6 +94,10 @@ Enter::
   Down::Volume_Down
   Right::Media_Next
 
+  Volume_Up::Media_Next
+  Volume_Down::Media_Prev
+  Volume_Mute::Media_Play_Pause
+
 
 #If current_layer="layer_symbols"
   SC029::return ; `
@@ -110,21 +114,21 @@ Enter::
   -::_
   =::+
 
-  q::!
-  w::+
-  e::*
-  r::&
-  t::send &&
-  y::send ||
-  u::|
-  i::/
-  o::-
-  p::?
+  q::send {Space}&&{Space}
+  w::&
+  e::/
+  r::-
+  t::_
+  y::=
+  u::+
+  i::\
+  o::|
+  p::send {Space}||{Space}
   [::(
   ]::)
-  \::return
+  \::|
 
-  a::send &&
+  a::send {Space}&&{Space}
   s::[
   d::{
   f::(
@@ -133,8 +137,8 @@ Enter::
   j::)
   k::}
   l::]
-  `;::send ||
-  '::return
+  `;::send {Space}||{Space}
+  '::"
 
   z::return
   x::return
@@ -146,4 +150,3 @@ Enter::
   ,::return
   .::return
   /::return
-

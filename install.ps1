@@ -55,6 +55,8 @@ if (-not $n) {
     'AgileBits.1Password',
     'Armin2208.WindowsAutoNightMode',
     'AutoHotkey.AutoHotkey',
+    'cURL.cURL',
+    'dotPDNLLC.paintdotnet',
     'Git.Git',
     'GitHub.cli',
     'Google.Chrome',
@@ -68,12 +70,10 @@ if (-not $n) {
     'Neovide.Neovide',
     'Neovim.Neovim.Nightly',
     'Obsidian.Obsidian',
-    'dotPDNLLC.paintdotnet',
     'Python.Python.3.12',
     'Spotify.Spotify',
     'Yarn.Yarn',
-    'Zoom.Zoom',
-    'cURL.cURL'
+    'Zoom.Zoom'
   )
 
   if ($h -or ((-not $w) -and ($(Read-Host -Prompt 'Install home packages? (y/N)') -eq 'y'))) {
