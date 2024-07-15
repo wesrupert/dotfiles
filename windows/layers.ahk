@@ -2,7 +2,7 @@
 #SingleInstance Ignore
 current_layer := "layer_normal"
 
-CapsLock::
+$CapsLock::
   ; Start layer and wait for tapping term.
   global current_layer
   current_layer := "layer_function"
@@ -19,7 +19,7 @@ CapsLock::
   }
   return
 
-Enter::
+$Enter::
   ; Start layer and wait for tapping term.
   global current_layer
   current_layer := "layer_symbols"
