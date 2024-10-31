@@ -1,19 +1,22 @@
 [user]
-	name = Wes Rupert
-	email = wesr@outlook.com
+  name = Wes Rupert
+  email = wesr@outlook.com
 [core]
   excludesfile = "~/.config/.gitignore_global"
   editor = nvim
+  pager = delta
   autocrlf = input
   eol = lf
 [diff]
   tool = nvimdiff
 [difftool "nvimdiff"]
   cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
-[difftool "vimrdiff"]
-  cmd = "vimr --wait --nvim -d \"$LOCAL\" \"$REMOTE\""
+[merge]
+  tool = nvimdiff
 [mergetool]
   keepBackup = false
+[mergetool "nvimdiff"]
+  layout = LOCAL,MERGED,REMOTE
 [format]
   pretty = oline
 [pretty]
@@ -21,7 +24,7 @@
   sline = - %s (%Cred%h%Creset)
   tline = %Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%n%w(80,0,0)%s%n
   pbody = %Cred%h%Creset%C(yellow)%d%Creset %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%n%w(80,0,0)%s%n%n%b
-  hashs = %Cred%H%Creset %s %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%C(yellow)%d%Creset
+  hashes = %Cred%H%Creset %s %Cgreen%cr%Creset %C(bold blue)<%an>%Creset%C(yellow)%d%Creset
 [pull]
   rebase = true
 [push]
@@ -30,7 +33,7 @@
 [status]
   showUntrackedFiles = all
 [interactive]
-  diffFilter = diff-highlight
+  diffFilter = delta --color-only
 [rebase]
   autoStash = true
 [safe]
@@ -42,6 +45,16 @@
   required = true
 [advice]
   setUpstreamFailure = false
+[delta]
+  navigate = true
+  line-numbers = true
+  light = true
+[delta "light"]
+  light = true
+  dark = false
+[delta "dark"]
+  light = false
+  dark = true
 [alias]
   # View all aliases in your terminal
   alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
@@ -78,7 +91,7 @@
   # Quick log aliases.
   logb           = "log --pretty=pbody"
   logg           = "log --decorate --graph"
-  logh           = "log --pretty=hashs"
+  logh           = "log --pretty=hashes"
   logl           = "log --branches --not --remotes"
   logs           = "log --pretty=sline"
   logt           = "log --pretty=tline"

@@ -1,12 +1,10 @@
 function try_source { if [[ -e "$1" ]]; then source "$1"; fi }
 function exists { command -v "$1" >/dev/null 2>&1; return $? }
 
-export DISABLE_AUTO_UPDATE='true'
+# export DISABLE_AUTO_UPDATE='true'
 
 # TODO: Support multiple additional imports
-try_source "$HOME/.zshrc.before"
 try_source "$ZSH_ADDITIONAL_IMPORTS"
-
 try_source "$HOME/.iterm2_shell_integration.zsh"
 
 export ZSH="$HOME/.oh-my-zsh"
@@ -32,9 +30,10 @@ fi
 
 # Run this check early so that we don't do extra work if we're relaunching
 if exists tmux; then
-  if [[ -z "$TMUX" && "$SESSION_TYPE" == remote/ssh ]]; then
+  # if [[ -z "$TMUX" && "$SESSION_TYPE" == remote/ssh ]]; then
+  if [[ -z "$TMUX" ]]; then
     export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=1
-    TERM=screen-256color-bce
+    TERM=xterm-256color
     sid="$(tmux ls | sed '/(attached)$/d' | sed 's/:.*//' | tail -n 1)"
     tmux ${ITERM_SHELL_INTEGRATION_INSTALLED:+-CC} ${sid:+attach} ${sid:+-t} $sid
     exit
@@ -53,11 +52,13 @@ ENABLE_CORRECTION='true'
 COMPLETION_WAITING_DOTS='true'
 setopt globdots
 
-if [[ -f "$HOME/.fzf.zsh" ]]; then
+if exists fzf; then
   export FZF_COMPLETION_TRIGGER='qq'
   export FZF_DEFAULT_COMMAND='rg --files --hidden --follow 2>/dev/null'
   export FZF_DEFAULT_OPTS="--height 40% --reverse --border"
-  source "$HOME/.fzf.zsh"
+  if [[ -f "$HOME/.fzf.zsh" ]]; then
+    source "$HOME/.fzf.zsh"
+  fi
 
   function fzf() {
     if [[ $(tput cols) > 100 ]]; then
@@ -168,6 +169,20 @@ function kill-port {
     echo "$(lsof -t -i tcp:$1 | wc -l) processes remaining"
 }
 
+function delta-colorscheme {
+  if [[ -z "$1" ]]; then
+    if [[ "$DELTA_FEATURES" == '+light' ]]; then
+      echo 'Delta: Switching to dark colorscheme'
+      export DELTA_FEATURES='+dark'
+    else
+      echo 'Delta: Switching to light colorscheme'
+      export DELTA_FEATURES='+light'
+    fi
+  else
+    export DELTA_FEATURES="+$1"
+  fi
+}
+
 if [[ -n "$TMUX" ]]; then
   alias detach='tmux detach'
 fi
@@ -199,5 +214,6 @@ try_source "$HOME/.zshrc.after"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-eval "`fnm env --use-on-cd`"
-eval "$(phpenv init -)"
+[ -f ~/.local/bin/mise ] && eval "$(~/.local/bin/mise activate zsh)"
+# exists fnm && eval "`fnm env --use-on-cd`"
+# exists phpenv && eval "$(phpenv init -)"

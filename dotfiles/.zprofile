@@ -1,15 +1,14 @@
 source "$HOME/.zshrc.before"
 
-export PATH=$PATH:$HOME/bin
-export PATH=$PATH:$HOME/platform-tools
-export PATH=$PATH:$HOME/.dotfiles/git-diffall
-export PATH=$PATH:$HOME/.pyenv/bin
-export PATH=$PATH:$HOME/.rbenv/bin
-export PATH=$PATH:$HOME/.local/share/fnm:$PATH
-export PATH=$PATH:$HOME/.yarn/bin
-export PATH=$PATH:$HOME/.config/yarn/global/node_modules/.bin
-export PATH=$PATH:$HOME/.local/bin
-export PATH=$PATH:$HOME/.local/share/fnm
-export PATH=$PATH:$HOME/.local/share/phpenv/bin
-export PATH=$PATH:$HOME/.composer/vendor/bin
-export PATH=$PATH:/usr/local/bin/python
+export PATH=$HOME/bin:$PATH
+export PATH=$HOME/platform-tools:$PATH
+export PATH=$HOME/.dotfiles/git-diffall:$PATH
+export PATH=$HOME/.pyenv/bin:$PATH
+export PATH=$HOME/.rbenv/bin:$PATH
+export PATH=$HOME/.yarn/bin:$PATH
+export PATH=$HOME/.config/yarn/global/node_modules/.bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.local/share/mise/shims:$PATH
+export PATH=$HOME/.composer/vendor/bin:$PATH
+export PATH=/usr/local/bin/python:$PATH
+export PATH=/usr/local/share/nvim/bin:$PATH
