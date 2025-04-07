@@ -1,0 +1,4 @@
+[tools]
+chezmoi = "latest"
+node = "latest"
+python = "3.13"

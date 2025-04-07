@@ -1,23 +1,15 @@
 function try_source { if [[ -e "$1" ]]; then source "$1"; fi }
 function exists { command -v "$1" >/dev/null 2>&1; return $? }
 
-# export DISABLE_AUTO_UPDATE='true'
-
 # TODO: Support multiple additional imports
 try_source "$ZSH_ADDITIONAL_IMPORTS"
 try_source "$HOME/.iterm2_shell_integration.zsh"
 
-export ZSH="$HOME/.oh-my-zsh"
-export NVM_DIR="$HOME/.nvm"
-
-if [ -d /mnt/c/QMK_MSYS ]; then
-  # USB integrations on WSL are inadequate for QMK, use the Windows utils directly.
-  export DFU_PROGRAMMER=/mnt/c/QMK_MSYS/mingw64/bin/dfu-programmer.exe
-  export DFU_UTIL=/mnt/c/QMK_MSYS/mingw64/bin/dfu-util.exe
-  export TEENSY_LOADER_CLI=/mnt/c/QMK_MSYS/mingw64/bin/teensy_loader_cli.exe
-  export BATCHISP=/mnt/c/QMK_MSYS/mingw64/bin/batchisp.exe
+if [[ -z "$DEFAULT_USER" ]]; then
+  DEFAULT_USER=wesr
 fi
 
+# Set SSH information in a friendlier format
 export SSH_PKEY="$HOME/.ssh/rsa_id"
 export SESSION_TYPE="$(who -m | awk '{ print $2 }' | sed 's/[0-9]*$//')"
 if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
@@ -28,29 +20,28 @@ else
   esac
 fi
 
-# Run this check early so that we don't do extra work if we're relaunching
+# ------------------------------------------------------------------------------
+# ----------- Run this check before setting up the rest of the shell -----------
+# ------------ so that we don't do extra work if we're relaunching. ------------
+# ------------------------------------------------------------------------------
+
 if exists tmux; then
-  # if [[ -z "$TMUX" && "$SESSION_TYPE" == remote/ssh ]]; then
-  if [[ -z "$TMUX" ]]; then
-    export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=1
-    TERM=xterm-256color
+  if [[ -z "$TMUX" && ("$AUTO_TMUX_ALWAYS" == 'true' || "$SESSION_TYPE" == 'remote/ssh') ]]; then
     sid="$(tmux ls | sed '/(attached)$/d' | sed 's/:.*//' | tail -n 1)"
-    tmux ${ITERM_SHELL_INTEGRATION_INSTALLED:+-CC} ${sid:+attach} ${sid:+-t} $sid
+    if [[ -n "$ITERM_SHELL_INTEGRATION_INSTALLED" ]]; then
+      export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=1
+      tmux -CC ${sid:+attach} ${sid:+-t} $sid
+    else
+      tmux ${sid:+attach} ${sid:+-t} $sid
+    fi
     exit
   fi
+  alias detach='tmux detach'
 fi
 
-if [[ -z "$DEFAULT_USER" ]]; then
-  DEFAULT_USER=wesr
-fi
-
-export LESS="-F -X -R $LESS"
-
-CASE_SENSITIVE='false'
-HYPHEN_INSENSITIVE='true'
-ENABLE_CORRECTION='true'
-COMPLETION_WAITING_DOTS='true'
-setopt globdots
+# ------------------------------------------------------------------------------
+# ---------------- Remaining shell setup goes after this line. -----------------
+# ------------------------------------------------------------------------------
 
 if exists fzf; then
   export FZF_COMPLETION_TRIGGER='qq'
@@ -74,8 +65,11 @@ if exists fzf; then
   }
 
   alias fzh="fzf --history '${FZF_HISTORY_DIR:-TMPDIR}'"
+
+  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 fi
 
+export ZSH="$HOME/.oh-my-zsh"
 if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
   # Backup variables used in the OH MY ZSH that need to be restored
   ENV_HOME=$HOME
@@ -125,6 +119,23 @@ zstyle ':completion:*' matcher-list '' \
   'r:[^[:alpha:]]||[[:alpha:]]=** r:|=* m:{a-z\-}={A-Z\_}' \
   'r:|?=** m:{a-z\-}={A-Z\_}'
 
+CASE_SENSITIVE='false'
+HYPHEN_INSENSITIVE='true'
+ENABLE_CORRECTION='true'
+COMPLETION_WAITING_DOTS='true'
+setopt globdots
+
+function get-theme {
+  # TODO: Add additional platform checks
+  theme='dark'
+  if [[ "$(uname -r | sed 's/.*-//')" == "WSL2" ]]; then
+    theme="$(reg.exe Query 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' /v AppsUseLightTheme | sed -e 's/0x0/dark/; s/0x1/light/' -e '/^[[:space:]]*$/d' | awk '{print $3}' | xargs)"
+    # elif {{ MACOS }}; then
+    #   theme="$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo dark || echo light)"
+  fi
+  echo "$theme"
+}
+
 function cd {
   if [[ "$#" == '0' ]]; then
     pushd "$HOME" > /dev/null
@@ -136,6 +147,39 @@ function cd {
 function od {
   popd "$@" > /dev/null
 }
+
+function .. {
+  dir='..'
+  times=${1:-1}
+  while [[ $((times--)) > 1 ]]; do
+    dir="$dir/.."
+  done
+  cd $dir
+}
+
+function kill-port {
+    echo "Killing $(lsof -t -i tcp:$1 | wc -l) processes"
+    lsof -t -i tcp:$1 | xargs kill -9
+    echo "$(lsof -t -i tcp:$1 | wc -l) processes remaining"
+}
+
+[ -f ~/.local/bin/mise ] && eval "$(~/.local/bin/mise activate zsh)"
+
+if exists nvim; then
+  export EDITOR=nvim
+  alias vim="$EDITOR"
+else
+  export EDITOR=vim
+fi
+
+alias e="$EDITOR"
+alias ed="$EDITOR"
+alias lg='lazygit'
+alias gitk='gitk &'
+alias beep='tput bel'
+alias settings='ed ~/.zshrc'
+
+export LESS="-F -X -R $LESS"
 
 export SSH_COMMAND="$(which ssh)"
 function ssh {
@@ -150,70 +194,18 @@ function ssh {
   fi
 }
 
-function .. {
-  dir='..'
-  times=${1:-1}
-  while [[ $((times--)) > 1 ]]; do
-    dir="$dir/.."
-  done
-  cd $dir
-}
-
-function withspaces {
-  awk -F: '{if(f!=$1)print ""; f=$1; print $0;}'
-}
-
-function kill-port {
-    echo "Killing $(lsof -t -i tcp:$1 | wc -l) processes"
-    lsof -t -i tcp:$1 | xargs kill -9
-    echo "$(lsof -t -i tcp:$1 | wc -l) processes remaining"
-}
-
-function delta-colorscheme {
-  if [[ -z "$1" ]]; then
-    if [[ "$DELTA_FEATURES" == '+light' ]]; then
-      echo 'Delta: Switching to dark colorscheme'
-      export DELTA_FEATURES='+dark'
-    else
-      echo 'Delta: Switching to light colorscheme'
-      export DELTA_FEATURES='+light'
-    fi
-  else
-    export DELTA_FEATURES="+$1"
-  fi
-}
-
-if [[ -n "$TMUX" ]]; then
-  alias detach='tmux detach'
+if exists lazygit; then
+  function lazygit {
+    LAZY_THEME="$(get-theme)" command lazygit "$@"
+  }
 fi
 
-if exists nvim; then
-  export EDITOR=nvim
-  alias vim=nvim
-else
-  export EDITOR=vim
-fi
-
-alias e="$EDITOR"
-alias gitk='gitk &'
-alias beep='tput bel'
-alias settings='e ~/.zshrc'
-
-if exists rbenv; then
-  eval "$(rbenv init -)"
-fi
-
-if exists pyenv; then
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
+if [ -d /mnt/c/QMK_MSYS ]; then
+  # USB integrations on WSL are inadequate for QMK, use the Windows utils directly.
+  export DFU_PROGRAMMER=/mnt/c/QMK_MSYS/mingw64/bin/dfu-programmer.exe
+  export DFU_UTIL=/mnt/c/QMK_MSYS/mingw64/bin/dfu-util.exe
+  export TEENSY_LOADER_CLI=/mnt/c/QMK_MSYS/mingw64/bin/teensy_loader_cli.exe
+  export BATCHISP=/mnt/c/QMK_MSYS/mingw64/bin/batchisp.exe
 fi
 
 try_source "$HOME/.zshrc.after"
-
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -f ~/.local/bin/mise ] && eval "$(~/.local/bin/mise activate zsh)"
-# exists fnm && eval "`fnm env --use-on-cd`"
-# exists phpenv && eval "$(phpenv init -)"

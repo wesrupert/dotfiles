@@ -1,0 +1,18 @@
+gui:
+  filterMode: fuzzy
+
+git:
+  autoFetch: false
+  disableForcePushing: true
+  paging:
+    colorArg: always
+    pager: delta --paging=never --features="$LAZY_THEME" --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+  commitPrefix:
+    pattern: "^([A-Za-z0-9_\\-]+)/([A-Za-z0-9_\\-]+)/.*"
+    replace: "$1($2): "
+
+notARepository: skip
+promptToReturnFromSubprocess: false
+
+update:
+  method: background
