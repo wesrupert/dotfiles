@@ -1,4 +1,4 @@
-source "$HOME/.zshrc.before"
+[[ -f "$HOME/.zshrc.before" ]] && source "$HOME/.zshrc.before"
 
 export PATH=$HOME/bin:$PATH
 export PATH=$HOME/platform-tools:$PATH
@@ -12,3 +12,7 @@ export PATH=$HOME/.local/share/mise/shims:$PATH
 export PATH=$HOME/.composer/vendor/bin:$PATH
 export PATH=/usr/local/bin/python:$PATH
 export PATH=/usr/local/share/nvim/bin:$PATH
+
+export NPM_TOKEN={{ onepasswordRead "op://Streamlabs/NPM Access Token/credential" }}
+export OPENAI_API_KEY={{ onepasswordRead "op://Private/OpenAI Token/api key" }}
+

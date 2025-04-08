@@ -10,9 +10,3 @@
     exact = true
     stripComponents = 1
     refreshPeriod = "168h"
-["$ZSH_CUSTOM/themes/spaceship-prompt"]
-    type = "git-repo"
-    url = "https://github.com/spaceship-prompt/spaceship-prompt.git"
-    refreshPeriod = "168h"
-    ["$ZSH_CUSTOM/themes/spaceship-prompt".pull]
-        args = "--depth=1"

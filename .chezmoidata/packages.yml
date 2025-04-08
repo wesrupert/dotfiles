@@ -1,0 +1,37 @@
+packages:
+  darwin:
+    brews:
+      - 'make'
+      - 'chezmoi'
+      - 'fzf'
+      - 'gh'
+      - 'lazygit'
+      - 'mise'
+      - 'moreutils'
+      - 'neovim'
+      - 'ripgrep'
+      - 'spaceship'
+      - 'tmux'
+    casks:
+      - '1password'
+      - '1password-cli'
+      - 'firefox'
+      - 'ghostty'
+      - 'google-chrome'
+      - 'logi-options+'
+      - 'neovide'
+      - 'obsidian'
+      - 'raycast'
+      - 'spotify'
+    home:
+      brews:
+      casks:
+    work:
+      brews:
+      casks:
+        - 'asana'
+        - 'docker'
+        - 'figma'
+        - 'openvpn-connect'
+        - 'slack'
+        - 'tableplus'
