@@ -1,5 +1,5 @@
 {
- :devices {:devicekb [{:vendor_id 1452 :product_id 591}]}
+ :devices {:devicekb [{ :is_built_in_keyboard true }]}
  :main [
         {:des "Symbol layer"
          :rules [
@@ -55,10 +55,10 @@
                  [:equal_sign          [:f12]                   ["func-layer" 1]]
                  [:delete_or_backspace [:delete_forward]        ["func-layer" 1]]
 
-                 ; [:caps_lock           [:caps_lock]             ["func-layer" 1]]
+                 [:caps_lock           [:caps_lock]             ["func-layer" 1]]
                  [:q                   [:rewind]                ["func-layer" 1]]
                  [:w                   [:play_or_pause]         ["func-layer" 1]]
-                 [:e                   [:fastforward]           ["func-layer" 1]]
+                 [:e                   [:fast_forward]           ["func-layer" 1]]
                  [:y                   [:home]                  ["func-layer" 1]]
                  [:u                   [:page_down]             ["func-layer" 1]]
                  [:i                   [:page_up]               ["func-layer" 1]]
@@ -77,7 +77,7 @@
                  [:spacebar            [:mute]                  ["func-layer" 1]]
                  [:right_shift         [:play_or_pause]         ["func-layer" 1]]
                  [:left_arrow          [:rewind]                ["func-layer" 1]]
-                 [:right_arrow         [:fastforward]           ["func-layer" 1]]
+                 [:right_arrow         [:fast_forward]           ["func-layer" 1]]
                  [:up_arrow            [:volume_up]             ["func-layer" 1]]
                  [:down_arrow          [:volume_down]           ["func-layer" 1]]
                  ]}
@@ -145,4 +145,3 @@
 ; :al_local_machine_browser :al_email_reader :al_logoff
 ; :al_a_or_v_capture_or_playback :al_keyboard_layout :al_message_status
 ; :al_integrated_help_center :al_word_processor :volume_down :volume_up
-

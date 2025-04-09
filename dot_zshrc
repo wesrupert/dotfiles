@@ -3,7 +3,6 @@ function exists { command -v "$1" >/dev/null 2>&1; return $? }
 
 # TODO: Support multiple additional imports
 try_source "$ZSH_ADDITIONAL_IMPORTS"
-try_source "$HOME/.iterm2_shell_integration.zsh"
 
 if [[ -z "$DEFAULT_USER" ]]; then
   DEFAULT_USER=wesr
@@ -28,12 +27,7 @@ fi
 if exists tmux; then
   if [[ -z "$TMUX" && ("$AUTO_TMUX_ALWAYS" == 'true' || "$SESSION_TYPE" == 'remote/ssh') ]]; then
     sid="$(tmux ls | sed '/(attached)$/d' | sed 's/:.*//' | tail -n 1)"
-    if [[ -n "$ITERM_SHELL_INTEGRATION_INSTALLED" ]]; then
-      export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=1
-      tmux -CC ${sid:+attach} ${sid:+-t} $sid
-    else
-      tmux ${sid:+attach} ${sid:+-t} $sid
-    fi
+    tmux ${sid:+attach} ${sid:+-t} $sid
     exit
   fi
   alias detach='tmux detach'
@@ -165,7 +159,6 @@ function kill-port {
     echo "$(lsof -t -i tcp:$1 | wc -l) processes remaining"
 }
 
-[ -f /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 [ -f ~/.local/bin/mise ] && eval "$(~/.local/bin/mise activate zsh)"
 [ -f ~/.config/op/plugins.sh ] && source "$HOME/.config/op/plugins.sh"
 

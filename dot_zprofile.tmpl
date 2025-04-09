@@ -1,4 +1,5 @@
 [[ -f "$HOME/.zshrc.before" ]] && source "$HOME/.zshrc.before"
+[ -f /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
 export PATH=$HOME/bin:$PATH
 export PATH=$HOME/platform-tools:$PATH
@@ -15,4 +16,3 @@ export PATH=/usr/local/share/nvim/bin:$PATH
 
 export NPM_TOKEN={{ onepasswordRead "op://Streamlabs/NPM Access Token/credential" }}
 export OPENAI_API_KEY={{ onepasswordRead "op://Private/OpenAI Token/api key" }}
-
