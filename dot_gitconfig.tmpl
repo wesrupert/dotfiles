@@ -2,7 +2,7 @@
   name = Wes Rupert
   email = email@wesr.dev
 [core]
-  excludesfile = "~/.config/.gitignore_global"
+  excludesfile = "~/.config/git/.gitignore"
   editor = nvim
   pager = delta
   autocrlf = input
@@ -55,10 +55,10 @@
   light = false
   dark = true
 [alias]
-  # View all aliases in your terminal
+  ; View all aliases in your terminal
   alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
 
-  # Informational aliases.
+  ; Informational aliases.
   sync-main-ref  = "!f() { git remote set-head $(git get-upstream) -a; }; f"
   get-unpushed   = "log --branches --not --remotes --no-walk --decorate --oneline"
   get-branch-name= "!git rev-parse --abbrev-ref HEAD"
@@ -67,7 +67,7 @@
   get-main-ref   = "!f() { git symbolic-ref refs/remotes/$(git get-upstream)/HEAD; }; f"
   get-main-branch= "!git get-main-ref | sed 's!.*/!!'"
 
-  # Quick commit aliases: co(mmit) a(ll) v(erify) m(essage).
+  ; Quick commit aliases: co(mmit) a(ll) v(erify) m(essage).
   co             = "commit --no-verify"
   com            = "commit --no-verify -m"
   coa            = "commit -a --no-verify"
@@ -77,7 +77,7 @@
   coav           = "commit -a"
   coavm          = "commit -a -m"
 
-  # Amend commit aliases: c(ommit) a(mend) a(ll) e(dit) v(erify).
+  ; Amend commit aliases: c(ommit) a(mend) a(ll) e(dit) v(erify).
   ca             = "commit --amend --no-edit --no-verify"
   caa            = "commit --amend -a --no-edit --no-verify"
   cae            = "commit --amend --no-verify"
@@ -87,7 +87,7 @@
   caev           = "commit --amend"
   caaev          = "commit --amend -a"
 
-  # Quick log aliases.
+  ; Quick log aliases.
   logb           = "log --pretty=pbody"
   logg           = "log --decorate --graph"
   logh           = "log --pretty=hashes"
@@ -98,7 +98,7 @@
   loglt          = "log --branches --not --remotes --pretty=tline"
   logc           = "!f() { git log --numstat --pretty="%H" ${1:-HEAD^..HEAD} | awk 'NF==3 {plus+=$1; minus+=$2} END {printf(\"+%d, -%d\\n\", plus, minus)}'; }; f"
 
-  # Branch management aliases.
+  ; Branch management aliases.
   brage          = "for-each-ref --sort=-committerdate refs/heads/ --format='%(committerdate:relative)\t-- %(refname:short)'"
   fup            = "!f() { git fetch --prune ${1:-$(git get-upstream)}; }; f"
   falp           = "fetch --all --prune"
@@ -113,26 +113,36 @@
   make-stage     = "!f() { stage=$(git get-branch-name | sed 's/\\/[^/]*$/\\/stage/'); git checkout -b $stage || git checkout $stage; }; f"
   stall          = "stash save --include-untracked"
 
-  # Hide files in the index that you don't intend to commit changes to.
+  ; Hide files in the index that you don't intend to commit changes to.
   assume         = "update-index --assume-unchanged"
   unassume       = "update-index --no-assume-unchanged"
   assumed        = "!git ls-files -v | grep ^h | cut -c 3-"
 
-  # Merge/rebase/etc aliases.
+  ; Merge/rebase/etc aliases.
   add-ours       = "!f() { git checkout --ours \"$@\" && git add \"$@\"; }; f"
   addo           = add-ours
   add-theirs     = "!f() { git checkout --theirs \"$@\" && git add \"$@\"; }; f"
   addt           = add-theirs
 
-  # Stupid, but a lifesaver.
+  ; Stupid, but a lifesaver.
   git            = "!exec git"
 [credential "https://github.com"]
+{{ if eq .chezmoi.os "darwin" }}
+  helper = !/opt/homebrew/bin/gh auth git-credential
+{{ else if eq .chezmoi.os "linux" }}
   helper = !/usr/bin/gh auth git-credential
+{{ else }}
+  ; TODO: Add Windows path
+  helper =
+{{ end }}
 [credential "https://gist.github.com"]
+{{ if eq .chezmoi.os "darwin" }}
+  helper = !/opt/homebrew/bin/gh auth git-credential
+{{ else if eq .chezmoi.os "linux" }}
   helper = !/usr/bin/gh auth git-credential
-[includeif "gitdir:~/Code/slde/"]
-  path = ~/.config/git/.gitconfig.after
-[includeif "gitdir:~/Code/slid-web/"]
-  path = ~/.config/git/.gitconfig.after
-[includeif "gitdir:~/Code/ultra-web/"]
-  path = ~/.config/git/.gitconfig.after
+{{ else }}
+  ; TODO: Add Windows path
+  helper =
+{{ end }}
+[includeif "gitdir:~/Code/work/**"]
+  path = ~/.config/git/.gitconfig.work
