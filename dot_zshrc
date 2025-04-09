@@ -79,7 +79,7 @@ if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
 
   export ZSH_DISABLE_COMPFIX=true
   export KEYTIMEOUT=1
-  plugins=(extract git sudo vi-mode wd)
+  plugins=(extract git sudo vi-mode wd last-working-dir)
 
   if [[ "$OSTYPE" == "darwin"* ]]; then
     plugins+=(macos)
@@ -109,6 +109,7 @@ if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
   SPACESHIP_PROMPT_SEPARATE_LINE=true
   SPACESHIP_CHAR_SUFFIX=' '
   SPACESHIP_EXEC_TIME_ELAPSED=30
+  SPACESHIP_DOCKER_COMPOSE_SHOW=false
 fi
 
 # 0 -- vanilla completion (abc => abc)
