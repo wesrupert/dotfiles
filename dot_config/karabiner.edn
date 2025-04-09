@@ -1,0 +1,148 @@
+{
+ :devices {:devicekb [{:vendor_id 1452 :product_id 591}]}
+ :main [
+        {:des "Symbol layer"
+         :rules [
+                 [:return_or_enter ["sym-layer" 1] :devicekb {:afterup ["sym-layer" 0] :alone :return_or_enter}]
+                 [:1          [:!S1]             ["sym-layer" 1]]
+                 [:2          [:!S2]             ["sym-layer" 1]]
+                 [:3          [:!S3]             ["sym-layer" 1]]
+                 [:4          [:!S4]             ["sym-layer" 1]]
+                 [:5          [:!S5]             ["sym-layer" 1]]
+                 [:6          [:!S6]             ["sym-layer" 1]]
+                 [:7          [:!S7]             ["sym-layer" 1]]
+                 [:8          [:!S8]             ["sym-layer" 1]]
+                 [:9          [:!S9]             ["sym-layer" 1]]
+                 [:0          [:!S0]             ["sym-layer" 1]]
+                 [:hyphen     [:!Shyphen]        ["sym-layer" 1]]
+                 [:equal_sign [:!Sequal_sign]    ["sym-layer" 1]]
+
+                 [:w          [:!Sbackslash]     ["sym-layer" 1]]
+                 [:e          [:slash]           ["sym-layer" 1]]
+                 [:r          [:hyphen]          ["sym-layer" 1]]
+                 [:t          [:!Sslash]         ["sym-layer" 1]]
+                 [:y          [:!S1]             ["sym-layer" 1]]
+                 [:u          [:!Sequal_sign]    ["sym-layer" 1]]
+                 [:i          [:!S8]             ["sym-layer" 1]]
+                 [:o          [:!S7]             ["sym-layer" 1]]
+
+                 [:s          [:open_bracket]    ["sym-layer" 1]]
+                 [:d          [:!Sopen_bracket]  ["sym-layer" 1]]
+                 [:f          [:!S9]             ["sym-layer" 1]]
+                 [:g          [:!Scomma]         ["sym-layer" 1]]
+                 [:h          [:!Speriod]        ["sym-layer" 1]]
+                 [:j          [:!S0]             ["sym-layer" 1]]
+                 [:k          [:!Sclose_bracket] ["sym-layer" 1]]
+                 [:l          [:close_bracket]   ["sym-layer" 1]]
+                 [:semicolon  [:!Ssemicolon]     ["sym-layer" 1]]
+                 [:quote      [:!Squote]         ["sym-layer" 1]]
+                 ]}
+
+        {:des "Function layer"
+         :rules [
+                 [:caps_lock ["func-layer" 1] :devicekb {:afterup ["func-layer" 0] :alone :escape}]
+                 [:1                   [:f1]                    ["func-layer" 1]]
+                 [:2                   [:f2]                    ["func-layer" 1]]
+                 [:3                   [:f3]                    ["func-layer" 1]]
+                 [:4                   [:f4]                    ["func-layer" 1]]
+                 [:5                   [:f5]                    ["func-layer" 1]]
+                 [:6                   [:f6]                    ["func-layer" 1]]
+                 [:7                   [:f7]                    ["func-layer" 1]]
+                 [:8                   [:f8]                    ["func-layer" 1]]
+                 [:9                   [:f9]                    ["func-layer" 1]]
+                 [:0                   [:f10]                   ["func-layer" 1]]
+                 [:hyphen              [:f11]                   ["func-layer" 1]]
+                 [:equal_sign          [:f12]                   ["func-layer" 1]]
+                 [:delete_or_backspace [:delete_forward]        ["func-layer" 1]]
+
+                 ; [:caps_lock           [:caps_lock]             ["func-layer" 1]]
+                 [:q                   [:rewind]                ["func-layer" 1]]
+                 [:w                   [:play_or_pause]         ["func-layer" 1]]
+                 [:e                   [:fastforward]           ["func-layer" 1]]
+                 [:y                   [:home]                  ["func-layer" 1]]
+                 [:u                   [:page_down]             ["func-layer" 1]]
+                 [:i                   [:page_up]               ["func-layer" 1]]
+                 [:o                   [:end]                   ["func-layer" 1]]
+                 [:p                   [:print_screen]          ["func-layer" 1]]
+
+                 [:s                   [:left_arrow]            ["func-layer" 1]]
+                 [:d                   [:up_arrow]              ["func-layer" 1]]
+                 [:f                   [:down_arrow]            ["func-layer" 1]]
+                 [:g                   [:right_arrow]           ["func-layer" 1]]
+                 [:h                   [:left_arrow]            ["func-layer" 1]]
+                 [:j                   [:down_arrow]            ["func-layer" 1]]
+                 [:k                   [:up_arrow]              ["func-layer" 1]]
+                 [:l                   [:right_arrow]           ["func-layer" 1]]
+
+                 [:spacebar            [:mute]                  ["func-layer" 1]]
+                 [:right_shift         [:play_or_pause]         ["func-layer" 1]]
+                 [:left_arrow          [:rewind]                ["func-layer" 1]]
+                 [:right_arrow         [:fastforward]           ["func-layer" 1]]
+                 [:up_arrow            [:volume_up]             ["func-layer" 1]]
+                 [:down_arrow          [:volume_down]           ["func-layer" 1]]
+                 ]}
+        ]}
+
+; Autocomplete (from https://raw.githubusercontent.com/yqrashawn/GokuRakuJoudo/master/src/karabiner_configurator/keys_info.clj):
+; :button1 :button2 :button3 :button4 :button5 :button6 :button7 :button8
+; :button9 :button10 :button11 :button12 :button13 :button14 :button15 :button16
+; :button17 :button18 :button19 :button21 :button22 :button23 :button24 :button25
+; :button26 :button27 :button28 :button29 :button30 :button31 :button32 :x :y
+; :any :command :shift :option :control :caps_lock :left_control :left_shift
+; :left_option :left_command :right_control :right_shift :right_option
+; :right_command :fn :return_or_enter :escape :delete_or_backspace
+; :delete_forward :tab :spacebar :hyphen :equal_sign :open_bracket :close_bracket
+; :backslash :non_us_pound :semicolon :quote :grave_accent_and_tilde :comma
+; :period :slash :non_us_backslash :up_arrow :down_arrow :left_arrow :right_arrow
+; :page_up :page_down :home :end :a :b :c :d :e :f :g :h :i :j :k :l :m :n :o :p
+; :q :r :s :t :u :v :w :x :y :z :1 :2 :3 :4 :5 :6 :7 :8 :9 :0 :f1 :f2 :f3 :f4 :f5
+; :f6 :f7 :f8 :f9 :f10 :f11 :f12 :f13 :f14 :f15 :f16 :f17 :f18 :f19 :f20 :f21
+; :f22 :f23 :f24 :display_brightness_decrement :display_brightness_increment
+; :mission_control :launchpad :dashboard :illumination_decrement
+; :illumination_increment :rewind :play_or_pause :fast_forward :dictation :mute
+; :volume_decrement :volume_increment :eject :apple_display_brightness_decrement
+; :apple_display_brightness_increment
+; :apple_top_case_display_brightness_decrement
+; :apple_top_case_display_brightness_increment :keypad_num_lock :keypad_slash
+; :keypad_asterisk :keypad_hyphen :keypad_plus :keypad_enter :keypad_1 :keypad_2
+; :keypad_3 :keypad_4 :keypad_5 :keypad_6 :keypad_7 :keypad_8 :keypad_9 :keypad_0
+; :keypad_period :keypad_equal_sign :keypad_comma :vk_none :print_screen
+; :scroll_lock :pause :insert :application :help :power :execute :menu :select
+; :stop :again :undo :cut :copy :paste :find :international1 :international2
+; :international3 :international4 :international5 :international6 :international7
+; :international8 :international9 :lang1 :lang2 :lang3 :lang4 :lang5 :lang6
+; :lang7 :lang8 :lang9 :japanese_eisuu :japanese_kana :japanese_pc_nfer
+; :japanese_pc_xfer :japanese_pc_katakana :keypad_equal_sign_as400
+; :locking_caps_lock :locking_num_lock :locking_scroll_lock :alternate_erase
+; :sys_req_or_attention :cancel :clear :prior :return :separator :out :oper
+; :clear_or_again :cr_sel_or_props :ex_sel :left_alt :left_gui :right_alt
+; :right_gui :vk_consumer_brightness_down :vk_consumer_brightness_up
+; :vk_mission_control :vk_launchpad :vk_dashboard :vk_consumer_illumination_down
+; :vk_consumer_illumination_up :vk_consumer_previous :vk_consumer_play
+; :vk_consumer_next :al_voicemail :al_desktop :al_documents
+; :al_consumer_control_configuration :al_instant_messaging
+; :al_oem_feature_browser :al_digital_wallet :al_power_status :al_newsreader
+; :al_presentation_app :al_research_or_search_browswer
+; :al_entertainment_content_browser :al_movie_browser :al_spreadsheet
+; :al_navigation :al_network_chat :al_customized_corporate_news_browser
+; :al_oem_help :al_preemptive_halt_task_or_application
+; :al_online_activity_browswer :al_image_browser
+; :al_contextaware_desktop_assistant :al_digital_rights_manager
+; :al_Calendar_Or_Schedule :al_next_task_or_application
+; :al_task_or_project_manager :al_contact_sync :al_text_editor
+; :al_process_or_task_manager :al_previous_task_or_application :al_calculator
+; :al_virus_protection :al_log_or_journal_or_timecard
+; :al_select_task_or_application :al_internet_browser :al_clock
+; :al_checkbook_or_finance :ac_forward :al_alarms :al_network_conference
+; :al_dictionary :al_audio_browser :ac_bookmarks :al_wireless_status
+; :al_lan_or_wan_browser :al_database_app :al_audio_player :al_graphics_editor
+; :ac_home :ac_back :al_screen_saver :ac_refresh :al_control_panel
+; :al_logon_or_logoff :al_market_monitor_or_finance_browser :al_grammer_check
+; :al_smart_card_information_or_help :al_spell_check :al_telephony_or_dialer
+; :al_command_line_processor_or_run :al_thesaurus :al_online_community
+; :al_encryption :al_logon :al_online_shopping_browswer :al_file_browser
+; :al_remote_networking_or_isp_connect :al_contacts_or_address_book
+; :al_local_machine_browser :al_email_reader :al_logoff
+; :al_a_or_v_capture_or_playback :al_keyboard_layout :al_message_status
+; :al_integrated_help_center :al_word_processor :volume_down :volume_up
+
