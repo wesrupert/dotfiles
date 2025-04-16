@@ -32,6 +32,9 @@ if exists tmux; then
   fi
   alias detach='tmux detach'
 fi
+if exists tmuxinator; then
+  alias tm=tmuxinator
+fi
 
 # ------------------------------------------------------------------------------
 # ---------------- Remaining shell setup goes after this line. -----------------

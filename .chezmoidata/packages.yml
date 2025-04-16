@@ -9,9 +9,11 @@ packages:
       - 'mise'
       - 'moreutils'
       - 'neovim'
+      - 'qmk/qmk/qmk'
       - 'ripgrep'
       - 'spaceship'
       - 'tmux'
+      - 'tmuxinator'
       - 'yqrashawn/goku/goku'
     casks:
       - '1password'
