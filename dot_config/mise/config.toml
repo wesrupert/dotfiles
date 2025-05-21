@@ -1,7 +1,8 @@
 [tools]
 chezmoi = 'latest'
 python = 'latest'
-node = 'lts'
+node = 'latest'
+ruby = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ['node']
