@@ -1,4 +1,8 @@
 [tools]
-chezmoi = "latest"
-node = "latest"
-python = "3.13"
+chezmoi = 'latest'
+python = 'latest'
+node = 'lts'
+
+[settings]
+idiomatic_version_file_enable_tools = ['node']
+trusted_config_paths = ['~/Code/']

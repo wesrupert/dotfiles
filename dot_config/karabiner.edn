@@ -1,94 +1,92 @@
 {
  :devices {:devicekb [{ :is_built_in_keyboard true }]}
  :main [
-        {:des "Symbol layer"
-         :rules [
-                 [:return_or_enter ["l_sym" 1] :devicekb {:afterup ["l_sym" 0] :alone :return_or_enter}]
-                 [:1          [:!S1]             :l_sym]
-                 [:2          [:!S2]             :l_sym]
-                 [:3          [:!S3]             :l_sym]
-                 [:4          [:!S4]             :l_sym]
-                 [:5          [:!S5]             :l_sym]
-                 [:6          [:!S6]             :l_sym]
-                 [:7          [:!S7]             :l_sym]
-                 [:8          [:!S8]             :l_sym]
-                 [:9          [:!S9]             :l_sym]
-                 [:0          [:!S0]             :l_sym]
-                 [:hyphen     [:!Shyphen]        :l_sym]
-                 [:equal_sign [:!Sequal_sign]    :l_sym]
-
-                 [:w          [:!Sbackslash]     :l_sym]
-                 [:e          [:slash]           :l_sym]
-                 [:r          [:hyphen]          :l_sym]
-                 [:t          [:!Sslash]         :l_sym]
-                 [:y          [:!S1]             :l_sym]
-                 [:u          [:!Sequal_sign]    :l_sym]
-                 [:i          [:!S8]             :l_sym]
-                 [:o          [:!S7]             :l_sym]
-
-                 [:a          [:spacebar :!S7 :!S7 :spacebar] :l_sym]
-                 [:s          [:open_bracket]    :l_sym]
-                 [:d          [:!Sopen_bracket]  :l_sym]
-                 [:f          [:!S9]             :l_sym]
-                 [:g          [:!Scomma]         :l_sym]
-                 [:h          [:!Speriod]        :l_sym]
-                 [:j          [:!S0]             :l_sym]
-                 [:k          [:!Sclose_bracket] :l_sym]
-                 [:l          [:close_bracket]   :l_sym]
-                 [:semicolon  [:spacebar :!Sbackslash :!Sbackslash :spacebar] :l_sym]
-
-                 [:caps_lock  [:caps_lock]       :l_sym]
-                 ]}
-
         {:des "Function layer"
          :rules [
                  [:caps_lock ["l_fun" 1] :devicekb {:afterup ["l_fun" 0] :alone :escape}]
-                 [:1                   [:f1]             :l_fun]
-                 [:2                   [:f2]             :l_fun]
-                 [:3                   [:f3]             :l_fun]
-                 [:4                   [:f4]             :l_fun]
-                 [:5                   [:f5]             :l_fun]
-                 [:6                   [:f6]             :l_fun]
-                 [:7                   [:f7]             :l_fun]
-                 [:8                   [:f8]             :l_fun]
-                 [:9                   [:f9]             :l_fun]
-                 [:0                   [:f10]            :l_fun]
-                 [:hyphen              [:f11]            :l_fun]
-                 [:equal_sign          [:f12]            :l_fun]
-                 [:delete_or_backspace [:delete_forward] :l_fun]
+                 [:return_or_enter     :caps_lock      :l_fun]
 
-                 [:q                   [:rewind]         :l_fun]
-                 [:w                   [:play_or_pause]  :l_fun]
-                 [:e                   [:fast_forward]   :l_fun]
-                 [:y                   [:home]           :l_fun]
-                 [:u                   [:page_down]      :l_fun]
-                 [:i                   [:page_up]        :l_fun]
-                 [:o                   [:end]            :l_fun]
-                 [:p                   [:print_screen]   :l_fun]
+                 [:1                   :f1             :l_fun]
+                 [:2                   :f2             :l_fun]
+                 [:3                   :f3             :l_fun]
+                 [:4                   :f4             :l_fun]
+                 [:5                   :f5             :l_fun]
+                 [:6                   :f6             :l_fun]
+                 [:7                   :f7             :l_fun]
+                 [:8                   :f8             :l_fun]
+                 [:9                   :f9             :l_fun]
+                 [:0                   :f10            :l_fun]
+                 [:hyphen              :f11            :l_fun]
+                 [:equal_sign          :f12            :l_fun]
+                 [:delete_or_backspace :delete_forward :l_fun]
 
-                 [:s                   [:left_arrow]     :l_fun]
-                 [:d                   [:up_arrow]       :l_fun]
-                 [:f                   [:down_arrow]     :l_fun]
-                 [:g                   [:right_arrow]    :l_fun]
-                 [:h                   [:left_arrow]     :l_fun]
-                 [:j                   [:down_arrow]     :l_fun]
-                 [:k                   [:up_arrow]       :l_fun]
-                 [:l                   [:right_arrow]    :l_fun]
+                 [:q                   :rewind         :l_fun]
+                 [:w                   :play_or_pause  :l_fun]
+                 [:e                   :fast_forward   :l_fun]
+                 [:y                   :home           :l_fun]
+                 [:u                   :page_down      :l_fun]
+                 [:i                   :page_up        :l_fun]
+                 [:o                   :end            :l_fun]
+                 [:p                   :print_screen   :l_fun]
 
-                 [:spacebar            [:play_or_pause]  :l_fun]
-                 [:right_shift         [:mute]           :l_fun]
-                 [:left_arrow          [:rewind]         :l_fun]
-                 [:right_arrow         [:fast_forward]   :l_fun]
-                 [:up_arrow            [:volume_up]      :l_fun]
-                 [:down_arrow          [:volume_down]    :l_fun]
+                 [:s                   :left_arrow     :l_fun]
+                 [:d                   :up_arrow       :l_fun]
+                 [:f                   :down_arrow     :l_fun]
+                 [:g                   :right_arrow    :l_fun]
+                 [:h                   :left_arrow     :l_fun]
+                 [:j                   :down_arrow     :l_fun]
+                 [:k                   :up_arrow       :l_fun]
+                 [:l                   :right_arrow    :l_fun]
+
+                 [:spacebar            :play_or_pause  :l_fun]
+                 [:right_shift         :mute           :l_fun]
+                 [:left_arrow          :rewind         :l_fun]
+                 [:right_arrow         :fast_forward   :l_fun]
+                 [:up_arrow            :volume_up      :l_fun]
+                 [:down_arrow          :volume_down    :l_fun]
+                 ]}
+
+        {:des "Symbol combos"
+         :rules [
+                 [:return_or_enter :right_control :devicekb {:alone :return_or_enter}]
+                 [[:grave_accent_and_tilde :tab] :!Sgrave_accent_and_tilde :devicekb]
+                 [[:a, :z]             [:spacebar :!S7 :!S7 :spacebar] :devicekb]
+                 [[:semicolon, :slash] [:spacebar :!Sbackslash :!Sbackslash :spacebar] :devicekb]
+
+                 [[:s, :z]      :open_bracket :devicekb]
+                 [[:d, :x]      :!Sopen_bracket :devicekb]
+                 [[:f, :c]      :!S9 :devicekb]
+                 [[:g, :v]      :!Scomma :devicekb]
+                 [[:h, :n]      :!Speriod :devicekb]
+                 [[:j, :m]      :!S0 :devicekb]
+                 [[:k, :comma]  :!Sclose_bracket :devicekb]
+                 [[:l, :period] :close_bracket :devicekb]
+                 [[:tab, :1]    :!S1 :devicekb]
+                 [[:q, :2]      :!S2 :devicekb]
+                 [[:w, :3]      :!S3 :devicekb]
+                 [[:e, :4]      :!S4 :devicekb]
+                 [[:r, :5]      :!S5 :devicekb]
+                 [[:t, :6]      :!S6 :devicekb]
+                 [[:y, :6]      :!S6 :devicekb]
+                 [[:u, :7]      :!S7 :devicekb]
+                 [[:i, :8]      :!S8 :devicekb]
+                 [[:o, :9]      :!S9 :devicekb]
+                 [[:p, :0]      :!S0 :devicekb]
+                 ]}
+
+        {:des "Function combos"
+         :rules [
+                 [[:hyphen :delete_or_backspace] :f11 :devicekb]
+                 [[:equal_sign :delete_or_backspace] :f12 :devicekb]
                  ]}
         ]}
 
-; Autocomplete (from https://raw.githubusercontent.com/yqrashawn/GokuRakuJoudo/master/src/karabiner_configurator/keys_info.clj):
-; :button1 :button2 :button3 :button4 :button5 :button6 :button7 :button8
-; :button9 :button10 :button11 :button12 :button13 :button14 :button15 :button16
-; :button17 :button18 :button19 :button21 :button22 :button23 :button24 :button25
-; :button26 :button27 :button28 :button29 :button30 :button31 :button32 :x :y
+
+; Autocomplete (from https://raw.gi:busercontent.com/yqrashawn/GokuRakuJoudo/master/src/karabiner_configurator/keys_info.clj):
+; :button1 :button2 :button3 :butto::button5 :button6 :button7 :button8
+; :button9 :button10 :button11 :but:12 :button13 :button14 :button15 :button16
+; :button17 :button18 :button19 :bu:n21 :button22 :button23 :button24 :button25
+; :button26 :button27 :button28 :bu:n29 :button30 :button31 :button32 :x :y
 ; :any :command :shift :option :control :caps_lock :left_control :left_shift
 ; :left_option :left_command :right_control :right_shift :right_option
 ; :right_command :fn :return_or_enter :escape :delete_or_backspace

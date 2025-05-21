@@ -162,12 +162,24 @@ function kill-port {
     echo "$(lsof -t -i tcp:$1 | wc -l) processes remaining"
 }
 
-[ -f ~/.local/bin/mise ] && eval "$(~/.local/bin/mise activate zsh)"
-[ -f ~/.config/op/plugins.sh ] && source "$HOME/.config/op/plugins.sh"
+[ -f "$HOME/.config/op/plugins.sh" ] && source "$HOME/.config/op/plugins.sh"
+[ -f "$HOME/.docker/completions" ] && fpath=("$HOME/.docker/completions" $fpath)
+
+[ -f "$HOME/.local/bin/mise" ] && MISE_INSTALL="$HOME/.local/bin/mise"
+[ -f "/opt/homebrew/bin/mise" ] && MISE_INSTALL="/opt/homebrew/bin/mise"
+if [ -f "$MISE_INSTALL_DIR" ]; then
+  export MISE_CONFIG_DIR="$HOME/.config/mise"
+  eval "$($MISE_INSTALL activate zsh)"
+fi
 
 if exists nvim; then
   export EDITOR=nvim
   alias vim="$EDITOR"
+  function nvims {
+    nvim --cmd ":let g:init_session='$1'"
+  }
+  alias nvimrc="cd $HOME/.config/nvim && nvims settings"
+  alias eds=nvims
 else
   export EDITOR=vim
 fi
