@@ -33,7 +33,7 @@ if exists tmux; then
   alias detach='tmux detach'
 fi
 if exists tmuxinator; then
-  alias tm=tmuxinator
+  alias tx=tmuxinator
 fi
 
 # ------------------------------------------------------------------------------
@@ -76,19 +76,26 @@ if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
 
   export ZSH_DISABLE_COMPFIX=true
   export KEYTIMEOUT=1
-  plugins=(extract git sudo vi-mode wd last-working-dir)
 
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    plugins+=(macos)
-  fi
+  plugins=(
+    1password        # "op" wrapper to copy passwords from the command line
+    aliases          # Help for finding aliases
+    copypath         # Copy pwd or dir to clipboard
+    git-commit       # Aliases for conventional commit messages
+    last-working-dir # Automatically reopen in last working dir
+    safe-paste       # Paste doesn't automatically execute code
+    tmux             # Tmux helpers and aliases
+    tmuxinator       # Tmuxinator aliases
+    vi-mode          # Vi keybindings in the terminal
+    wd               # "Warp directory": Mark and cd to frequent directories
+  )
 
-  if exists code; then
-    plugins+=(vscode)
-  fi
+  [[ "$OSTYPE" == "darwin"* ]] && plugins+=(macos) # Add term/finder/music/etc app integrations
+  exists fzf  &&                  plugins+=(fzf)   # Add fzf completion integrations
 
-  if exists fzf; then
-    plugins+=(fzf)
-  fi
+  alias mark='wd add'
+  alias marks='wd list'
+  alias delmark='wd rm'
 
   try_source $ZSH/oh-my-zsh.sh
 
