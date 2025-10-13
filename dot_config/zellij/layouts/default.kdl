@@ -1,6 +1,183 @@
 layout {
-  pane
   pane size=1 borderless=true {
     plugin location="compact-bar"
+  }
+  pane borderless=true
+
+  swap_tiled_layout name="prio" {
+    tab max_panes=2 {
+      pane size=1 borderless=true {
+        plugin location="compact-bar"
+      }
+      pane borderless=true
+    }
+    tab max_panes=5 {
+      pane size=1 borderless=true {
+        plugin location="compact-bar"
+      }
+      pane {
+        pane size="81%"
+        pane split_direction="vertical" {
+          pane size="62%"
+          children
+        }
+      }
+    }
+    tab {
+      pane size=1 borderless=true {
+        plugin location="compact-bar"
+      }
+      pane {
+        pane size="62%"
+        pane split_direction="vertical" {
+          pane size="81%"
+          pane stacked=true {
+            children
+          }
+        }
+      }
+    }
+  }
+  swap_tiled_layout name="vert" {
+    tab max_panes=2 {
+      pane size=1 borderless=true {
+        plugin location="compact-bar"
+      }
+      pane borderless=true
+    }
+    tab max_panes=5 {
+      pane size=1 borderless=true {
+        plugin location="compact-bar"
+      }
+      pane split_direction="vertical" {
+        pane size="62%"
+        pane {
+          pane size="81%"
+          children
+        }
+      }
+    }
+    tab {
+      pane size=1 borderless=true {
+        plugin location="compact-bar"
+      }
+      pane split_direction="vertical" {
+        pane size="62%"
+        pane {
+          pane size="81%"
+          pane stacked=true {
+            children
+          }
+        }
+      }
+    }
+  }
+  swap_tiled_layout name="grid" {
+    tab max_panes=2 {
+      pane size=1 borderless=true {
+        plugin location="compact-bar"
+      }
+      pane borderless=true
+    }
+    tab max_panes=3 {
+      pane size=1 borderless=true {
+        plugin location="compact-bar"
+      }
+      pane split_direction="vertical" {
+        pane size="50%"
+        pane size="50%"
+      }
+    }
+    tab max_panes=5 {
+      pane size=1 borderless=true {
+        plugin location="compact-bar"
+      }
+      pane split_direction="horizontal" {
+        pane split_direction="vertical" {
+          pane size="50%"
+          pane size="50%"
+        }
+        pane split_direction="vertical" {
+          children
+        }
+      }
+    }
+    tab max_panes=9 {
+      pane size=1 borderless=true {
+        plugin location="compact-bar"
+      }
+      pane split_direction="horizontal" {
+        pane split_direction="vertical" {
+          pane size="25%"
+          pane size="25%"
+          pane size="25%"
+          pane size="25%"
+        }
+        pane split_direction="vertical" {
+          children
+        }
+      }
+    }
+    tab max_panes=13 {
+      pane size=1 borderless=true {
+        plugin location="compact-bar"
+      }
+      pane split_direction="horizontal" {
+        pane split_direction="vertical" {
+          pane size="25%"
+          pane size="25%"
+          pane size="25%"
+          pane size="25%"
+        }
+        pane split_direction="vertical" {
+          pane size="25%"
+          pane size="25%"
+          pane size="25%"
+          pane size="25%"
+        }
+        pane split_direction="vertical" {
+          children
+        }
+      }
+    }
+    tab max_panes=17 {
+      pane size=1 borderless=true {
+        plugin location="compact-bar"
+      }
+      pane split_direction="horizontal" {
+        pane split_direction="vertical" {
+          pane size="25%"
+          pane size="25%"
+          pane size="25%"
+          pane size="25%"
+        }
+        pane split_direction="vertical" {
+          pane size="25%"
+          pane size="25%"
+          pane size="25%"
+          pane size="25%"
+        }
+        pane split_direction="vertical" {
+          pane size="25%"
+          pane size="25%"
+          pane size="25%"
+          pane size="25%"
+        }
+        pane split_direction="vertical" {
+          children
+        }
+      }
+    }
+    tab {
+      pane size=1 borderless=true {
+        plugin location="compact-bar"
+      }
+      pane split_direction="vertical" {
+        pane size="50%"
+        pane stacked=true {
+          children
+        }
+      }
+    }
   }
 }

@@ -1,9 +1,8 @@
 show_startup_tips false
 attach_to_session true
 default_mode "locked"
-default_layout "compact"
-theme "catppuccin-latte"
 
+theme "ansi"
 ui {
   pane_frames {
     rounded_corners true
@@ -13,7 +12,7 @@ ui {
 
 keybinds clear-defaults=true {
   locked {
-    bind "Ctrl g" { SwitchToMode "normal"; }
+    bind "Super g" { SwitchToMode "normal"; }
   }
   pane {
     bind "left" { MoveFocus "left"; }
@@ -149,9 +148,15 @@ keybinds clear-defaults=true {
     }
   }
   shared_among "normal" "locked" {
+    bind "Alt i" { MoveTab "left"; }
+    bind "Alt o" { MoveTab "right"; }
+    bind "Alt h" { MoveFocusOrTab "left"; }
     bind "Alt left" { MoveFocusOrTab "left"; }
+    bind "Alt j" { MoveFocus "down"; }
     bind "Alt down" { MoveFocus "down"; }
+    bind "Alt k" { MoveFocus "up"; }
     bind "Alt up" { MoveFocus "up"; }
+    bind "Alt l" { MoveFocusOrTab "right"; }
     bind "Alt right" { MoveFocusOrTab "right"; }
     bind "Alt +" { Resize "Increase"; }
     bind "Alt ," {
@@ -169,9 +174,7 @@ keybinds clear-defaults=true {
     bind "Alt =" { Resize "Increase"; }
     bind "Alt [" { PreviousSwapLayout; }
     bind "Alt ]" { NextSwapLayout; }
-    bind "Alt w" { ToggleFloatingPanes; }
-    bind "Alt f" { ToggleFocusFullscreen; }
-    bind "Alt g" {
+    bind "Alt d" {
       Run "lazygit" {
         floating true
         hold_on_close false
@@ -181,13 +184,6 @@ keybinds clear-defaults=true {
         height "94%"
       }
     }
-    bind "Alt h" { MoveFocusOrTab "left"; }
-    bind "Alt i" { MoveTab "left"; }
-    bind "Alt j" { MoveFocus "down"; }
-    bind "Alt k" { MoveFocus "up"; }
-    bind "Alt l" { MoveFocusOrTab "right"; }
-    bind "Alt n" { NewPane; }
-    bind "Alt o" { MoveTab "right"; }
     bind "Alt s" {
       Run "nvims" "settings" {
         cwd "~/.config/nvim"
@@ -201,7 +197,7 @@ keybinds clear-defaults=true {
     }
   }
   shared_except "locked" "renametab" "renamepane" {
-    bind "Ctrl g" { SwitchToMode "locked"; }
+    bind "Super g" { SwitchToMode "locked"; }
     bind "Ctrl q" { Quit; }
   }
   shared_except "locked" "entersearch" {
@@ -259,6 +255,21 @@ keybinds clear-defaults=true {
   renamepane {
     bind "esc" { UndoRenamePane; SwitchToMode "pane"; }
   }
+
+  // Make sure your tty is yielding these hotkeys!
+  shared_among "normal" "locked" {
+    bind "Super n" { NewPane; SwitchToMode "locked"; }
+    bind "Super w" { ToggleFloatingPanes; }
+    bind "Super f" { ToggleFocusFullscreen; }
+    bind "Super s" { NewPane; SwitchToMode "locked"; }
+    bind "Super t" { NewTab; SwitchToMode "locked"; }
+    bind "Super q" { Detach; }
+    bind "Ctrl tab" { GoToNextTab; SwitchToMode "locked"; }
+    bind "Ctrl Shift tab" { GoToPreviousTab; SwitchToMode "locked"; }
+  }
+  normal {
+    bind "Super w" { CloseTab; SwitchToMode "locked"; }
+  }
 }
 
 // Plugin aliases - can be used to change the implementation of Zellij
@@ -266,7 +277,7 @@ keybinds clear-defaults=true {
 plugins {
   about location="zellij:about"
   compact-bar location="zellij:compact-bar" {
-    tooltip "Alt t"
+    tooltip "Super /"
   }
   configuration location="zellij:configuration"
   filepicker location="zellij:strider" {
@@ -280,10 +291,4 @@ plugins {
   welcome-screen location="zellij:session-manager" {
     welcome_screen true
   }
-}
-
-// Plugins to load in the background when a new session starts
-// eg. "file:/path/to/my-plugin.wasm"
-// eg. "https://example.com/my-plugin.wasm"
-load_plugins {
 }

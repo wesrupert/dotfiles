@@ -6,9 +6,9 @@ layout {
     }
   }
   default_tab_template split_direction="horizontal" {
-    children
     pane size=1 borderless=true {
-      plugin location="zellij:compact-bar"
+      plugin location="compact-bar"
     }
+    children
   }
 }

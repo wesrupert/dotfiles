@@ -10,7 +10,6 @@ packages:
       - 'lazygit'
       - 'mise'
       - 'moreutils'
-      - 'neovim'
       - 'qmk/qmk/qmk'
       - 'ripgrep'
       - 'starship'

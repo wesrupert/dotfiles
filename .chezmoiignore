@@ -3,3 +3,4 @@
 .oh-my-zsh/**/*.zwc
 
 .todo
+Session.vim

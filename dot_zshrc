@@ -24,11 +24,39 @@ fi
 # ------------ so that we don't do extra work if we're relaunching. ------------
 # ------------------------------------------------------------------------------
 
-if exists zellij && [[ ("$AUTO_LAUNCH_WORKSPACE" == 'zellij' || -z "$AUTO_LAUNCH_WORKSPACE") ]]; then
-  # TODO: Only auto-attach if the session has no attached clients
-  # export ZELLIJ_AUTO_ATTACH=true
-  export ZELLIJ_AUTO_EXIT=true
-  eval "$(zellij setup --generate-auto-start zsh)"
+if exists zellij; then
+  if [[ ("$AUTO_LAUNCH_WORKSPACE" == 'zellij' || -z "$AUTO_LAUNCH_WORKSPACE") ]]; then
+    export ZELLIJ_AUTO_ATTACH=true
+    export ZELLIJ_AUTO_EXIT=true
+
+    # Only auto-attach when the session has no attached clients.
+    # TODO: Better approach should be possible when zellij-org/zellij#4381 is fixed.
+    # Then, we can just use:
+    # eval "$(zellij setup --generate-auto-start zsh)"
+    if [[ -z "$ZELLIJ" ]]; then
+      if [[ "$ZELLIJ_AUTO_ATTACH" == "true" ]]; then
+        function get_zellij_detached_session () {
+          for session in $(zellij ls -n | grep -v 'EXITED' | grep -v '(current)' | awk '{print $1}'); do
+            if [[ $(zellij --session "$session" action list-clients | wc -l) -eq 1 ]]; then
+              print "$session"
+              return
+            fi
+          done
+          return 1
+        }
+        if ZELLIJ_REATTACHED_SESSION="$(get_zellij_detached_session)"; then
+          zellij attach "$ZELLIJ_REATTACHED_SESSION"
+        else
+          zellij
+        fi
+      else
+        zellij
+      fi
+      if [[ "$ZELLIJ_AUTO_EXIT" == "true" ]]; then
+        exit
+      fi
+    fi
+  fi
 elif exists tmux; then
   if [[ -z "$TMUX" && ("$AUTO_LAUNCH_WORKSPACE" == 'tmux' || "$SESSION_TYPE" == 'remote/ssh') ]]; then
     sid="$(tmux ls | sed '/(attached)$/d' | sed 's/:.*//' | tail -n 1)"
@@ -166,6 +194,7 @@ if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
 
   [[ "$OSTYPE" == "darwin"* ]] && plugins+=(macos) # term/finder/music/etc app integrations
   exists fzf                   && plugins+=(fzf)
+  exists yarn                  && plugins+=(yarn)
   exists jj                    && plugins+=(jj)
 
   alias mark='wd add'
@@ -200,9 +229,13 @@ setopt globdots
 
 [ -f "$HOME/.local/bin/mise" ] && MISE_INSTALL="$HOME/.local/bin/mise"
 [ -f "/opt/homebrew/bin/mise" ] && MISE_INSTALL="/opt/homebrew/bin/mise"
-if [ -f "$MISE_INSTALL_DIR" ]; then
+if [ -f "$MISE_INSTALL" ]; then
   export MISE_CONFIG_DIR="$HOME/.config/mise"
   eval "$($MISE_INSTALL activate zsh)"
+fi
+
+if [[ -d "$HOME/.local/share/bob" ]]; then
+  FPATH="$HOME/.config/bob/completions:$FPATH"
 fi
 
 if exists nvim; then

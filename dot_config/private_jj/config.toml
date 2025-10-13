@@ -1,0 +1,166 @@
+#:schema https://jj-vcs.github.io/jj/latest/config-schema.json
+
+[user]
+name = 'Wes Rupert'
+email = 'email@wesr.dev'
+
+[ui]
+default-command = 'status_log'
+merge-editor = 'nvim'
+diff-editor = 'nvim-dirdiff'
+
+[ui.movement]
+edit = true
+
+[merge]
+hunk-level = 'line'
+
+[merge-tools.nvim]
+merge-args = [
+  '-f', '-M', '-d',
+  '$output', '$left', '$base', '$right',
+  '-c', 'wincmd J', '-c', 'set modifiable', '-c', 'set write'
+]
+program = 'nvim'
+merge-tool-edits-conflict-markers = true
+
+[merge-tools.nvimresolve]
+program = "nvim"
+merge-args = [
+    "-c", "let g:jj_diffconflicts_marker_length=$marker_length",
+    "-c", "JJDiffConflicts!", "$output", "$base", "$left", "$right",
+]
+merge-tool-edits-conflict-markers = true
+
+[remotes.origin]
+auto-track-bookmarks = 'glob:"*/wes/*"|glob:"*/wr/*"|glob:"team/*"|main|master'
+
+[revsets]
+log = 'stack(@)'
+
+[revset-aliases]
+at = '@'
+'user(x)' = 'author(x) | committer(x)'
+trunk = 'trunk()'
+'/' = 'trunk()'
+'trunk()' = 'latest((present(main) | present(master)) & remote_bookmarks())'
+
+# stack(x, n) is the set of mutable commits reachable from 'x', with 'n'
+# parents. 'n' is often useful to customize the display and return set for
+# certain operations. 'x' can be used to target the set of 'roots' to traverse,
+# e.g. @ is the current stack.
+stack = 'stack()'
+'stack()' = 'stack(@)'
+'stack(x)' = 'stack(x, 2)'
+'stack(x, n)' = 'ancestors(reachable(x, mutable()), n)'
+
+# The current set of "open" works. It is defined as:
+#
+# - given the set of commits not in trunk, that are written by me,
+# - calculate the given stack() for each of those commits
+#
+# n = 1, meaning that nothing from `trunk()` is included, so all resulting
+# commits are mutable by definition.
+open = 'open()'
+'open()' = 'open(mine())'
+'open(x)' = 'ancestors(x ~ ::immutable_heads(), 2) ~ ::trunk()'
+
+open_bookmarks = 'open_bookmarks()'
+'open_bookmarks()' = 'ancestors((mine() & bookmarks()) ~ ::immutable_heads(), 2)'
+
+# Private and wip commits that should never be pushed anywhere. Often part of
+# work-in-progress merge stacks.
+wip = 'wip()'
+'wip()' = 'stack(::bookmarks(glob:"wip/*") & open(), 2) | (mine() & description(glob:"wip:*"))'
+private = 'private()'
+'private()' = 'description(glob:"private:*")'
+void = 'void()'
+'void()' = 'empty() & ~merges() & ~root() & description(exact:"")'
+no_push = 'no_push()'
+'no_push()' = 'wip() | private() | void()'
+
+# nearest_bookmark(x) is the nearest bookmark in x's ancestors. In the event of
+# a merge commit, nearest_bookmark will prioritize the first parent.
+nearest_bookmark = 'nearest_bookmark(@)'
+'nearest_bookmark(x)' = '''
+  coalesce(
+    heads(first_ancestors(x) & bookmarks()),
+    heads(ancestors(x) & bookmarks())
+  )
+'''
+
+# The set of 'ready()' commits. defined as the set of open commits, but nothing
+# that is blacklisted or any of their children.
+ready = 'ready()'
+'ready()' = 'open() ~ no_push()::'
+
+[templates]
+git_push_bookmark = '"dev/wr/" ++ change_id.short()'
+config_list = 'builtin_config_list_detailed'
+op_log_node = 'if(current_operation, "@", "◉")'
+log_node = '''
+label("node",
+  coalesce(
+    if(!self, label("elided", "⇋")),
+    if(current_working_copy, label("working_copy", "◉")),
+    if(conflict, label("conflict", "x")),
+    if(immutable, label("immutable", "◆")),
+    if(description.starts_with("wip: "), label("wip", "!")),
+    label("normal", "○")
+  )
+)
+'''
+
+[template-aliases]
+'in_branch(commit)' = 'commit.contained_in("immutable_heads()..bookmarks()")'
+'format_short_signature(signature)' = '''
+  coalesce(
+    if(stringify(signature.email()) == config("user.email").as_string(), label("author email local", "me")),
+    signature.email().local().replace(regex:'^\d+\+', "")
+  )
+'''
+
+[aliases]
+# Shorthand aliases
+g = ['git']
+l = ['log']
+r = ['log', '-r']
+n = ['new']
+e = ['edit']
+ed = ['edit']
+d = ['describe']
+m = ['describe', '-m']
+b = ['bookmark']
+f = ['git', 'fetch']
+p = ['git', 'push']
+pd = ['git', 'push', '--dry-run']
+pc = ['git', 'push', '--change']
+pcd = ['git', 'push', '--dry-run', '--change']
+
+# Navigation
+j = ['prev', '--edit']
+k = ['next', '--edit']
+
+# Quick actions
+stog = ['status_log']
+status_log = ['util', 'exec', '--', 'bash', '-c', '''
+jj status
+echo ''
+echo 'Working copy log:'
+jj log
+''']
+update = ['rebase', '--skip-emptied', '-d', 'trunk()']
+tug = ['bookmark', 'move', '--from', 'nearest_bookmark(@)', '--to', '@']
+resolveui = ['resolve', '--tool', 'diffconflicts']
+new-work = ['new', '-r', 'trunk()']
+nw = ['new-work']
+
+# Revision logs
+ll = ['log', '-T', 'builtin_log_detailed']
+rl = ['log', '-T', 'builtin_log_detailed', '-r']
+
+# Git-style full history log
+git-log = ['log', '-r', '..']
+gl = ['git-log']
+git-logl = ['log', '-T', 'builtin_log_detailed', '-r', '..']
+gll = ['git-logl']
