@@ -1,11 +1,8 @@
 show_startup_tips false
 attach_to_session true
 default_mode "locked"
+default_layout "compact"
 theme "catppuccin-latte"
-
-// TODO: Move to compact layout once which-key feature is supported:
-// https://github.com/zellij-org/zellij/pull/4225
-// default_layout "compact"
 
 ui {
   pane_frames {
