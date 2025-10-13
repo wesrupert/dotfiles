@@ -1,0 +1,14 @@
+layout {
+  tab name="qmk" cwd="~/Code/qmk/" focus=true {
+    pane focus=true borderless=true command="nvims" { args "qmk"; }
+    pane size="19%" split_direction="vertical" {
+      pane
+    }
+  }
+  default_tab_template split_direction="horizontal" {
+    children
+    pane size=1 borderless=true {
+      plugin location="zellij:compact-bar"
+    }
+  }
+}

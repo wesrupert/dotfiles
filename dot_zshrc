@@ -24,21 +24,92 @@ fi
 # ------------ so that we don't do extra work if we're relaunching. ------------
 # ------------------------------------------------------------------------------
 
-if exists tmux; then
-  if [[ -z "$TMUX" && ("$AUTO_TMUX_ALWAYS" == 'true' || "$SESSION_TYPE" == 'remote/ssh') ]]; then
+if exists zellij && [[ ("$AUTO_LAUNCH_WORKSPACE" == 'zellij' || -z "$AUTO_LAUNCH_WORKSPACE") ]]; then
+  # TODO: Only auto-attach if the session has no attached clients
+  # export ZELLIJ_AUTO_ATTACH=true
+  export ZELLIJ_AUTO_EXIT=true
+  eval "$(zellij setup --generate-auto-start zsh)"
+elif exists tmux; then
+  if [[ -z "$TMUX" && ("$AUTO_LAUNCH_WORKSPACE" == 'tmux' || "$SESSION_TYPE" == 'remote/ssh') ]]; then
     sid="$(tmux ls | sed '/(attached)$/d' | sed 's/:.*//' | tail -n 1)"
     tmux ${sid:+attach} ${sid:+-t} $sid
     exit
   fi
   alias detach='tmux detach'
-fi
-if exists tmuxinator; then
-  alias tx=tmuxinator
+  if exists tmuxinator; then
+    alias tx=tmuxinator
+    function txx {
+      session_name="$(tmux display-message -p '#S')"
+      if [[ -n "$session_name" ]]; then
+        echo "Stopping '$session_name' session..."
+        tmuxinator stop "$session_name"
+      else
+        echo "No current session found!"
+      fi
+    }
+  fi
 fi
 
 # ------------------------------------------------------------------------------
 # ---------------- Remaining shell setup goes after this line. -----------------
 # ------------------------------------------------------------------------------
+
+function get-theme {
+  theme='dark'
+  if [[ $(uname) == "Darwin" ]]; then # MacOS
+    theme="$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo dark || echo light)"
+  elif [[ "$(uname -r | sed 's/.*-//')" == "WSL2" ]]; then # Windows::WSL2
+    theme="$(reg.exe Query 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' /v AppsUseLightTheme | sed -e 's/0x0/dark/; s/0x1/light/' -e '/^[[:space:]]*$/d' | awk '{print $3}' | xargs)"
+  fi
+  echo "$theme"
+}
+
+function cd {
+  if [[ "$#" == '0' ]]; then
+    pushd "$HOME" > /dev/null
+  else
+    pushd "$@" > /dev/null
+  fi
+}
+
+function od {
+  popd "$@" > /dev/null
+}
+
+function .. {
+  dir='..'
+  times=${1:-1}
+  while [[ $((times--)) > 1 ]]; do
+    dir="$dir/.."
+  done
+  cd $dir
+}
+
+function kill-port {
+    echo "Killing $(lsof -t -i tcp:$1 | wc -l) processes"
+    lsof -t -i tcp:$1 | xargs kill -9
+    echo "$(lsof -t -i tcp:$1 | wc -l) processes remaining"
+}
+
+if exists zellij; then
+  if [ -d "$HOME/.config/zellij/completions" ]; then
+    FPATH="$HOME/.config/zellij/completions:$FPATH"
+  fi
+  alias zx='zellij --layout'
+  function zr () { zellij run --name "$*" -- zsh -ic "$*";}
+  function zrf () { zellij run --name "$*" --floating -- zsh -ic "$*";}
+  function zri () { zellij run --name "$*" --in-place -- zsh -ic "$*";}
+  function ze () { zellij edit "$*";}
+  function zef () { zellij edit --floating "$*";}
+  function zei () { zellij edit --in-place "$*";}
+  function zpipe () {
+    if [ -z "$1" ]; then
+      zellij pipe;
+    else
+      zellij pipe -p $1;
+    fi
+  }
+fi
 
 if exists fzf; then
   export FZF_COMPLETION_TRIGGER='qq'
@@ -84,14 +155,18 @@ if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
     git-commit       # Aliases for conventional commit messages
     last-working-dir # Automatically reopen in last working dir
     safe-paste       # Paste doesn't automatically execute code
+    ssh-agent        # Automate ssh-agent launch and credential load
     tmux             # Tmux helpers and aliases
     tmuxinator       # Tmuxinator aliases
     vi-mode          # Vi keybindings in the terminal
     wd               # "Warp directory": Mark and cd to frequent directories
   )
 
-  [[ "$OSTYPE" == "darwin"* ]] && plugins+=(macos) # Add term/finder/music/etc app integrations
-  exists fzf  &&                  plugins+=(fzf)   # Add fzf completion integrations
+  zstyle :omz:plugins:ssh-agent quiet yes
+
+  [[ "$OSTYPE" == "darwin"* ]] && plugins+=(macos) # term/finder/music/etc app integrations
+  exists fzf                   && plugins+=(fzf)
+  exists jj                    && plugins+=(jj)
 
   alias mark='wd add'
   alias marks='wd list'
@@ -103,17 +178,6 @@ if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
   ZSH=${ENV_ZSH:-$ZSH}
   HOME=${ENV_HOME:-$HOME}
   ZSH_THEME=${ENV_ZSH_THEME:-$ZSH_THEME}
-
-  if exists brew; then
-    if [[ -d "$(brew --prefix)/opt/spaceship/" ]] && source $(brew --prefix)/opt/spaceship/spaceship.zsh
-  fi
-
-  ZSH_THEME='spaceship'
-  SPACESHIP_PROMPT_ADD_NEWLINE=false
-  SPACESHIP_PROMPT_SEPARATE_LINE=true
-  SPACESHIP_CHAR_SUFFIX=' '
-  SPACESHIP_EXEC_TIME_ELAPSED=30
-  SPACESHIP_DOCKER_COMPOSE_SHOW=false
 fi
 
 # 0 -- vanilla completion (abc => abc)
@@ -131,46 +195,8 @@ ENABLE_CORRECTION='true'
 COMPLETION_WAITING_DOTS='true'
 setopt globdots
 
-function get-theme {
-  # TODO: Add additional platform checks
-  theme='dark'
-  if [[ "$(uname -r | sed 's/.*-//')" == "WSL2" ]]; then
-    theme="$(reg.exe Query 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' /v AppsUseLightTheme | sed -e 's/0x0/dark/; s/0x1/light/' -e '/^[[:space:]]*$/d' | awk '{print $3}' | xargs)"
-    # elif {{ MACOS }}; then
-    #   theme="$(defaults read -globalDomain AppleInterfaceStyle &> /dev/null && echo dark || echo light)"
-  fi
-  echo "$theme"
-}
-
-function cd {
-  if [[ "$#" == '0' ]]; then
-    pushd "$HOME" > /dev/null
-  else
-    pushd "$@" > /dev/null
-  fi
-}
-
-function od {
-  popd "$@" > /dev/null
-}
-
-function .. {
-  dir='..'
-  times=${1:-1}
-  while [[ $((times--)) > 1 ]]; do
-    dir="$dir/.."
-  done
-  cd $dir
-}
-
-function kill-port {
-    echo "Killing $(lsof -t -i tcp:$1 | wc -l) processes"
-    lsof -t -i tcp:$1 | xargs kill -9
-    echo "$(lsof -t -i tcp:$1 | wc -l) processes remaining"
-}
-
 [ -f "$HOME/.config/op/plugins.sh" ] && source "$HOME/.config/op/plugins.sh"
-[ -f "$HOME/.docker/completions" ] && fpath=("$HOME/.docker/completions" $fpath)
+[ -d "$HOME/.docker/completions" ] && FPATH="$HOME/.docker/completions:$FPATH"
 
 [ -f "$HOME/.local/bin/mise" ] && MISE_INSTALL="$HOME/.local/bin/mise"
 [ -f "/opt/homebrew/bin/mise" ] && MISE_INSTALL="/opt/homebrew/bin/mise"
@@ -182,9 +208,6 @@ fi
 if exists nvim; then
   export EDITOR=nvim
   alias vim="$EDITOR"
-  function nvims {
-    nvim --cmd ":let g:init_session='$1'"
-  }
   alias nvimrc="cd $HOME/.config/nvim && nvims settings"
   alias eds=nvims
 else
@@ -226,5 +249,7 @@ if [ -d /mnt/c/QMK_MSYS ]; then
   export TEENSY_LOADER_CLI=/mnt/c/QMK_MSYS/mingw64/bin/teensy_loader_cli.exe
   export BATCHISP=/mnt/c/QMK_MSYS/mingw64/bin/batchisp.exe
 fi
+
+eval "$(starship init zsh)"
 
 try_source "$HOME/.zshrc.after"

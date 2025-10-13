@@ -1,0 +1,43 @@
+# ~/.config/starship.toml
+
+# Show jj after git but before rest of prompts
+format = """
+$username\
+$hostname\
+$localip\
+$shlvl\
+$singularity\
+$kubernetes\
+$directory\
+$vcsh\
+$fossil_branch\
+$fossil_metrics\
+$git_branch\
+$git_commit\
+$git_state\
+$git_metrics\
+$git_status\
+${custom.jj_change}\
+${custom.jj_desc}\
+$all"""
+
+[git_commit] # Hide the git commit prompt
+disabled = true
+
+[custom.jj_change]
+description = "The working copy of the repo in your current directory: workspaces (if relevant), change ID, bookmarks"
+command     = ''' jj log --no-graph -r=@ -T='separate(" ", working_copies, change_id.shortest(), bookmarks,)' '''
+when        = ''' test -n "$(jj status)" || exit 1 '''
+format      = 'on [$symbol ($output)]($style) '
+symbol      = '󱗆'
+style       = 'bold purple'
+ignore_timeout  = true
+
+[custom.jj_desc]
+description = "The description of your working copy, if set"
+command     = ''' jj log --no-graph -r=@ -T="description.first_line()" | awk '{if(length($0) > 25) {s = substr($0, 1, 25); sub(/[ \t\r\n]+$/, "", s); print s "…"} else {print $0}}' '''
+when        = ''' test -n "$(jj status)" -a -n "$(jj log --no-graph -r=@ -T='description')" || exit 1 '''
+format      = '[$symbol "($output)"]($style) '
+symbol      = '󰦨'
+style       = 'bold green'
+ignore_timeout  = true
