@@ -1,0 +1,1 @@
+irm https://raw.githubusercontent.com/MordechaiHadad/bob/master/scripts/install.ps1 | iex

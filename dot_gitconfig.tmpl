@@ -132,8 +132,7 @@
 {{ else if eq .chezmoi.os "linux" }}
   helper = !/usr/bin/gh auth git-credential
 {{ else }}
-  ; TODO: Add Windows path
-  helper =
+  helper = !'C:\\Program Files\\GitHub CLI\\gh.exe' auth git-credential
 {{ end }}
 [credential "https://gist.github.com"]
 {{ if eq .chezmoi.os "darwin" }}
@@ -141,8 +140,7 @@
 {{ else if eq .chezmoi.os "linux" }}
   helper = !/usr/bin/gh auth git-credential
 {{ else }}
-  ; TODO: Add Windows path
-  helper =
+  helper = !'C:\\Program Files\\GitHub CLI\\gh.exe' auth git-credential
 {{ end }}
 [includeif "gitdir:~/Code/work/**"]
   path = ~/.config/git/.gitconfig.work

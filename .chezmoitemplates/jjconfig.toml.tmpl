@@ -143,7 +143,11 @@ k = ['next', '--edit']
 
 # Quick actions
 stog = ['status_log']
+{{ if eq .chezmoi.os "windows" }}
+status_log = ['util', 'exec', '--', 'pwsh', '-c', '''
+{{ else }}
 status_log = ['util', 'exec', '--', 'bash', '-c', '''
+{{ end }}
 jj status
 echo ''
 echo 'Working copy log:'

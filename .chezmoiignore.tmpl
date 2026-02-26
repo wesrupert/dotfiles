@@ -1,0 +1,31 @@
+.oh-my-zsh/cache
+.oh-my-zsh/cache/**
+.oh-my-zsh/**/*.zwc
+
+.todo
+Session.vim
+
+{{ if eq .chezmoi.os "darwin" }}
+.chezmoiscripts/linux/**
+.chezmoiscripts/windows/**
+{{ end }}
+
+{{ if eq .chezmoi.os "linux" }}
+.chezmoiscripts/darwin/**
+.chezmoiscripts/windows/**
+{{ end }}
+
+{{ if eq .chezmoi.os "windows" }}
+.chezmoiscripts/nix/**
+.chezmoiscripts/darwin/**
+.chezmoiscripts/linux/**
+.zprofile
+.zshrc
+.config/jj/config.toml
+{{ else }}
+AppData/**
+readonly_Documents/PowerShell/**
+layers.ahk
+spaceshipfixed.omp.json
+windowsTerminal_themeToggler.ps1
+{{ end }}
