@@ -3,6 +3,7 @@ packages:
     brews:
       - 'make'
       - 'chezmoi'
+      - 'difftastic'
       - 'fzf'
       - 'git-delta'
       - 'gh'
@@ -16,6 +17,7 @@ packages:
       - 'switchaudio-osx'
       - 'tmux'
       - 'tmuxinator'
+      - 'tree-sitter-cli'
       - 'yqrashawn/goku/goku'
       - 'zellij'
     casks:
