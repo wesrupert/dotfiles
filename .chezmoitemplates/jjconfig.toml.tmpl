@@ -7,7 +7,8 @@ email = 'email@wesr.dev'
 [ui]
 default-command = 'status_log'
 merge-editor = 'nvim'
-diff-editor = 'nvim-dirdiff'
+diff-formatter = ["difft", "--color=always", "$left", "$right"]
+pager = "less -FRX --mouse --wheel-lines=3"
 
 [ui.movement]
 edit = true
@@ -44,15 +45,18 @@ at = '@'
 trunk = 'trunk()'
 '/' = 'trunk()'
 'trunk()' = 'latest((present(main) | present(master)) & remote_bookmarks())'
+mine = 'mine()'
 
-# stack(x, n) is the set of mutable commits reachable from 'x', with 'n'
-# parents. 'n' is often useful to customize the display and return set for
+# stack(x, n) is n sets, the set of mutable commits reachable from 'x', plus
+# n-1 parents. 'n' is often useful to customize the display and return set for
 # certain operations. 'x' can be used to target the set of 'roots' to traverse,
 # e.g. @ is the current stack.
+'stack(x, n)' = 'ancestors(reachable(x, mutable()), n)'
+'stack(x)' = 'stack(x, 2)'
 stack = 'stack()'
 'stack()' = 'stack(@)'
-'stack(x)' = 'stack(x, 2)'
-'stack(x, n)' = 'ancestors(reachable(x, mutable()), n)'
+stacks = 'stacks()'
+'stacks()' = 'stack(mine() | @)'
 
 # The current set of "open" works. It is defined as:
 #
@@ -62,8 +66,8 @@ stack = 'stack()'
 # n = 1, meaning that nothing from `trunk()` is included, so all resulting
 # commits are mutable by definition.
 open = 'open()'
-'open()' = 'open(mine())'
-'open(x)' = 'ancestors(x ~ ::immutable_heads(), 2) ~ ::trunk()'
+'open()' = 'open(mine() | @)'
+'open(x)' = 'stack(x, 1) ~ hidden()'
 
 open_bookmarks = 'open_bookmarks()'
 'open_bookmarks()' = 'ancestors((mine() & bookmarks()) ~ ::immutable_heads(), 2)'
@@ -94,6 +98,9 @@ nearest_bookmark = 'nearest_bookmark(@)'
 ready = 'ready()'
 'ready()' = 'open() ~ no_push()::'
 
+## The commit that makes revision 'x' immutable.
+'why_immutable(x)' = "(x & immutable()) | roots(x:: & immutable_heads())"
+
 [templates]
 git_push_bookmark = '"dev/wr/" ++ change_id.short()'
 config_list = 'builtin_config_list_detailed'
@@ -116,6 +123,7 @@ label("node",
 'format_short_signature(signature)' = '''
   coalesce(
     if(stringify(signature.email()) == config("user.email").as_string(), label("author email local", "me")),
+    if(stringify(signature.name()) == config("user.name").as_string(), label("author email local", "me*")),
     signature.email().local().replace(regex:'^\d+\+', "")
   )
 '''
@@ -153,11 +161,12 @@ echo ''
 echo 'Working copy log:'
 jj log
 ''']
-update = ['rebase', '--skip-emptied', '-d', 'trunk()']
+restack = ['rebase', '--skip-emptied', '--simplify-parents', '--onto', 'trunk()', '--source', 'roots(trunk()..) & stack()']
+restack-all = ['rebase', '--skip-emptied', '--simplify-parents', '--onto', 'trunk()', '--source', 'roots(trunk()..) & stacks()']
 tug = ['bookmark', 'move', '--from', 'nearest_bookmark(@)', '--to', '@']
-resolveui = ['resolve', '--tool', 'diffconflicts']
-new-work = ['new', '-r', 'trunk()']
-nw = ['new-work']
+new-revset = ['new', '-r', 'trunk()']
+tip = ['new-revset']
+resolveui = ['resolve', '--tool', 'nvimresolve']
 
 # Revision logs
 ll = ['log', '-T', 'builtin_log_detailed']
